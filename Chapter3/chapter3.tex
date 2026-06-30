@@ -1,0 +1,367 @@
+\chapter{Phương pháp xây dựng Vietnamese NeoBERT}
+\label{chap:method}
+
+Chương này trình bày chi tiết phương pháp xây dựng mô hình Vietnamese NeoBERT
+(ViNeoBERT). Trước hết, chúng tôi mô tả tổng quan quy trình ba giai đoạn cùng các mô hình
+nguồn được sử dụng (Mục~\ref{sec:method-overview}). Tiếp theo, chúng tôi trình bày bước cắt
+tỉa và đồng bộ từ vựng (Mục~\ref{sec:vocab}), quá trình trích xuất tập neo theo cặp dịch --
+một cải tiến của đề tài so với SALT gốc (Mục~\ref{sec:anchor}), và phép chiếu SALT áp dụng
+cho cả lớp nhúng đầu vào lẫn lớp đầu ra tách rời của NeoBERT (Mục~\ref{sec:salt-proj}).
+Cuối cùng, chúng tôi mô tả giai đoạn căn chỉnh đóng băng (Mục~\ref{sec:freeze}) và giai
+đoạn tiếp tục tiền huấn luyện thích nghi (Mục~\ref{sec:cpt}). Các giá trị siêu tham số cụ
+thể được trình bày trong Chương~\ref{chap:experiment}.
+
+% ======================================================================
+\section{Tổng quan phương pháp}
+\label{sec:method-overview}
+
+\subsection{Đặt vấn đề}
+\label{subsec:problem}
+
+Như đã phân tích trong Chương~\ref{chap:related}, việc xây dựng một Encoder hiện đại cho
+tiếng Việt từ NeoBERT đối mặt đồng thời ba thách thức: (1)~NeoBERT chỉ được tiền huấn luyện
+trên ngữ liệu tiếng Anh, nên toàn bộ lớp nhúng của nó phản ánh phân phối từ vựng Anh ngữ;
+(2)~tiếp tục tiền huấn luyện với một lớp nhúng \textit{khởi tạo ngẫu nhiên} dễ dẫn tới hiện
+tượng quên lãng thảm họa; và (3)~huấn luyện lại từ đầu trên quy mô hàng nghìn tỷ token là
+bất khả thi về tài nguyên. Phương pháp của đề tài giải quyết đồng thời ba thách thức này
+bằng cách \textit{khởi tạo có thông tin} lớp nhúng tiếng Việt thông qua kỹ thuật SALT, sau
+đó tinh chỉnh mô hình trên ngữ liệu tiếng Việt với chi phí khiêm tốn.
+
+\subsection{Mô hình nguồn và mô hình hiến tặng}
+\label{subsec:sources}
+
+Phương pháp sử dụng hai mô hình tiền huấn luyện:
+\begin{itemize}
+  \item \textbf{NeoBERT}~\cite{lebreton2025neobert} đóng vai trò \textit{kiến trúc đích}:
+        toàn bộ phần thân Transformer (28 lớp với RoPE, SwiGLU, Pre-RMSNorm) cùng không gian
+        biểu diễn tiếng Anh được giữ nguyên và dùng làm hệ tọa độ đích cho phép chiếu. Một
+        đặc điểm quan trọng là NeoBERT sử dụng \textit{đầu giải mã tách rời} (untied head):
+        lớp đầu ra của tác vụ MLM là một ánh xạ tuyến tính riêng $\,y = W_{\mathrm{dec}}\,h
+        + b_{\mathrm{dec}}\,$ với ma trận trọng số $W_{\mathrm{dec}}$ và véc-tơ độ chệch
+        $b_{\mathrm{dec}}$ \textit{độc lập} với ma trận nhúng đầu vào $E$. Do đó, việc thích
+        nghi sang tiếng Việt đòi hỏi khởi tạo \textit{cả hai} ma trận token: ma trận nhúng
+        đầu vào $E$ và ma trận đầu ra $W_{\mathrm{dec}}$.
+  \item \textbf{ViDeBERTa}~\cite{lai2023videberta} (bản \texttt{base}) đóng vai trò
+        \textit{mô hình hiến tặng} (donor): cung cấp không gian nhúng tiếng Việt chất lượng
+        cao làm nguồn để tái sử dụng. ViDeBERTa dùng bộ tách từ SentencePiece theo thuật
+        toán Unigram với kích thước từ vựng lớn (khoảng 128 nghìn token), trong đó mỗi đơn
+        vị từ vựng đi kèm một điểm log-xác suất.
+\end{itemize}
+
+\subsection{Quy trình ba giai đoạn}
+\label{subsec:pipeline}
+
+Mô hình ViNeoBERT được xây dựng qua ba giai đoạn nối tiếp, minh họa trong
+Hình~\ref{fig:pipeline}:
+\begin{enumerate}
+  \item \textbf{Khởi tạo SALT}: xây dựng tập từ vựng tiếng Việt, trích xuất tập neo, rồi
+        chiếu không gian nhúng của ViDeBERTa sang không gian NeoBERT để khởi tạo cả ma trận
+        nhúng đầu vào lẫn ma trận đầu ra; độ chệch của đầu ra được khởi tạo theo tần suất từ
+        đơn (Mục~\ref{sec:vocab}--\ref{sec:salt-proj}). Giai đoạn này \textit{không} cập
+        nhật phần thân Transformer.
+  \item \textbf{Căn chỉnh đóng băng}: đóng băng toàn bộ phần thân, chỉ huấn luyện ma trận
+        nhúng và ma trận đầu ra trên một lượng nhỏ ngữ liệu tiếng Việt, nhằm để hai ma trận
+        vừa khởi tạo căn chỉnh với nhau và với phần thân (Mục~\ref{sec:freeze}).
+  \item \textbf{Tiếp tục tiền huấn luyện thích nghi}: tinh chỉnh toàn bộ mô hình trên ngữ
+        liệu tiếng Việt quy mô lớn với mục tiêu MLM theo lịch tốc độ học WSD
+        (Mục~\ref{sec:cpt}).
+\end{enumerate}
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[
+    node distance=7mm and 12mm,
+    stage/.style={draw, rounded corners, minimum width=38mm, minimum height=13mm, align=center, font=\small, fill=blue!7},
+    src/.style={draw, rounded corners, minimum width=30mm, minimum height=9mm, align=center, font=\footnotesize, fill=gray!10},
+    >={Latex[length=2mm]}
+  ]
+    \node[src] (neo)  {NeoBERT\\(kiến trúc + không gian đích)};
+    \node[src, below=of neo] (vide) {ViDeBERTa\\(mô hình hiến tặng)};
+    \node[stage, right=of $(neo)!0.5!(vide)$] (s1) {Giai đoạn 1\\Khởi tạo SALT};
+    \node[stage, right=of s1] (s2) {Giai đoạn 2\\Căn chỉnh đóng băng};
+    \node[stage, right=of s2] (s3) {Giai đoạn 3\\CPT (WSD)};
+    \node[src, right=of s3] (out) {ViNeoBERT};
+    \draw[->] (neo.east)  -- (s1.west);
+    \draw[->] (vide.east) -- (s1.west);
+    \draw[->] (s1) -- (s2); \draw[->] (s2) -- (s3); \draw[->] (s3) -- (out);
+    \node[font=\scriptsize, below=1mm of s1] {thân đóng băng};
+    \node[font=\scriptsize, below=1mm of s2] {thân đóng băng};
+    \node[font=\scriptsize, below=1mm of s3] {toàn bộ tham số};
+  \end{tikzpicture}
+  \caption{Quy trình ba giai đoạn xây dựng ViNeoBERT: khởi tạo lớp nhúng và lớp đầu ra bằng
+    SALT từ ViDeBERTa sang không gian NeoBERT, căn chỉnh đóng băng phần thân, rồi tiếp tục
+    tiền huấn luyện thích nghi trên ngữ liệu tiếng Việt.}
+  \label{fig:pipeline}
+\end{figure}
+
+% ======================================================================
+\section{Cắt tỉa và đồng bộ từ vựng}
+\label{sec:vocab}
+
+Phép chiếu SALT yêu cầu lớp nhúng nguồn và đích có cùng kích thước từ vựng. Vì từ vựng của
+ViDeBERTa lớn hơn nhiều so với 30.522 token của NeoBERT, cần một bước \textit{cắt tỉa từ
+vựng} (vocabulary pruning) để đồng bộ kích thước. Quá trình này giữ lại toàn bộ các token
+đặc biệt (như \texttt{[CLS]}, \texttt{[SEP]}, \texttt{[MASK]}, \texttt{[PAD]}), sau đó chọn
+bổ sung các token thông thường có \textit{điểm log-xác suất Unigram cao nhất} -- tức các đơn
+vị từ vựng phổ biến và đáng tin cậy nhất -- cho tới khi đạt đúng 30.522 token.
+
+Gọi $\mathcal{V}_s$ là tập token đặc biệt và $\mathcal{V}_n$ là tập token thông thường của
+ViDeBERTa, với điểm Unigram $\mathrm{score}(\cdot)$. Tập từ vựng tiếng Việt sau cắt tỉa
+$\mathcal{V}_t$ được xác định như Công thức~\eqref{eq:prune}:
+\begin{equation}
+  \label{eq:prune}
+  \mathcal{V}_t = \mathcal{V}_s \;\cup\; \mathrm{TopK}\big(\mathcal{V}_n,\, \mathrm{score},\,
+  K\big), \qquad K = 30{,}522 - |\mathcal{V}_s|
+\end{equation}
+Trong đó $\mathrm{TopK}(\mathcal{V}_n, \mathrm{score}, K)$ trả về $K$ token có điểm Unigram
+cao nhất. Bộ tách từ được ghi lại với ánh xạ chỉ số mới, đồng thời lưu một ánh xạ
+$\pi:\, \text{id mới} \rightarrow \text{id gốc trong ViDeBERTa}$ để truy xuất đúng hàng nhúng
+hiến tặng ở các bước sau. Phép so khớp chuỗi piece là chính xác vì các đơn vị Unigram là duy
+nhất trong từ vựng.
+
+% ======================================================================
+\section{Trích xuất tập neo theo cặp dịch}
+\label{sec:anchor}
+
+\subsection{Vai trò của tập neo}
+\label{subsec:anchor-role}
+
+\textit{Tập neo} (anchor set) $\mathcal{A}$ là tập các cặp token $(t_{\mathrm{vi}},
+t_{\mathrm{neo}})$ có tương ứng ngữ nghĩa rõ ràng giữa từ vựng tiếng Việt và từ vựng NeoBERT.
+Mỗi cặp neo cung cấp một điểm \textit{đã biết} của ánh xạ giữa hai không gian nhúng: nhúng
+NeoBERT của $t_{\mathrm{neo}}$ chính là đích mà nhúng ViDeBERTa của $t_{\mathrm{vi}}$ cần
+được ánh xạ tới. Do đó, chất lượng và độ phủ của tập neo quyết định trực tiếp chất lượng của
+phép chiếu SALT.
+
+Trong nghiên cứu gốc, SALT~\cite{lee2025salt} cũng như FOCUS~\cite{dobler2023focus} chủ yếu
+khai thác các token \textit{trùng lặp bề mặt} (cùng dạng chuỗi) giữa hai từ vựng làm neo. Đối
+với cặp ngôn ngữ Anh--Việt vốn khác biệt lớn về hình thái, số token trùng lặp bề mặt là khá
+hạn chế. Vì vậy, đề tài đề xuất \textit{mở rộng tập neo bằng các cặp dịch} Anh--Việt được
+khai thác tự động, nhằm làm giàu và phủ rộng tập neo. Đây là một trong những đóng góp chính
+của đề tài.
+
+\subsection{Lọc từ đầy đủ và hợp lệ}
+\label{subsec:anchor-filter}
+
+Để bảo đảm các cặp neo mang ngữ nghĩa trong sạch, trước khi khai thác cặp dịch, chúng tôi áp
+dụng hai bộ lọc. Thứ nhất, chỉ giữ lại các \textit{token là từ đầy đủ} (word-initial), loại
+bỏ các mảnh từ phụ (subword) vốn không mang nghĩa độc lập. Thứ hai, đối với token tiếng Việt,
+chúng tôi áp dụng một bộ \textit{lọc chính tả tiếng Việt} nghiêm ngặt: loại các token chứa ký
+tự không bản địa (\textit{f, j, w, z}), giới hạn độ dài, yêu cầu đúng một cụm nguyên âm liền
+mạch, và tuân thủ các quy tắc chính tả (chẳng hạn \textit{k, gh, ngh} chỉ đứng trước
+\textit{i, e, ê, y}). Hai bộ lọc này bảo đảm chỉ những từ tiếng Việt hợp lệ và đơn nghĩa mới
+được xét làm neo.
+
+\subsection{Khai thác cặp dịch ba tầng}
+\label{subsec:anchor-mining}
+
+Trên tập token đã lọc, chúng tôi khai thác cặp dịch theo ba tầng bổ sung cho nhau:
+\begin{itemize}
+  \item \textbf{Tầng trùng lặp bề mặt và số}: các từ có cùng dạng chuỗi ở cả hai từ vựng
+        (được xác minh bằng dịch máy MarianMT~\cite{junczys2018marian}) và các token số chung.
+  \item \textbf{Tầng dịch ngược một từ}: với mỗi từ tiếng Việt, chúng tôi dịch sang tiếng
+        Anh rồi \textit{dịch ngược} trở lại tiếng Việt; cặp neo chỉ được chấp nhận nếu kết
+        quả dịch ngược trùng khớp với từ gốc và bản dịch tiếng Anh là một từ đơn thuộc từ vựng
+        NeoBERT.
+  \item \textbf{Tầng từ ghép}: các từ ghép tiếng Việt (đa âm tiết) được dịch trực tiếp, chỉ
+        giữ lại khi bản dịch là một từ đơn thuộc từ vựng NeoBERT.
+\end{itemize}
+
+Cơ sở khoa học của phép kiểm tra \textit{dịch ngược} là: một từ đa nghĩa thường không dịch
+ngược về chính nó một cách ổn định, do bản dịch trung gian có thể tương ứng với một nghĩa
+khác. Vì vậy, ràng buộc dịch ngược trùng khớp tự nhiên loại bỏ phần lớn các từ đa nghĩa, chỉ
+giữ lại các cặp tương ứng một--một đáng tin cậy. Ràng buộc ``bản dịch là một từ đơn'' bảo đảm
+mỗi cặp neo tương ứng đúng một token NeoBERT. Toàn bộ tập neo thu được hợp nhất từ ba tầng và
+được dùng thống nhất cho cả lớp nhúng đầu vào lẫn lớp đầu ra ở Mục~\ref{sec:salt-proj}.
+
+% ======================================================================
+\section{Phép chiếu SALT cho lớp nhúng và lớp đầu ra}
+\label{sec:salt-proj}
+
+Mục này trình bày phép chiếu SALT -- bước khởi tạo cốt lõi. Với mỗi token tiếng Việt
+\textit{không thuộc} tập neo, chúng tôi xây dựng nhúng của nó bằng một ánh xạ tuyến tính cục
+bộ học từ các neo lân cận về mặt ngữ nghĩa. Các token neo và token đặc biệt được sao chép
+trực tiếp hàng tương ứng từ NeoBERT.
+
+\subsection{Lựa chọn neo bằng Sparsemax}
+\label{subsec:anchor-select}
+
+Để xác định các neo liên quan tới một token đích $t$, chúng tôi đo độ tương đồng ngữ nghĩa
+trong không gian nhúng từ tĩnh fastText~\cite{bojanowski2017fasttext, grave2018fasttext}. Gọi
+$\mathbf{f}_t$ là véc-tơ fastText của $t$ và $\{\mathbf{f}_a\}_{a\in\mathcal{A}}$ là véc-tơ
+fastText của các neo. Độ tương đồng cosine và trọng số neo được tính như
+Công thức~\eqref{eq:sparsemax-sel}:
+\begin{equation}
+  \label{eq:sparsemax-sel}
+  s_{t,a} = \frac{\mathbf{f}_t^\top \mathbf{f}_a}{\lVert \mathbf{f}_t\rVert\, \lVert \mathbf{f}_a\rVert},
+  \qquad
+  \mathbf{w}_t = \mathrm{sparsemax}\big(\mathbf{s}_t\big),
+  \qquad
+  \mathcal{S}_t = \{\, a : w_{t,a} > 0 \,\}
+\end{equation}
+Trong đó $\mathrm{sparsemax}(\cdot)$~\cite{martins2016sparsemax} là phép chiếu lên đơn hình
+xác suất, cho kết quả \textit{thưa} -- chỉ một tập con nhỏ $\mathcal{S}_t$ các neo liên quan
+nhất nhận trọng số khác 0 (xem Mục~\ref{subsec:init-methods}). Việc dùng Sparsemax thay cho
+softmax đặc biệt phù hợp với cấu trúc \textit{bất đẳng hướng} của không gian biểu diễn
+(Mục~\ref{sec:geometry}): vì trong không gian bất đẳng hướng mọi cặp từ đều có độ tương đồng
+cosine khá cao, một phân phối dày đặc sẽ pha trộn nhiễu, trong khi hỗ trợ thưa giữ lại đúng
+các neo thực sự gần nghĩa.
+
+\subsection{Ánh xạ tuyến tính cục bộ theo từng token}
+\label{subsec:local-map}
+
+Như đã lập luận ở Mục~\ref{sec:geometry}, do hai không gian nhúng là bất đẳng hướng và không
+đẳng cấu, một ánh xạ tuyến tính toàn cục duy nhất là không đủ. Thay vào đó, SALT học một
+\textit{ánh xạ tuyến tính riêng cho từng token} từ tập neo được chọn. Gọi $A_t^{\mathrm{src}}
+\in \mathbb{R}^{k\times h}$ là ma trận xếp chồng các nhúng \textit{hiến tặng} (ViDeBERTa) của
+$k = |\mathcal{S}_t|$ neo trong $\mathcal{S}_t$, và $A_t^{\mathrm{tgt}} \in \mathbb{R}^{k\times
+h}$ là ma trận các hàng \textit{đích} (NeoBERT) tương ứng. Khi số neo đủ lớn
+($k \ge k_0$), ánh xạ cục bộ $X_t$ và nhúng kết quả $\mathbf{e}_t$ được xác định như
+Công thức~\eqref{eq:local-map}:
+\begin{equation}
+  \label{eq:local-map}
+  X_t = \big(A_t^{\mathrm{src}}\big)^{+} A_t^{\mathrm{tgt}}, \qquad
+  \mathbf{e}_t = \mathbf{d}_t\, X_t
+\end{equation}
+Trong đó $(\cdot)^{+}$ là \textit{giả nghịch đảo} Moore--Penrose (nghiệm bình phương tối
+thiểu chuẩn nhỏ nhất), $\mathbf{d}_t \in \mathbb{R}^{h}$ là nhúng hiến tặng của token $t$, và
+$h$ là số chiều ẩn. Ánh xạ $X_t$ học quan hệ tuyến tính giữa hai không gian \textit{cục bộ
+quanh token $t$}, dựa trên các neo gần nghĩa nhất với nó.
+
+Khi số neo không đủ ($k < k_0$), giả nghịch đảo trở nên kém ổn định; khi đó chúng tôi thoái
+lui về \textit{trung bình có trọng số Sparsemax} của các hàng đích, như
+Công thức~\eqref{eq:wavg}:
+\begin{equation}
+  \label{eq:wavg}
+  \mathbf{e}_t = \frac{\sum_{a\in\mathcal{S}_t} w_{t,a}\, \mathbf{a}^{\mathrm{tgt}}}
+                      {\sum_{a\in\mathcal{S}_t} w_{t,a}}
+\end{equation}
+Trường hợp token không có véc-tơ fastText hợp lệ, nhúng được khởi tạo ngẫu nhiên theo phân
+phối chuẩn khớp với thống kê của NeoBERT.
+
+\subsection{Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}
+\label{subsec:both-matrices}
+
+Đây là điểm khác biệt then chốt so với SALT gốc. Vì NeoBERT dùng đầu giải mã \textit{tách
+rời}, ma trận đầu ra $W_{\mathrm{dec}}$ là một ma trận độc lập với hình học riêng -- và theo
+kết quả về hiện tượng thoái hóa biểu diễn (Mục~\ref{sec:geometry}), nó \textit{không} thể
+được khởi tạo bằng cách sao chép ma trận nhúng. Do đó, chúng tôi áp dụng \textit{cùng một quy
+trình chiếu SALT theo từng token} cho cả hai ma trận, chỉ khác ở tập hàng đích:
+\begin{itemize}
+  \item Với \textbf{ma trận nhúng đầu vào} $E$: hàng đích $A_t^{\mathrm{tgt}}$ lấy từ các
+        \textit{hàng nhúng} NeoBERT của các neo.
+  \item Với \textbf{ma trận đầu ra} $W_{\mathrm{dec}}$: hàng đích $A_t^{\mathrm{tgt}}$ lấy từ
+        các \textit{hàng đầu giải mã} NeoBERT của các neo.
+\end{itemize}
+Nhờ vậy, mỗi ma trận được khởi tạo trong đúng không gian của nó, phản ánh trung thực quan hệ
+ngữ nghĩa mà các neo thiết lập trong từng không gian.
+
+\subsection{Hiệu chỉnh chuẩn của lớp nhúng}
+\label{subsec:norm-calib}
+
+Như đã lưu ý ở Mục~\ref{subsec:rmsnorm}, NeoBERT dùng Pre-RMSNorm vốn chuẩn hóa theo độ lớn
+của véc-tơ; do đó độ lớn (norm) của mỗi hàng nhúng ảnh hưởng trực tiếp đến hành vi mô hình.
+Các nhúng sinh ra từ phép chiếu SALT thường có độ lớn lệch so với phân phối của NeoBERT. Để
+tránh gây bất ổn định, chúng tôi hiệu chỉnh độ lớn của mỗi hàng \textit{không phải neo} về
+độ lớn trung bình của NeoBERT trong khi giữ nguyên hướng, như Công thức~\eqref{eq:norm-calib}:
+\begin{equation}
+  \label{eq:norm-calib}
+  \mathbf{e}_t \;\leftarrow\; \mathbf{e}_t \cdot \frac{\mu_{\mathrm{neo}}}{\lVert \mathbf{e}_t\rVert},
+  \qquad
+  \mu_{\mathrm{neo}} = \frac{1}{|\mathcal{V}_{\mathrm{neo}}|}\sum_{v} \lVert E^{\mathrm{neo}}_v\rVert
+\end{equation}
+Trong đó $\mu_{\mathrm{neo}}$ là độ lớn trung bình của các hàng nhúng NeoBERT. Các hàng neo
+và token đặc biệt được giữ nguyên để bảo toàn độ trung thực với NeoBERT.
+
+\subsection{Khởi tạo độ chệch đầu ra theo tần suất}
+\label{subsec:freq-bias}
+
+Lớp đầu ra của NeoBERT có một véc-tơ độ chệch $b_{\mathrm{dec}}$ mã hóa \textit{tiên nghiệm
+tần suất} của token. Các phương pháp khởi tạo trước đây thường để độ chệch này bằng 0, khiến
+mô hình ở bước đầu phải lãng phí công sức học lại phân phối tần suất biên. Đề tài khởi tạo
+$b_{\mathrm{dec}}$ theo \textit{log-tần-suất từ đơn} (unigram log-frequency) của tiếng Việt,
+như Công thức~\eqref{eq:freq-bias}:
+\begin{equation}
+  \label{eq:freq-bias}
+  b_{\mathrm{dec},v} = \log p_v, \qquad
+  p_v = \frac{c_v + 1}{\sum_{u\in\mathcal{V}_t} c_u + |\mathcal{V}_t|}
+\end{equation}
+Trong đó $c_v$ là số lần xuất hiện của token $v$ trong ngữ liệu tiếng Việt (đếm qua bộ tách
+từ đã cắt tỉa), và phép cộng 1 ở tử số là làm trơn Laplace. Nhờ cách khởi tạo này, ngay ở
+bước huấn luyện đầu tiên mô hình đã ``đoán'' đúng phân phối tần suất từ đơn thay vì phân phối
+đều, giúp hàm mất mát khởi điểm xấp xỉ \textit{entropy từ đơn} của tiếng Việt -- thấp hơn
+đáng kể so với mức ngẫu nhiên $\log|\mathcal{V}_t|$. Đây là một cải tiến đơn giản nhưng hiệu
+quả, phối hợp ăn khớp với việc khởi tạo trọng số đầu ra bằng SALT.
+
+% ======================================================================
+\section{Giai đoạn căn chỉnh đóng băng}
+\label{sec:freeze}
+
+Sau bước khởi tạo, ma trận nhúng và ma trận đầu ra của tiếng Việt là \textit{mới} đối với
+phần thân Transformer đã được huấn luyện trên tiếng Anh. Nếu lập tức tinh chỉnh toàn bộ mô
+hình, phần thân có thể bị kéo theo để thích ứng với hai ma trận mới còn chưa ổn định, làm gia
+tăng nguy cơ quên lãng thảm họa (Mục~\ref{subsec:lang-adapt}). Vì vậy, chúng tôi chèn một
+\textit{giai đoạn căn chỉnh đóng băng}: đóng băng toàn bộ phần thân Transformer và chỉ huấn
+luyện ma trận nhúng đầu vào, ma trận đầu ra và độ chệch của nó trên một lượng nhỏ ngữ liệu
+tiếng Việt với mục tiêu MLM.
+
+Trực giác của bước này là để hai ma trận vừa khởi tạo \textit{căn chỉnh với nhau và với phần
+thân cố định} trong không gian biểu diễn trước khi cho phép phần thân thay đổi; nhờ đó điểm
+khởi đầu của giai đoạn tiếp tục tiền huấn luyện ổn định hơn. Cách làm này nằm trong tinh thần
+chiến lược \textit{đóng băng rồi thích nghi} của de Vries và
+Nissim~\cite{devries2021recycle}, vốn cho thấy việc tách giai đoạn học lớp nhúng khỏi giai
+đoạn tinh chỉnh toàn bộ giúp tái sử dụng mô hình hiệu quả hơn. Trong thực nghiệm
+(Chương~\ref{chap:experiment}), chúng tôi quan sát thấy giai đoạn này cải thiện chất lượng
+khởi đầu, do đó được giữ lại trong quy trình.
+
+% ======================================================================
+\section{Tiếp tục tiền huấn luyện thích nghi}
+\label{sec:cpt}
+
+Ở giai đoạn cuối, toàn bộ mô hình được tinh chỉnh trên ngữ liệu tiếng Việt quy mô lớn
+CulturaX với mục tiêu MLM. Theo Gururangan và cộng sự~\cite{gururangan2020dapt}, việc tiếp
+tục tiền huấn luyện trên dữ liệu miền đích mang lại cải thiện ổn định; ở đây miền đích là
+toàn bộ ngôn ngữ tiếng Việt.
+
+\textbf{Lịch tốc độ học WSD.} Chúng tôi sử dụng lịch \textit{Warmup--Stable--Decay}
+(WSD)~\cite{hu2024minicpm} thay cho lịch cosine cố định, vì WSD cho phép huấn luyện theo
+nhiều phiên nối tiếp mà không phải cam kết trước tổng số bước. Tốc độ học $\eta$ theo bước
+toàn cục $s$ được định nghĩa như Công thức~\eqref{eq:wsd}:
+\begin{equation}
+  \label{eq:wsd}
+  \eta(s) =
+  \begin{cases}
+    \eta_{\mathrm{peak}} \cdot \dfrac{s}{S_w} & \text{nếu } s < S_w \quad \text{(khởi động)}\\[2mm]
+    \eta_{\mathrm{peak}} & \text{nếu } S_w \le s < S_c \quad \text{(ổn định)}\\[2mm]
+    \eta_{\mathrm{peak}} \cdot \Big(1 - \sqrt{\tfrac{\,s - S_c\,}{S_d}}\,\Big) & \text{nếu } s \ge S_c \quad \text{(làm nguội)}
+  \end{cases}
+\end{equation}
+Trong đó $S_w$ là mốc kết thúc khởi động, $S_c$ là mốc bắt đầu làm nguội, và $S_d$ là độ dài
+giai đoạn làm nguội. Pha \textit{ổn định} giữ tốc độ học ở đỉnh trong phần lớn quá trình; pha
+\textit{làm nguội} dùng dạng $1-\sqrt{\cdot}$ vốn được Hägele và cộng sự~\cite{hagele2024scaling}
+chứng minh là dạng làm nguội cho chất lượng hạ nguồn tốt nhất ở một ngân sách cho trước. Vì
+lịch WSD được điều khiển theo \textit{bước toàn cục}, một phiên huấn luyện nối tiếp tiếp tục ở
+pha ổn định mà không bị khởi động lại đột ngột.
+
+\textbf{Khởi động lại tốc độ học.} Một điểm kiểm tra đã được làm nguội về tốc độ học gần 0
+gần như không thể cập nhật trọng số nếu huấn luyện tiếp mà không xử lý. Do đó, mỗi khi tiếp
+tục huấn luyện trên dữ liệu mới (ví dụ một pha làm nguội trên dữ liệu mới), tốc độ học được
+\textit{khởi động lại} rồi làm nguội lại theo đúng khuyến nghị của Ibrahim và cộng
+sự~\cite{ibrahim2024continual}. Ngoài ra, bộ tối ưu AdamW được giữ \textit{liên tục} giữa các
+phiên (mang theo các mô-men bậc nhất và bậc hai) với cặp tham số $\beta = (0{,}9;\, 0{,}95)$
+theo công thức gốc của NeoBERT, để bộ tiền điều kiện của bộ tối ưu khớp với chế độ mà phần
+thân đã được huấn luyện.
+
+% ======================================================================
+\section{Tổng kết phương pháp}
+\label{sec:method-summary}
+
+Tóm lại, phương pháp xây dựng ViNeoBERT gồm ba giai đoạn: (1)~khởi tạo lớp nhúng và lớp đầu
+ra bằng phép chiếu SALT theo từng token từ ViDeBERTa sang không gian NeoBERT, với tập neo
+được làm giàu bằng cặp dịch và độ chệch đầu ra khởi tạo theo tần suất; (2)~căn chỉnh đóng
+băng để hai ma trận mới ổn định cùng phần thân; và (3)~tiếp tục tiền huấn luyện thích nghi
+theo lịch WSD. So với SALT gốc, đề tài có ba khác biệt chính: \textit{mở rộng tập neo bằng
+cặp dịch} (Mục~\ref{sec:anchor}), \textit{áp dụng phép chiếu cho cả lớp đầu ra tách rời kèm
+khởi tạo độ chệch theo tần suất} (Mục~\ref{sec:salt-proj}), và \textit{bổ sung giai đoạn căn
+chỉnh đóng băng} (Mục~\ref{sec:freeze}). Hiệu quả của các thành phần này được đánh giá trong
+Chương~\ref{chap:experiment}.

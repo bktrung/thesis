@@ -1,0 +1,303 @@
+% =====================================================================
+%  Tài liệu tham khảo — Vietnamese NeoBERT (ViNeoBERT)
+%  Khóa keys khớp với \cite{...} trong các chương. Style: IEEE (biblatex).
+%  Mọi entry đã được đối chiếu với bản gốc (arXiv/ACL Anthology/hội nghị).
+% =====================================================================
+
+% ─────────────────────────── Kiến trúc & nền tảng ───────────────────────────
+@inproceedings{vaswani2017attention,
+  author    = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Lukasz and Polosukhin, Illia},
+  title     = {Attention Is All You Need},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {30},
+  year      = {2017},
+}
+
+@inproceedings{devlin2019bert,
+  author    = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  title     = {{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  booktitle = {Proceedings of NAACL-HLT},
+  pages     = {4171--4186},
+  year      = {2019},
+}
+
+@article{liu2019roberta,
+  author  = {Liu, Yinhan and Ott, Myle and Goyal, Naman and Du, Jingfei and Joshi, Mandar and Chen, Danqi and Levy, Omer and Lewis, Mike and Zettlemoyer, Luke and Stoyanov, Veselin},
+  title   = {{RoBERTa}: A Robustly Optimized {BERT} Pretraining Approach},
+  journal = {arXiv preprint arXiv:1907.11692},
+  year    = {2019},
+}
+
+@article{lebreton2025neobert,
+  author  = {Le Breton, Lola and Fournier, Quentin and El Mezouar, Mariam and Morris, John X. and Chandar, Sarath},
+  title   = {{NeoBERT}: A Next-Generation {BERT}},
+  journal = {arXiv preprint arXiv:2502.19587},
+  year    = {2025},
+}
+
+@article{su2023roformer,
+  author  = {Su, Jianlin and Lu, Yu and Pan, Shengfeng and Murtadha, Ahmed and Wen, Bo and Liu, Yunfeng},
+  title   = {{RoFormer}: Enhanced Transformer with Rotary Position Embedding},
+  journal = {Neurocomputing},
+  volume  = {568},
+  year    = {2024},
+  note    = {arXiv:2104.09864},
+}
+
+@article{shazeer2020glu,
+  author  = {Shazeer, Noam},
+  title   = {{GLU} Variants Improve Transformer},
+  journal = {arXiv preprint arXiv:2002.05202},
+  year    = {2020},
+}
+
+@inproceedings{zhang2019rmsnorm,
+  author    = {Zhang, Biao and Sennrich, Rico},
+  title     = {Root Mean Square Layer Normalization},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2019},
+  note      = {arXiv:1910.07467},
+}
+
+@inproceedings{xiong2020layer,
+  author    = {Xiong, Ruibin and Yang, Yunchang and He, Di and Zheng, Kai and Zheng, Shuxin and Xing, Chen and Zhang, Huishuai and Lan, Yanyan and Wang, Liwei and Liu, Tie-Yan},
+  title     = {On Layer Normalization in the Transformer Architecture},
+  booktitle = {Proceedings of the 37th International Conference on Machine Learning (ICML)},
+  year      = {2020},
+}
+
+@inproceedings{levine2020limits,
+  author    = {Levine, Yoav and Wies, Noam and Sharir, Or and Bata, Hofit and Shashua, Amnon},
+  title     = {The Depth-to-Width Interplay in Self-Attention},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2020},
+  note      = {arXiv:2006.12467},
+}
+
+@inproceedings{hendrycks2016gelu,
+  author    = {Hendrycks, Dan and Gimpel, Kevin},
+  title     = {Gaussian Error Linear Units ({GELU}s)},
+  journal   = {arXiv preprint arXiv:1606.08415},
+  year      = {2016},
+}
+
+@inproceedings{dao2023flashattention2,
+  author    = {Dao, Tri},
+  title     = {{FlashAttention-2}: Faster Attention with Better Parallelism and Work Partitioning},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  note      = {arXiv:2307.08691},
+}
+
+@article{penedo2023refinedweb,
+  author  = {Penedo, Guilherme and Malartic, Quentin and Hesslow, Daniel and Cojocaru, Ruxandra and Cappelli, Alessandro and Alobeidli, Hamza and Pannier, Baptiste and Almazrouei, Ebtesam and Launay, Julien},
+  title   = {The {RefinedWeb} Dataset for {Falcon} {LLM}: Outperforming Curated Corpora with Web Data, and Web Data Only},
+  journal = {arXiv preprint arXiv:2306.01116},
+  year    = {2023},
+}
+
+@inproceedings{wettig2023mask,
+  author    = {Wettig, Alexander and Gao, Tianyu and Zhong, Zexuan and Chen, Danqi},
+  title     = {Should You Mask 15\% in Masked Language Modeling?},
+  booktitle = {Proceedings of the 17th Conference of the European Chapter of the ACL (EACL)},
+  year      = {2023},
+}
+
+@article{peng2023yarn,
+  author  = {Peng, Bowen and Quesnelle, Jeffrey and Fan, Honglu and Shippole, Enrico},
+  title   = {{YaRN}: Efficient Context Window Extension of Large Language Models},
+  journal = {arXiv preprint arXiv:2309.00071},
+  year    = {2023},
+}
+
+@article{dubey2024llama,
+  author  = {Dubey, Abhimanyu and others},
+  title   = {The {Llama} 3 Herd of Models},
+  journal = {arXiv preprint arXiv:2407.21783},
+  year    = {2024},
+}
+
+@article{deepseek2025,
+  author  = {{DeepSeek-AI}},
+  title   = {{DeepSeek-V3} Technical Report},
+  journal = {arXiv preprint arXiv:2412.19437},
+  year    = {2024},
+}
+
+@article{warner2024modernbert,
+  author  = {Warner, Benjamin and Chaffin, Antoine and Clavi{\'e}, Benjamin and Weller, Orion and Hallstr{\"o}m, Oskar and Taghadouini, Said and Gallagher, Alexis and Biswas, Raja and Ladhak, Faisal and Aarsen, Tom and Cooper, Nathan and Adams, Griffin and Howard, Jeremy and Poli, Iacopo},
+  title   = {Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder for Fast, Memory Efficient, and Long Context Finetuning and Inference},
+  journal = {arXiv preprint arXiv:2412.13663},
+  year    = {2024},
+}
+
+@article{nussbaum2024nomic,
+  author  = {Nussbaum, Zach and Morris, John X. and Duderstadt, Brandon and Mulyar, Andriy},
+  title   = {Nomic Embed: Training a Reproducible Long Context Text Embedder},
+  journal = {arXiv preprint arXiv:2402.01613},
+  year    = {2024},
+}
+
+% ─────────────────────────── Mô hình tiếng Việt ───────────────────────────
+@inproceedings{nguyen2020phobert,
+  author    = {Nguyen, Dat Quoc and Nguyen, Anh Tuan},
+  title     = {{PhoBERT}: Pre-trained language models for {Vietnamese}},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2020},
+  pages     = {1037--1042},
+  year      = {2020},
+}
+
+@inproceedings{lai2023videberta,
+  author    = {Tran, Cong Dao and Pham, Nhut Huy and Nguyen, Anh and Hy, Truong Son and Vu, Tu},
+  title     = {{ViDeBERTa}: A powerful pre-trained language model for {Vietnamese}},
+  booktitle = {Findings of the Association for Computational Linguistics: EACL 2023},
+  pages     = {1071--1078},
+  year      = {2023},
+}
+
+% ──────────────── Khởi tạo nhúng & chuyển giao xuyên ngôn ngữ ────────────────
+@inproceedings{minixhofer2022wechsel,
+  author    = {Minixhofer, Benjamin and Paischer, Fabian and Rekabsaz, Navid},
+  title     = {{WECHSEL}: Effective Initialization of Subword Embeddings for Cross-lingual Transfer of Monolingual Language Models},
+  booktitle = {Proceedings of NAACL-HLT},
+  pages     = {3992--4006},
+  year      = {2022},
+}
+
+@inproceedings{dobler2023focus,
+  author    = {Dobler, Konstantin and de Melo, Gerard},
+  title     = {{FOCUS}: Effective Embedding Initialization for Monolingual Specialization of Multilingual Models},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2023},
+}
+
+@inproceedings{liu2024ofa,
+  author    = {Liu, Yihong and Lin, Peiqin and Wang, Mingyang and Sch{\"u}tze, Hinrich},
+  title     = {{OFA}: A Framework of Initializing Unseen Subword Embeddings for Efficient Large-scale Multilingual Continued Pretraining},
+  booktitle = {Findings of the Association for Computational Linguistics: NAACL 2024},
+  year      = {2024},
+}
+
+@article{lee2025salt,
+  author  = {Lee, Seungyoon and Hong, Seongtae and Moon, Hyeonseok and Lim, Heuiseok},
+  title   = {Semantic Aware Linear Transfer by Recycling Pre-trained Language Models for Cross-lingual Transfer},
+  journal = {Findings of the Association for Computational Linguistics: ACL 2025},
+  year    = {2025},
+  note    = {arXiv:2505.10945},
+}
+
+@inproceedings{martins2016sparsemax,
+  author    = {Martins, Andr{\'e} F. T. and Astudillo, Ram{\'o}n Fernandez},
+  title     = {From Softmax to Sparsemax: A Sparse Model of Attention and Multi-Label Classification},
+  booktitle = {Proceedings of the 33rd International Conference on Machine Learning (ICML)},
+  year      = {2016},
+}
+
+% ──────────────── Hình học không gian biểu diễn (nền tảng lý thuyết) ────────────────
+@inproceedings{ethayarajh2019contextual,
+  author    = {Ethayarajh, Kawin},
+  title     = {How Contextual are Contextualized Word Representations? Comparing the Geometry of {BERT}, {ELMo}, and {GPT-2} Embeddings},
+  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP-IJCNLP)},
+  year      = {2019},
+}
+
+@inproceedings{gao2019degeneration,
+  author    = {Gao, Jun and He, Di and Tan, Xu and Qin, Tao and Wang, Liwei and Liu, Tie-Yan},
+  title     = {Representation Degeneration Problem in Training Natural Language Generation Models},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+}
+
+@inproceedings{ormazabal2019limitations,
+  author    = {Ormazabal, Aitor and Artetxe, Mikel and Labaka, Gorka and Soroa, Aitor and Agirre, Eneko},
+  title     = {Analyzing the Limitations of Cross-lingual Word Embedding Mappings},
+  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  pages     = {4990--4995},
+  year      = {2019},
+}
+
+@article{bojanowski2017fasttext,
+  author  = {Bojanowski, Piotr and Grave, Edouard and Joulin, Armand and Mikolov, Tomas},
+  title   = {Enriching Word Vectors with Subword Information},
+  journal = {Transactions of the Association for Computational Linguistics (TACL)},
+  volume  = {5},
+  pages   = {135--146},
+  year    = {2017},
+}
+
+@inproceedings{grave2018fasttext,
+  author    = {Grave, Edouard and Bojanowski, Piotr and Gupta, Prakhar and Joulin, Armand and Mikolov, Tomas},
+  title     = {Learning Word Vectors for 157 Languages},
+  booktitle = {Proceedings of the 11th International Conference on Language Resources and Evaluation (LREC)},
+  year      = {2018},
+}
+
+% ──────────────── Tiếp tục tiền huấn luyện & thích nghi ngôn ngữ ────────────────
+@inproceedings{gururangan2020dapt,
+  author    = {Gururangan, Suchin and Marasovi{\'c}, Ana and Swayamdipta, Swabha and Lo, Kyle and Beltagy, Iz and Downey, Doug and Smith, Noah A.},
+  title     = {Don't Stop Pretraining: Adapt Language Models to Domains and Tasks},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year      = {2020},
+}
+
+@article{hu2024minicpm,
+  author  = {Hu, Shengding and Tu, Yuge and Han, Xu and He, Chaoqun and Cui, Ganqu and Long, Xiang and others},
+  title   = {{MiniCPM}: Unveiling the Potential of Small Language Models with Scalable Training Strategies},
+  journal = {arXiv preprint arXiv:2404.06395},
+  year    = {2024},
+}
+
+@inproceedings{hagele2024scaling,
+  author    = {H{\"a}gele, Alexander and Bakouch, Elie and Kosson, Atli and Ben Allal, Loubna and Von Werra, Leandro and Jaggi, Martin},
+  title     = {Scaling Laws and Compute-Optimal Training Beyond Fixed Training Durations},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2024},
+  note      = {arXiv:2405.18392},
+}
+
+@inproceedings{loshchilov2019adamw,
+  author    = {Loshchilov, Ilya and Hutter, Frank},
+  title     = {Decoupled Weight Decay Regularization},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  note      = {arXiv:1711.05101},
+}
+
+@inproceedings{loshchilov2017sgdr,
+  author    = {Loshchilov, Ilya and Hutter, Frank},
+  title     = {{SGDR}: Stochastic Gradient Descent with Warm Restarts},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2017},
+  note      = {arXiv:1608.03983},
+}
+
+@article{ibrahim2024continual,
+  author  = {Ibrahim, Adam and Th{\'e}rien, Benjamin and Gupta, Kshitij and Richter, Mats L. and Anthony, Quentin and Lesort, Timoth{\'e}e and Belilovsky, Eugene and Rish, Irina},
+  title   = {Simple and Scalable Strategies to Continually Pre-train Large Language Models},
+  journal = {Transactions on Machine Learning Research (TMLR)},
+  year    = {2024},
+  note    = {arXiv:2403.08763},
+}
+
+@inproceedings{elhady2025emergent,
+  author    = {Elhady, Ahmed and Agirre, Eneko and Artetxe, Mikel},
+  title     = {Emergent Abilities of Large Language Models under Continued Pretraining for Language Adaptation},
+  booktitle = {Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year      = {2025},
+  note      = {arXiv:2506.00288},
+}
+
+@inproceedings{devries2021recycle,
+  author    = {de Vries, Wietse and Nissim, Malvina},
+  title     = {As Good as New. How to Successfully Recycle {English} {GPT-2} to Make Models for Other Languages},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021},
+  year      = {2021},
+}
+
+% ─────────────────────────── Công cụ dịch ───────────────────────────
+@inproceedings{junczys2018marian,
+  author    = {Junczys-Dowmunt, Marcin and Grundkiewicz, Roman and Dwojak, Tomasz and Hoang, Hieu and Heafield, Kenneth and Neckermann, Tom and Seide, Frank and Germann, Ulrich and Fikri Aji, Alham and Bogoychev, Nikolay and Martins, Andr{\'e} F. T. and Birch, Alexandra},
+  title     = {{Marian}: Fast Neural Machine Translation in {C++}},
+  booktitle = {Proceedings of ACL 2018, System Demonstrations},
+  year      = {2018},
+}

@@ -1,0 +1,8 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Cấu trúc một khối Encoder của NeoBERT theo lối chuẩn hóa trước (Pre-RMSNorm): tín hiệu lần lượt qua RMSNorm, khối tự chú ý đa đầu có áp dụng RoPE trên truy vấn và khóa, rồi tới mạng truyền thẳng SwiGLU. Hai đường bên cạnh biểu diễn các kết nối tắt (residual connection).}}{11}{figure.2.1}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT: khởi tạo lớp nhúng và lớp đầu ra bằng SALT từ ViDeBERTa sang không gian NeoBERT, căn chỉnh đóng băng phần thân, rồi tiếp tục tiền huấn luyện thích nghi trên ngữ liệu tiếng Việt.}}{22}{figure.3.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

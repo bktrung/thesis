@@ -1,0 +1,433 @@
+\chapter{Cơ sở lý thuyết và các công trình liên quan}
+\label{chap:related}
+
+Chương này trình bày nền tảng lý thuyết và các công trình liên quan làm cơ sở cho
+phương pháp được đề xuất. Trước hết, chúng tôi khảo sát kiến trúc Transformer cùng dòng
+mô hình Encoder-only đã trở thành chuẩn mực cho các bài toán hiểu ngôn ngữ
+(Mục~\ref{sec:transformer}). Tiếp theo, chúng tôi phân tích chi tiết kiến trúc NeoBERT
+-- mô hình nền mà đề tài kế thừa -- cùng các cải tiến hiện đại và cơ sở khoa học của
+chúng (Mục~\ref{sec:neobert}). Sau đó, chúng tôi trình bày các kết quả về hình học của
+không gian biểu diễn từ, vốn là nền tảng lý thuyết giải thích vì sao việc chuyển giao
+không gian nhúng cần được thực hiện một cách \textit{cục bộ} (Mục~\ref{sec:geometry}).
+Cuối cùng, chúng tôi khảo sát bài toán thích nghi ngôn ngữ cùng các phương pháp khởi tạo
+không gian nhúng xuyên ngôn ngữ, dẫn tới kỹ thuật Semantic Aware Linear Transfer (SALT)
+mà đề tài áp dụng (Mục~\ref{sec:transfer}).
+
+% ======================================================================
+\section{Kiến trúc Transformer và mô hình Encoder-only}
+\label{sec:transformer}
+
+\subsection{Cơ chế tự chú ý trong kiến trúc Transformer}
+\label{subsec:attention}
+
+Kiến trúc Transformer, được Vaswani và cộng sự~\cite{vaswani2017attention} giới thiệu năm
+2017, đã tạo ra một bước ngoặt trong lĩnh vực Xử lý Ngôn ngữ Tự nhiên (Natural Language
+Processing -- NLP). Khác với các mạng hồi tiếp (Recurrent Neural Network -- RNN) vốn xử lý
+chuỗi một cách tuần tự, Transformer loại bỏ hoàn toàn tính hồi tiếp và chỉ dựa trên
+\textit{cơ chế tự chú ý} (self-attention) để mô hình hóa quan hệ giữa các vị trí trong
+chuỗi. Nhờ đó, mọi vị trí được xử lý song song và mọi cặp token được liên kết bởi một
+đường đi có độ dài không đổi, khắc phục được hạn chế về phụ thuộc xa của RNN.
+
+Thành phần cốt lõi của Transformer là cơ chế \textit{tự chú ý theo tích vô hướng có tỷ
+lệ} (Scaled Dot-Product Attention). Mỗi token đầu vào được chiếu thành ba véc-tơ: truy vấn
+(query), khóa (key) và giá trị (value); tập hợp các véc-tơ này theo toàn chuỗi tạo thành
+ba ma trận $Q$, $K$ và $V$. Trọng số chú ý được tính như Công thức~\eqref{eq:attention}:
+\begin{equation}
+  \label{eq:attention}
+  \mathrm{Attention}(Q, K, V) = \mathrm{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right) V
+\end{equation}
+Trong đó:
+\begin{itemize}
+  \item $Q \in \mathbb{R}^{n \times d_k}$, $K \in \mathbb{R}^{n \times d_k}$,
+        $V \in \mathbb{R}^{n \times d_v}$: lần lượt là ma trận truy vấn, khóa và giá trị
+        của chuỗi có độ dài $n$;
+  \item $d_k$: số chiều của véc-tơ khóa, đóng vai trò hệ số chuẩn hóa;
+  \item $\dfrac{1}{\sqrt{d_k}}$: hệ số tỷ lệ nhằm tránh tích vô hướng $QK^\top$ đạt giá
+        trị quá lớn, vốn đẩy hàm softmax vào vùng bão hòa và làm gradient triệt tiêu.
+\end{itemize}
+
+Để mô hình có thể đồng thời chú ý đến thông tin từ nhiều không gian biểu diễn con khác
+nhau, Transformer mở rộng cơ chế trên thành \textit{tự chú ý đa đầu} (Multi-Head
+Attention). Cụ thể, $Q$, $K$, $V$ được chiếu song song thành $h$ tập con, mỗi tập được tính
+chú ý độc lập rồi nối lại như Công thức~\eqref{eq:mha}:
+\begin{equation}
+  \label{eq:mha}
+  \mathrm{MultiHead}(Q,K,V) = \mathrm{Concat}(\mathrm{head}_1, \dots, \mathrm{head}_h)\, W^O,
+  \quad
+  \mathrm{head}_i = \mathrm{Attention}(Q W_i^Q,\, K W_i^K,\, V W_i^V)
+\end{equation}
+Trong đó $W_i^Q, W_i^K, W_i^V$ và $W^O$ là các ma trận trọng số có thể học được. Cơ chế đa
+đầu cho phép mỗi đầu chú ý (attention head) học một loại quan hệ ngữ nghĩa hoặc cú pháp
+riêng biệt, từ đó tạo ra biểu diễn phong phú hơn~\cite{vaswani2017attention}.
+
+Sau khối tự chú ý, mỗi vị trí được biến đổi độc lập bởi một mạng truyền thẳng theo vị trí
+(Position-wise Feed-Forward Network) gồm hai phép chiếu tuyến tính với một hàm phi tuyến ở
+giữa, như Công thức~\eqref{eq:ffn}:
+\begin{equation}
+  \label{eq:ffn}
+  \mathrm{FFN}(x) = \max(0,\, x W_1 + b_1)\, W_2 + b_2
+\end{equation}
+Mỗi khối Transformer kết hợp hai thành phần trên với \textit{kết nối tắt} (residual
+connection) và \textit{chuẩn hóa lớp} (Layer Normalization), giúp ổn định quá trình huấn
+luyện cho các mạng sâu.
+
+\subsection{BERT và mô hình hóa ngôn ngữ có mặt nạ}
+\label{subsec:bert}
+
+Trên nền tảng bộ mã hóa (encoder) của Transformer, Devlin và cộng
+sự~\cite{devlin2019bert} đề xuất BERT (Bidirectional Encoder Representations from
+Transformers) -- mô hình Encoder-only đầu tiên khai thác triệt để tính hai chiều của cơ chế
+tự chú ý. Khác với các mô hình ngôn ngữ tự hồi quy chỉ mô hình hóa xác suất từ trái sang
+phải, BERT được tiền huấn luyện đồng thời trên ngữ cảnh hai phía thông qua tác vụ
+\textit{mô hình hóa ngôn ngữ có mặt nạ} (Masked Language Modeling -- MLM): một tỷ lệ token
+trong chuỗi đầu vào bị thay bằng ký hiệu \texttt{[MASK]}, và mô hình phải dự đoán lại các
+token gốc dựa trên toàn bộ ngữ cảnh còn lại. Mục tiêu MLM được biểu diễn bởi
+Công thức~\eqref{eq:mlm}:
+\begin{equation}
+  \label{eq:mlm}
+  \mathcal{L}_{\mathrm{MLM}} = -\sum_{i \in \mathcal{M}} \log P\!\left(x_i \mid x_{\setminus \mathcal{M}}\right)
+\end{equation}
+Trong đó $\mathcal{M}$ là tập vị trí bị che, $x_i$ là token gốc tại vị trí $i$, và
+$x_{\setminus \mathcal{M}}$ là phần ngữ cảnh không bị che. BERT gốc sử dụng tỷ lệ che 15\%
+và bổ sung tác vụ dự đoán câu kế tiếp (Next Sentence Prediction -- NSP).
+
+Tiếp nối BERT, Liu và cộng sự~\cite{liu2019roberta} đề xuất RoBERTa với các cải tiến về
+quy trình tiền huấn luyện: loại bỏ tác vụ NSP vốn không cải thiện hiệu năng, sử dụng mặt nạ
+động thay cho mặt nạ tĩnh, đồng thời tăng đáng kể quy mô dữ liệu và kích thước lô. Những
+điều chỉnh này giúp RoBERTa vượt trội BERT mà không thay đổi kiến trúc, qua đó khẳng định
+vai trò quan trọng của chiến lược tiền huấn luyện bên cạnh thiết kế mô hình. BERT và RoBERTa
+đã trở thành nền tảng cho hầu hết các bài toán hiểu ngôn ngữ tự nhiên, trong đó có các mô
+hình tiếng Việt tiêu biểu như PhoBERT~\cite{nguyen2020phobert} và
+ViDeBERTa~\cite{lai2023videberta}.
+
+\subsection{Giới hạn của các mô hình Encoder thế hệ cũ}
+\label{subsec:bert-limits}
+
+Mặc dù thiết lập nền tảng vững chắc cho các bài toán hiểu ngôn ngữ, BERT và RoBERTa vẫn tồn
+tại nhiều hạn chế cố hữu khi đặt cạnh các tiến bộ hiện đại của thế giới mô hình ngôn ngữ
+lớn (Large Language Model -- LLM).
+
+\textbf{Giới hạn độ dài ngữ cảnh.} BERT và RoBERTa sử dụng \textit{mã hóa vị trí tuyệt đối}
+(absolute positional embedding) được học cố định ở độ dài tối đa 512 token. Điều này khiến
+chúng không thể xử lý các văn bản dài hơn nếu không có can thiệp đặc biệt, gây trở ngại cho
+nhiều ứng dụng thực tế như phân tích tài liệu pháp lý hay bài báo khoa học.
+
+\textbf{Kiến trúc lạc hậu.} Trong khi các LLM thế hệ mới như LLaMA~\cite{dubey2024llama} hay
+DeepSeek~\cite{deepseek2025} liên tục tích hợp các cải tiến kiến trúc tiên tiến, BERT và
+RoBERTa vẫn dừng lại ở kiến trúc Transformer gốc với hàm kích hoạt GELU, chuẩn hóa
+Post-LayerNorm và mã hóa vị trí tuyệt đối.
+
+\textbf{Tỷ lệ chiều sâu -- chiều rộng chưa tối ưu.} Levine và cộng
+sự~\cite{levine2020limits} chứng minh rằng với một ngân sách tham số cho trước, tồn tại một
+ngưỡng chiều rộng mà dưới đó việc tăng chiều sâu trở nên kém hiệu quả. Các mô hình nhỏ như
+BERT thường hoạt động trong vùng \textit{kém hiệu quả về chiều rộng} (width-inefficient),
+tức phân bổ quá nhiều tham số cho chiều rộng thay vì chiều sâu, làm hạn chế khả năng biểu
+diễn phân cấp.
+
+\textbf{Dữ liệu tiền huấn luyện lỗi thời.} BERT được huấn luyện trên BooksCorpus và
+Wikipedia (khoảng 13GB), trong khi các mô hình hiện đại sử dụng các kho ngữ liệu web được
+lọc kỹ với quy mô lớn hơn nhiều bậc. Chính những hạn chế này tạo ra nhu cầu cấp thiết cho
+một thế hệ Encoder mới, dẫn tới sự ra đời của NeoBERT.
+
+% ======================================================================
+\section{Kiến trúc NeoBERT}
+\label{sec:neobert}
+
+\subsection{Tổng quan}
+\label{subsec:neobert-overview}
+
+NeoBERT~\cite{lebreton2025neobert} là mô hình Encoder-only thế hệ mới do Le Breton và cộng
+sự giới thiệu năm 2025, với mục tiêu thu hẹp khoảng cách giữa các Encoder truyền thống và
+thế giới LLM hiện đại. Mô hình có 250 triệu tham số, được tiền huấn luyện trên kho ngữ liệu
+web RefinedWeb~\cite{penedo2023refinedweb} và xử lý khoảng 2,1 nghìn tỷ token trong toàn bộ
+quá trình huấn luyện, hỗ trợ độ dài ngữ cảnh lên tới 4.096 token. NeoBERT tích hợp đồng
+thời bốn cải tiến kiến trúc cốt lõi: tỷ lệ chiều sâu trên chiều rộng tối ưu, mã hóa vị trí
+quay (RoPE), hàm kích hoạt SwiGLU, và chuẩn hóa Pre-RMSNorm. Trên chuẩn đánh giá MTEB
+(Massive Text Embedding Benchmark), NeoBERT vượt trội các mô hình
+\textsc{BERT}\textsubscript{large}, \textsc{RoBERTa}\textsubscript{large} và NomicBERT dưới
+cùng điều kiện tinh chỉnh, đồng thời đạt tốc độ suy luận cao hơn đáng kể trên các chuỗi
+dài. Cấu trúc tổng quát của một khối Encoder trong NeoBERT được minh họa trong
+Hình~\ref{fig:neobert-block}; các mục tiếp theo phân tích chi tiết từng cải tiến cùng cơ
+sở khoa học của chúng.
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[
+    node distance=5.5mm,
+    box/.style={draw, rounded corners, minimum width=44mm, minimum height=8mm, align=center, font=\small},
+    norm/.style={box, fill=blue!8},
+    attn/.style={box, fill=orange!15},
+    ffn/.style={box, fill=green!12},
+    add/.style={draw, circle, inner sep=1.2pt, font=\footnotesize},
+    >={Latex[length=2mm]}
+  ]
+    \node (in) {\small $x$ \;(đầu vào khối)};
+    \node[norm, above=of in]   (n1)   {RMSNorm};
+    \node[attn, above=of n1]   (attn) {Tự chú ý đa đầu\\ (RoPE trên $Q,K$)};
+    \node[add,  above=of attn] (a1)   {$+$};
+    \node[norm, above=of a1]   (n2)   {RMSNorm};
+    \node[ffn,  above=of n2]   (ffn)  {Mạng truyền thẳng SwiGLU};
+    \node[add,  above=of ffn]  (a2)   {$+$};
+    \node[above=of a2]         (out)  {\small $x'$ \;(đầu ra khối)};
+    \draw[->] (in)--(n1); \draw[->] (n1)--(attn); \draw[->] (attn)--(a1);
+    \draw[->] (a1)--(n2); \draw[->] (n2)--(ffn);  \draw[->] (ffn)--(a2); \draw[->] (a2)--(out);
+    \draw[->] (in.east)  -- ++(3.0,0) |- (a1.east);   % kết nối tắt 1
+    \draw[->] (a1.west)  -- ++(-3.0,0) |- (a2.west);  % kết nối tắt 2
+  \end{tikzpicture}
+  \caption{Cấu trúc một khối Encoder của NeoBERT theo lối chuẩn hóa trước (Pre-RMSNorm):
+    tín hiệu lần lượt qua RMSNorm, khối tự chú ý đa đầu có áp dụng RoPE trên truy vấn và
+    khóa, rồi tới mạng truyền thẳng SwiGLU. Hai đường bên cạnh biểu diễn các kết nối tắt
+    (residual connection).}
+  \label{fig:neobert-block}
+\end{figure}
+
+\subsection{Tỷ lệ chiều sâu trên chiều rộng tối ưu}
+\label{subsec:depth-width}
+
+Dựa trên lý thuyết của Levine và cộng sự~\cite{levine2020limits} về sự tương tác giữa chiều
+sâu và chiều rộng trong cơ chế tự chú ý, NeoBERT giữ nguyên kích thước ẩn (hidden size)
+bằng 768 -- tương thích plug-and-play với \textsc{BERT}\textsubscript{base} -- nhưng tăng số
+lớp Transformer từ 12 lên 28. Thiết kế \textit{sâu và hẹp} (deep-and-narrow) này giúp mô
+hình thoát khỏi vùng kém hiệu quả về chiều rộng và xây dựng biểu diễn phân cấp sâu hơn. Để
+kiểm chứng, nhóm tác giả NeoBERT trước tiên tăng tổng số tham số lên 250 triệu trong khi giữ
+nguyên tỷ lệ gốc (16 lớp, kích thước ẩn 1056), sau đó điều chỉnh sang tỷ lệ sâu-hẹp (28
+lớp, kích thước ẩn 768). Kết quả cho thấy cấu hình 28 lớp đạt điểm GLUE cao hơn, xác nhận
+lợi ích của chiều sâu đối với các mô hình quy mô nhỏ~\cite{lebreton2025neobert}.
+
+\subsection{Mã hóa vị trí quay (Rotary Position Embeddings)}
+\label{subsec:rope}
+
+Như đã phân tích, mã hóa vị trí tuyệt đối của BERT cố định độ dài chuỗi và khó ngoại suy
+sang các chuỗi dài hơn. NeoBERT thay thế bằng \textit{mã hóa vị trí quay} (Rotary Position
+Embeddings -- RoPE) của Su và cộng sự~\cite{su2023roformer}. Ý tưởng cốt lõi của RoPE là mã
+hóa vị trí bằng một \textit{phép quay} áp dụng lên véc-tơ truy vấn và khóa trước khi tính
+tích vô hướng: token tại vị trí $m$ được quay một góc tỷ lệ với $m$. Do tích vô hướng của
+hai véc-tơ đã quay chỉ phụ thuộc vào hiệu số góc quay, điểm chú ý giữa hai token trở thành
+hàm của \textit{vị trí tương đối} $(m-n)$ thay vì vị trí tuyệt đối.
+
+Cụ thể, với véc-tơ truy vấn $\mathbf{q}_m$ tại vị trí $m$ và véc-tơ khóa $\mathbf{k}_n$ tại
+vị trí $n$, RoPE biến đổi chúng qua ma trận quay $R_{\Theta,m}$ rồi tính điểm chú ý như
+Công thức~\eqref{eq:rope}:
+\begin{equation}
+  \label{eq:rope}
+  \mathrm{Attention}(\mathbf{q}_m, \mathbf{k}_n)
+  = \left(R_{\Theta,m}\, \mathbf{q}_m\right)^\top \left(R_{\Theta,n}\, \mathbf{k}_n\right)
+  = \mathbf{q}_m^\top\, R_{\Theta,\,n-m}\, \mathbf{k}_n
+\end{equation}
+Trong đó $R_{\Theta,m}$ là ma trận quay khối chéo, ghép từ các khối quay hai chiều với góc
+$m\theta_i$ và tần số $\theta_i = 10000^{-2(i-1)/d}$ cho cặp chiều thứ $i$. Đẳng thức cuối
+trong Công thức~\eqref{eq:rope} thể hiện tính chất then chốt: điểm chú ý chỉ phụ thuộc vào
+hiệu vị trí $(n-m)$. Nhờ đó, RoPE cho phép mô hình học khoảng cách tương đối một cách tự
+nhiên, không bị ràng buộc bởi độ dài chuỗi huấn luyện, và có khả năng ngoại suy tốt sang các
+chuỗi dài hơn, kết hợp được với các kỹ thuật mở rộng ngữ cảnh như YaRN~\cite{peng2023yarn}.
+
+\subsection{Hàm kích hoạt SwiGLU}
+\label{subsec:swiglu}
+
+BERT sử dụng hàm kích hoạt GELU trong lớp truyền thẳng. NeoBERT thay thế bằng
+SwiGLU~\cite{shazeer2020glu}, một biến thể thuộc họ \textit{đơn vị tuyến tính có cổng}
+(Gated Linear Unit -- GLU). Ý tưởng của GLU là điều tiết luồng thông tin qua mạng bằng một
+\textit{cổng} (gate): đầu vào được chiếu song song theo hai nhánh, một nhánh đi qua hàm phi
+tuyến rồi nhân từng phần tử với nhánh còn lại. Với SwiGLU, hàm phi tuyến được chọn là Swish,
+như Công thức~\eqref{eq:swiglu}:
+\begin{equation}
+  \label{eq:swiglu}
+  \mathrm{SwiGLU}(x) = \big(\mathrm{Swish}(x W_1)\big) \otimes (x V) W_2,
+  \qquad \mathrm{Swish}(x) = x \cdot \sigma(x)
+\end{equation}
+Trong đó $W_1, V, W_2$ là các ma trận trọng số, $\sigma$ là hàm sigmoid, và $\otimes$ là
+phép nhân từng phần tử (tích Hadamard). Cơ chế cổng cho phép mô hình điều chỉnh linh hoạt
+mức độ đóng góp của từng đặc trưng, qua đó học được các biểu diễn phức tạp hơn so với hàm
+kích hoạt thông thường~\cite{shazeer2020glu}. Do SwiGLU sử dụng ba ma trận trọng số thay vì
+hai, NeoBERT thu nhỏ kích thước lớp ẩn bên trong theo hệ số $\tfrac{2}{3}$ để giữ nguyên
+tổng số tham số.
+
+\subsection{Chuẩn hóa Pre-RMSNorm}
+\label{subsec:rmsnorm}
+
+BERT áp dụng \textit{chuẩn hóa sau} (Post-Layer Normalization): phép chuẩn hóa được đặt
+\textit{sau} mỗi khối con và nằm ngoài kết nối tắt, vốn dễ gây bất ổn định khi huấn luyện
+với tốc độ học lớn. NeoBERT chuyển sang \textit{chuẩn hóa trước} (Pre-Layer Normalization):
+phép chuẩn hóa được đặt \textit{trước} mỗi khối con và nằm trong nhánh residual. Xiong và
+cộng sự~\cite{xiong2020layer} chứng minh rằng cách bố trí này giúp gradient tại thời điểm
+khởi tạo có độ lớn ổn định và gần như độc lập với chiều sâu, nhờ đó loại bỏ nhu cầu khởi
+động (warmup) tinh vi và cho phép huấn luyện ổn định các mạng sâu.
+
+Bên cạnh đó, thay cho LayerNorm vốn tính cả trung bình và phương sai, NeoBERT sử dụng
+\textit{chuẩn hóa theo căn quân phương} (Root Mean Square Layer Normalization -- RMSNorm)
+của Zhang và Sennrich~\cite{zhang2019rmsnorm}, định nghĩa bởi Công thức~\eqref{eq:rmsnorm}:
+\begin{equation}
+  \label{eq:rmsnorm}
+  \mathrm{RMSNorm}(x) = \frac{x}{\mathrm{RMS}(x)} \odot g,
+  \qquad
+  \mathrm{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2 + \epsilon}
+\end{equation}
+Trong đó $d$ là số chiều, $g$ là véc-tơ hệ số tỷ lệ có thể học được, và $\epsilon$ là hằng
+số nhỏ bảo đảm ổn định số học. RMSNorm bỏ qua bước trừ trung bình, chỉ giữ lại phép chuẩn
+hóa theo độ lớn, qua đó giảm chi phí tính toán mà vẫn duy trì độ ổn định huấn luyện tương
+đương. Một hệ quả quan trọng đối với đề tài: vì RMSNorm chuẩn hóa theo độ lớn của véc-tơ
+đầu vào, độ lớn (norm) của mỗi hàng nhúng có ảnh hưởng trực tiếp đến hành vi của mô hình --
+đây là lý do bước hiệu chỉnh chuẩn được trình bày trong Chương~\ref{chap:method}.
+
+\subsection{Dữ liệu và chiến lược tiền huấn luyện}
+\label{subsec:neobert-pretrain}
+
+NeoBERT được tiền huấn luyện trên RefinedWeb~\cite{penedo2023refinedweb} -- kho ngữ liệu web
+quy mô lớn được xây dựng từ CommonCrawl qua quy trình lọc và khử trùng lặp nghiêm ngặt.
+Penedo và cộng sự chứng minh rằng dữ liệu web được lọc kỹ, không cần bổ sung các kho ngữ
+liệu được tuyển chọn thủ công, vẫn đủ để huấn luyện các mô hình mạnh. Bên cạnh dữ liệu,
+NeoBERT áp dụng một số cải tiến về quy trình huấn luyện:
+\begin{itemize}
+  \item \textbf{Tỷ lệ che 20\%}: thay cho 15\% của BERT, dựa trên kết quả của Wettig và cộng
+        sự~\cite{wettig2023mask} cho thấy tỷ lệ che cao hơn có thể tối ưu hơn tùy theo quy
+        mô mô hình.
+  \item \textbf{Bộ tối ưu AdamW} với lịch suy giảm cosine, kết hợp khởi động tuyến tính ở
+        giai đoạn đầu.
+  \item \textbf{FlashAttention}~\cite{dao2023flashattention2} và các kỹ thuật tối ưu bộ nhớ,
+        cho phép huấn luyện hiệu quả trên chuỗi dài với kích thước lô lớn.
+\end{itemize}
+
+Đặc biệt, NeoBERT áp dụng chiến lược mở rộng ngữ cảnh \textit{hai giai đoạn}: giai đoạn đầu
+huấn luyện ở độ dài tối đa 1.024 token, giai đoạn sau huấn luyện bổ sung ở độ dài 4.096
+token với việc tăng tỷ lệ lấy mẫu các chuỗi dài. Nhờ tính ngoại suy của RoPE, mô hình ở giai
+đoạn đầu đã tổng quát hóa tốt tới khoảng 3.000 token, và sau giai đoạn hai có thể mô hình hóa
+ổn định các chuỗi còn dài hơn~\cite{lebreton2025neobert}. Chính nhờ tập hợp các cải tiến
+này, NeoBERT đạt hiệu năng vượt trội trên GLUE và MTEB so với các Encoder tiền nhiệm có quy
+mô lớn hơn, đồng thời là mô hình nền mà đề tài lựa chọn để thích nghi sang tiếng Việt.
+
+% ======================================================================
+\section{Hình học của không gian biểu diễn từ}
+\label{sec:geometry}
+
+Phương pháp của đề tài dựa trên việc ánh xạ không gian nhúng của một mô hình tiếng Việt sang
+không gian của NeoBERT. Để lựa chọn dạng ánh xạ phù hợp, cần hiểu rõ cấu trúc hình học của
+các không gian biểu diễn từ. Mục này trình bày ba kết quả lý thuyết then chốt.
+
+\textbf{Tính bất đẳng hướng của không gian biểu diễn.} Ethayarajh~\cite{ethayarajh2019contextual}
+chỉ ra rằng các biểu diễn từ của BERT, ELMo và GPT-2 mang tính \textit{bất đẳng hướng}
+(anisotropic): thay vì phân bố đều theo mọi hướng, các véc-tơ co cụm trong một \textit{hình
+nón hẹp}. Hệ quả là hai từ bất kỳ đã có độ tương đồng cosine khá cao, và một véc-tơ tĩnh duy
+nhất chỉ giải thích được dưới 5\% phương sai trong các biểu diễn theo ngữ cảnh của một từ.
+Cấu trúc bất đẳng hướng này cho thấy một phép ánh xạ tuyến tính \textit{toàn cục} duy nhất
+khó có thể nắm bắt được quan hệ biến đổi cục bộ giữa hai không gian; thay vào đó, các ánh xạ
+\textit{cục bộ theo từng token} mới có khả năng thích ứng với hình học riêng của từng vùng
+lân cận.
+
+\textbf{Giả định đẳng cấu và giới hạn của ánh xạ tuyến tính toàn cục.} Ormazabal và cộng
+sự~\cite{ormazabal2019limitations} phân tích các phương pháp ánh xạ nhúng xuyên ngôn ngữ và
+chỉ ra rằng chúng ngầm giả định hai không gian nhúng đơn ngữ là \textit{xấp xỉ đẳng cấu}
+(isomorphic) -- tức có cùng cấu trúc sai khác một phép biến đổi tuyến tính. Tuy nhiên, giả
+định này không bền vững đối với các không gian được huấn luyện độc lập, đặc biệt với các ngôn
+ngữ khác biệt. Do đó, một ánh xạ tuyến tính toàn cục có giới hạn cố hữu khi hai không gian
+nguồn và đích không thực sự đẳng cấu -- chính là tình huống giữa NeoBERT (tiếng Anh) và mô
+hình tiếng Việt.
+
+\textbf{Hiện tượng thoái hóa biểu diễn và quyết định buộc/tách trọng số.} Gao và cộng
+sự~\cite{gao2019degeneration} chứng minh rằng việc \textit{buộc trọng số} (weight tying) --
+chia sẻ chung ma trận nhúng đầu vào và ma trận đầu ra -- cùng quá trình tối ưu hợp lý cực đại
+sẽ đẩy các véc-tơ nhúng vào một hình nón hẹp \textit{thoái hóa} (degenerate), trong đó các
+token tần suất thấp bị co cụm nghiêm trọng nhất. Kết quả này là cơ sở lý thuyết cho việc
+\textit{tách rời} (untie) ma trận nhúng đầu vào và ma trận đầu ra: khi hai ma trận là độc
+lập, mỗi ma trận giữ được hình học riêng và tránh được hiện tượng thoái hóa.
+
+Ba kết quả trên cùng dẫn tới hai hệ quả thiết kế mà đề tài kế thừa: (1) việc chuyển giao
+không gian nhúng nên thực hiện bằng các \textit{ánh xạ tuyến tính cục bộ theo từng token}
+thay vì một ánh xạ toàn cục, vì các không gian là bất đẳng hướng và không đẳng cấu; và (2)
+khi mô hình nền sử dụng \textit{đầu giải mã tách rời} (untied head) -- như trường hợp NeoBERT
+-- thì ma trận đầu ra cần được khởi tạo như một ma trận độc lập, chứ không sao chép từ ma
+trận nhúng.
+
+% ======================================================================
+\section{Thích nghi ngôn ngữ và khởi tạo không gian nhúng}
+\label{sec:transfer}
+
+\subsection{Thích nghi ngôn ngữ và hiện tượng quên lãng thảm họa}
+\label{subsec:lang-adapt}
+
+NeoBERT chỉ được huấn luyện trên ngữ liệu tiếng Anh, trong khi việc huấn luyện lại từ đầu
+cho tiếng Việt trên quy mô hàng nghìn tỷ token là bất khả thi đối với hầu hết các nhóm
+nghiên cứu. Hướng tiếp cận khả thi là \textit{thích nghi ngôn ngữ} (language adaptation)
+thông qua \textit{tiếp tục tiền huấn luyện} (Continued Pre-training -- CPT): khởi tạo một
+lớp nhúng mới cho tiếng Việt rồi tiếp tục huấn luyện mô hình trên ngữ liệu tiếng Việt.
+Gururangan và cộng sự~\cite{gururangan2020dapt} đã chứng minh rằng việc tiếp tục tiền huấn
+luyện trên dữ liệu gần với miền đích mang lại cải thiện ổn định; thích nghi xuyên ngôn ngữ
+có thể xem là trường hợp dịch chuyển miền ở mức cực đại.
+
+Tuy nhiên, CPT với một lớp nhúng \textit{khởi tạo ngẫu nhiên} thường dẫn tới hiện tượng
+\textit{quên lãng thảm họa} (catastrophic forgetting): các lớp Transformer sâu bị kéo theo
+để thích ứng với lớp nhúng nhiễu loạn ban đầu, làm phá vỡ tri thức ngôn ngữ học quý giá đã
+học được. de Vries và Nissim~\cite{devries2021recycle} cho thấy có thể \textit{tái sử dụng}
+một mô hình tiếng Anh cho ngôn ngữ khác bằng cách giữ lại phần thân Transformer và học một
+lớp nhúng mới, trong đó một bước khởi tạo nhúng tốt là yếu tố then chốt rút ngắn quá trình
+thích nghi. Gần đây, Elhady và cộng sự~\cite{elhady2025emergent} chỉ ra rằng trong quá trình
+CPT thích nghi ngôn ngữ, độ hỗn loạn (perplexity) có thể trông ổn định trong khi năng lực
+hạ nguồn vẫn suy giảm do quên lãng thảm họa, qua đó nhấn mạnh tầm quan trọng của một điểm
+khởi đầu tốt. Ngoài ra, Ibrahim và cộng sự~\cite{ibrahim2024continual} khuyến nghị
+\textit{khởi động lại tốc độ học} (learning-rate re-warming) khi tiếp tục huấn luyện từ một
+điểm kiểm tra đã suy giảm tốc độ học về gần 0 -- một lưu ý vận hành quan trọng cho giai đoạn
+huấn luyện thích nghi.
+
+\subsection{Các phương pháp khởi tạo không gian nhúng}
+\label{subsec:init-methods}
+
+Như đã phân tích, chất lượng của bước \textit{khởi tạo} lớp nhúng quyết định phần lớn hiệu
+quả của quá trình thích nghi. Nhiều phương pháp đã được đề xuất nhằm khởi tạo nhúng cho từ
+vựng mới một cách \textit{có thông tin} thay vì ngẫu nhiên, tạo thành một dòng nghiên cứu mà
+SALT kế thừa và đề tài áp dụng.
+
+\textbf{WECHSEL}~\cite{minixhofer2022wechsel} khởi tạo nhúng của từ vựng đích bằng cách bắc
+cầu qua một không gian nhúng từ tĩnh song ngữ (fastText): mỗi token đích được biểu diễn
+thành véc-tơ tĩnh, rồi nhúng của nó được tính bằng trung bình có trọng số của các nhúng token
+nguồn dựa trên độ tương đồng ngữ nghĩa trong không gian chung.
+
+\textbf{FOCUS}~\cite{dobler2023focus} chia từ vựng đích thành các token \textit{trùng lặp}
+(xuất hiện ở cả hai từ vựng) và token \textit{mới}. Token trùng lặp được sao chép trực tiếp
+nhúng từ mô hình nguồn; token mới được khởi tạo bằng tổ hợp \textit{thưa} của các token
+trùng lặp, với trọng số chọn lọc qua hàm Sparsemax~\cite{martins2016sparsemax} dựa trên độ
+tương đồng trong không gian nhúng phụ trợ.
+
+\textbf{OFA}~\cite{liu2024ofa} mở rộng ý tưởng trên cho bối cảnh đa ngôn ngữ, kết hợp các
+véc-tơ tĩnh đa ngôn ngữ đã căn chỉnh với một phép phân rã ma trận nhằm giảm số tham số và
+tăng tốc hội tụ khi tiếp tục tiền huấn luyện. Các phương pháp này tạo thành nền tảng trực
+tiếp mà SALT kế thừa.
+
+\subsection{Kỹ thuật Semantic Aware Linear Transfer (SALT)}
+\label{subsec:salt}
+
+SALT (Semantic Aware Linear Transfer) của Lee và cộng sự~\cite{lee2025salt} là kỹ thuật
+khởi tạo không gian nhúng mà đề tài áp dụng. Khác với việc khởi tạo ngẫu nhiên hay sao chép
+trực tiếp, SALT \textit{tái sử dụng} (recycle) không gian nhúng của một mô hình tiền huấn
+luyện sẵn có ở ngôn ngữ đích, rồi chuyển sức biểu diễn đó sang mô hình nguồn thông qua các
+phép \textit{biến đổi tuyến tính nhận thức ngữ nghĩa}.
+
+Ý tưởng cốt lõi của SALT gồm hai phần. Thứ nhất, dựa trên phần \textit{từ vựng chồng lấp}
+(overlap) giữa hai mô hình, SALT thiết lập các \textit{đường hồi quy tuyến tính} (linear
+regression) mô tả quan hệ giữa hai không gian nhúng. Thứ hai, với mỗi token \textit{không
+trùng}, SALT lựa chọn một tập con các token tham chiếu (neo, anchor) có liên quan ngữ nghĩa
+-- thông qua độ tương đồng trong không gian nhúng tĩnh -- rồi áp dụng phép hồi quy tuyến
+tính cục bộ để ánh xạ nhúng của token đó sang không gian đích. Cách tiếp cận \textit{cục bộ
+theo từng token} này phù hợp với các kết quả về hình học không gian biểu diễn đã trình bày ở
+Mục~\ref{sec:geometry}: do hai không gian là bất đẳng hướng và không đẳng cấu, một tập các
+ánh xạ cục bộ phản ánh trung thực quan hệ giữa chúng tốt hơn một ánh xạ tuyến tính toàn cục
+duy nhất.
+
+Trong nghiên cứu gốc, SALT được áp dụng cho các mô hình nguồn dạng giải mã (decoder) như
+Gemma và XGLM, với không gian nhúng đích lấy từ các mô hình tiền huấn luyện tương ứng. Đề
+tài kế thừa khung phương pháp này và áp dụng cho bối cảnh khác biệt -- một Encoder thế hệ mới
+(NeoBERT) và ngôn ngữ đích là tiếng Việt -- đồng thời đề xuất một số cải tiến về cách trích
+xuất tập neo và cách xử lý lớp đầu ra. Các nội dung này được trình bày chi tiết trong
+Chương~\ref{chap:method}.
+
+% ======================================================================
+\section{Nhận xét và định hướng}
+\label{sec:related-summary}
+
+Qua khảo sát trên, có thể rút ra một số nhận xét định hướng cho đề tài. Thứ nhất, NeoBERT là
+một mô hình Encoder hiện đại với nhiều ưu thế kiến trúc, song chỉ hỗ trợ tiếng Anh; việc xây
+dựng một phiên bản tiếng Việt là cần thiết và có giá trị thực tiễn. Thứ hai, huấn luyện lại
+từ đầu là bất khả thi về tài nguyên, trong khi CPT với khởi tạo ngẫu nhiên dễ dẫn tới quên
+lãng thảm họa; do đó một bước khởi tạo nhúng có thông tin là thiết yếu. Thứ ba, các kết quả
+về hình học không gian biểu diễn cho thấy việc chuyển giao nên thực hiện bằng các ánh xạ
+tuyến tính cục bộ theo từng token, và lớp đầu ra tách rời của NeoBERT cần được khởi tạo như
+một ma trận độc lập. Những nhận xét này dẫn tới việc lựa chọn và cải tiến kỹ thuật SALT làm
+nền tảng cho phương pháp đề xuất, được trình bày trong Chương~\ref{chap:method}.
