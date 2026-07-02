@@ -1,4 +1,4 @@
-\chapter{Giới thiệu}
+\chapter{Tổng quan}
 \label{chap:intro}
 
 % ============================================================
@@ -27,10 +27,10 @@ khoảng cách này. NeoBERT tái định nghĩa khả năng của các mô hìn
 tích hợp các cải tiến kiến trúc tiên tiến nhất từ thế giới LLM: hàm kích hoạt
 SwiGLU, cơ chế mã hóa vị trí tương đối Rotary Position Embeddings (RoPE), chuẩn hóa
 Pre-RMSNorm, và tỷ lệ chiều sâu trên chiều rộng tối ưu (28 lớp ẩn với kích thước
-ẩn 768). Với 250 triệu tham số và được huấn luyện trên 2,1 nghìn tỷ tokens,
+ẩn 768). Với khoảng 250 triệu tham số và được huấn luyện trên 2,1 nghìn tỷ token,
 NeoBERT vượt trội BERT\textsubscript{large} và RoBERTa\textsubscript{large} trên chuẩn
 đánh giá MTEB (Massive Text Embedding Benchmark), đồng thời hỗ trợ ngữ cảnh lên
-tới 4.096 tokens -- gấp 8 lần so với các mô hình tiền nhiệm.
+tới 4.096 token -- gấp 8 lần so với các mô hình tiền nhiệm.
 
 Tuy nhiên, NeoBERT chỉ được huấn luyện trên ngữ liệu tiếng Anh. Đối với tiếng Việt,
 nhu cầu về một bộ Encoder mạnh mẽ và hiện đại ngày càng cấp thiết khi các ứng dụng
@@ -38,11 +38,11 @@ NLP trong nước -- từ hệ thống tìm kiếm ngữ nghĩa, phân tích c�
 thống hỏi-đáp tự động -- đòi hỏi chất lượng biểu diễn ngữ nghĩa ngày càng cao. Các
 mô hình Encoder tiếng Việt hiện có như PhoBERT~\cite{nguyen2020phobert} và
 ViDeBERTa~\cite{lai2023videberta} tuy hiệu quả nhưng vẫn dựa trên kiến trúc
-Transformer cũ, bị giới hạn ở độ dài ngữ cảnh 512 tokens và thiếu đi các tối ưu hóa
+Transformer cũ, bị giới hạn ở độ dài ngữ cảnh 512 token và thiếu đi các tối ưu hóa
 kiến trúc hiện đại.
 
 Việc huấn luyện lại NeoBERT từ đầu (from scratch) cho tiếng Việt trên quy mô hàng
-nghìn tỷ tokens là điều bất khả thi về mặt tài nguyên tính toán đối với hầu hết các
+nghìn tỷ token là điều bất khả thi về mặt tài nguyên tính toán đối với hầu hết các
 nhóm nghiên cứu. Bên cạnh đó, phương pháp tiếp tục tiền huấn luyện (Continued
 Pre-training) thông thường -- tức là khởi tạo ngẫu nhiên lớp nhúng mới rồi huấn
 luyện trực tiếp -- thường dẫn đến hiện tượng \textit{quên lãng thảm họa} (catastrophic
@@ -70,21 +70,25 @@ bảo toàn được sức mạnh kiến trúc của NeoBERT.
     RoPE, Pre-RMSNorm và tỷ lệ depth-to-width tối ưu; từ đó xác định những điểm cần
     điều chỉnh khi thích nghi sang tiếng Việt.
 
-    \item \textbf{Áp dụng kỹ thuật SALT để chuyển giao không gian biểu diễn}: Nghiên
-    cứu và triển khai thuật toán SALT -- bao gồm trích xuất tập neo (anchor extraction)
-    dựa trên độ tương đồng ngữ nghĩa và phép biến đổi Bình phương Tối thiểu (Linear
-    Least Squares) -- nhằm ánh xạ không gian nhúng từ ViDeBERTa sang không gian vector
-    của NeoBERT.
+    \item \textbf{Áp dụng và cải tiến kỹ thuật SALT để chuyển giao không gian biểu
+    diễn}: Nghiên cứu và triển khai thuật toán SALT -- bao gồm trích xuất tập neo
+    (anchor extraction) dựa trên độ tương đồng ngữ nghĩa và ánh xạ tuyến tính cục bộ
+    theo phương pháp bình phương tối thiểu -- nhằm ánh xạ không gian nhúng từ
+    ViDeBERTa sang không gian véc-tơ của NeoBERT; đồng thời cải tiến cho cặp ngôn ngữ
+    Anh--Việt: mở rộng tập neo bằng cặp dịch và khởi tạo riêng lớp đầu ra tách rời.
 
-    \item \textbf{Xây dựng mô hình Vietnamese NeoBERT}: Kết hợp lớp nhúng đã được
-    khởi tạo bằng SALT với kiến trúc NeoBERT gốc, sau đó tiến hành huấn luyện thích
-    nghi có chọn lọc (Language Adaptive Continual Pre-training) trên ngữ liệu tiếng
-    Việt, hướng đến khả năng xử lý ngữ cảnh dài tới 4.096 tokens.
+    \item \textbf{Xây dựng mô hình Vietnamese NeoBERT (ViNeoBERT)}: Kết hợp lớp nhúng
+    và lớp đầu ra đã được khởi tạo bằng SALT với phần thân NeoBERT gốc, sau đó huấn
+    luyện qua giai đoạn căn chỉnh đóng băng và tiếp tục tiền huấn luyện thích nghi
+    (Continued Pre-training) trên ngữ liệu tiếng Việt quy mô lớn theo lịch tốc độ
+    học Warmup--Stable--Decay.
 
-    \item \textbf{Đánh giá hiệu quả của phương pháp}: So sánh toàn diện Vietnamese
-    NeoBERT với các baseline hiện có (PhoBERT, ViDeBERTa) trên các bộ benchmark tiêu
-    chuẩn cho tiếng Việt (VLSP, MTEB tiếng Việt) về cả chất lượng biểu diễn ngữ nghĩa,
-    tốc độ hội tụ trong huấn luyện và chi phí tính toán.
+    \item \textbf{Đánh giá hiệu quả của phương pháp}: Đánh giá ViNeoBERT trên một bộ
+    tác vụ hiểu ngôn ngữ tiếng Việt đa dạng -- trọng tâm là hỏi đáp đọc hiểu
+    (UIT-ViQuAD), cùng các nhóm suy luận, phân loại, gán nhãn chuỗi và tương đồng ngữ
+    nghĩa -- so sánh với các mô hình tiếng Việt và đa ngữ hiện có (PhoBERT, XLM-R);
+    đồng thời so sánh các phương án khởi tạo khác nhau ở cùng ngân sách huấn luyện để
+    định lượng đóng góp của từng thành phần.
 
     \item \textbf{Kiểm chứng tính hiệu quả của việc tái sử dụng tri thức}: Thông qua
     kết quả thực nghiệm, xác minh rằng SALT giúp giảm đáng kể số lượng token huấn
@@ -100,17 +104,22 @@ bảo toàn được sức mạnh kiến trúc của NeoBERT.
 
 \textbf{Đối tượng nghiên cứu chính} bao gồm: (1)~kiến trúc NeoBERT với trọng số
 gốc được công bố công khai; (2)~thuật toán SALT với cơ chế trích xuất tập neo và
-hồi quy tuyến tính; (3)~mô hình nguồn ViDeBERTa làm cơ sở chuyển giao không gian
-nhúng.
+ánh xạ tuyến tính cục bộ; (3)~mô hình hiến tặng (donor) ViDeBERTa cung cấp không
+gian nhúng tiếng Việt cho bước chuyển giao.
 
-\textbf{Dữ liệu thực nghiệm} gồm ngữ liệu tiếng Việt quy mô lớn được trích xuất từ
-Wikipedia và các trang tin tức tổng hợp cho giai đoạn huấn luyện thích nghi, cùng
-các bộ benchmark VLSP và MTEB tiếng Việt cho đánh giá.
+\textbf{Dữ liệu thực nghiệm} gồm phần tiếng Việt của kho ngữ liệu web đa ngữ
+CulturaX cho giai đoạn huấn luyện thích nghi, cùng một bộ tác vụ đánh giá tiếng Việt
+đa dạng cho bước tinh chỉnh hạ nguồn -- từ hỏi đáp đọc hiểu (UIT-ViQuAD), suy luận
+ngôn ngữ tự nhiên (XNLI, ViANLI), phân loại văn bản (UIT-VSFC, UIT-VSMEC,
+UIT-ViCTSD) tới gán nhãn từ loại và tương đồng ngữ nghĩa.
 
 \textbf{Các ràng buộc và giới hạn}: Nghiên cứu \textit{không} thực hiện huấn luyện
 NeoBERT từ đầu do hạn chế tài nguyên tính toán. Phạm vi bài toán chỉ bao gồm các
 tác vụ NLU và trích xuất đặc trưng (Feature Extraction), không bao gồm các bài toán
-sinh văn bản tự do của các mô hình Decoder-only.
+sinh văn bản tự do của các mô hình Decoder-only. Mô hình kế thừa kiến trúc hỗ trợ
+ngữ cảnh tới 4.096 token của NeoBERT, tuy nhiên việc kiểm chứng và tinh chỉnh
+chuyên biệt cho ngữ cảnh dài nằm ngoài phạm vi đề tài và được để lại như hướng
+phát triển.
 
 % ============================================================
 \section{Đóng góp của đề tài}
@@ -119,23 +128,54 @@ sinh văn bản tự do của các mô hình Decoder-only.
 Đề tài đưa ra các đóng góp cụ thể sau:
 
 \begin{itemize}
-    \item \textbf{Mô hình Vietnamese NeoBERT}: Cung cấp một bộ Encoder tiên tiến
-    250M tham số cho tiếng Việt, hỗ trợ ngữ cảnh dài 4.096 tokens, tương thích với
-    thư viện Hugging Face Transformers và sẵn sàng sử dụng cho các bài toán NLU
-    thực tế.
+    \item \textbf{Mô hình Vietnamese NeoBERT (ViNeoBERT)}: Cung cấp một bộ Encoder
+    hiện đại khoảng 245 triệu tham số cho tiếng Việt, kế thừa các cải tiến kiến trúc
+    của NeoBERT (RoPE, SwiGLU, Pre-RMSNorm, FlashAttention) cùng trần ngữ cảnh
+    4.096 token, tương thích với thư viện Hugging Face Transformers và sẵn sàng sử
+    dụng cho các bài toán NLU thực tế.
 
-    \item \textbf{Quy trình thích nghi ngôn ngữ tối ưu}: Đề xuất và kiểm chứng một
-    pipeline chuyển giao ngôn ngữ hiệu quả áp dụng SALT lên kiến trúc NeoBERT -- lần
-    đầu tiên được thực hiện cho một kiến trúc Encoder thế hệ mới hỗ trợ ngữ cảnh dài
-    và FlashAttention-2, thay vì các kiến trúc BERT cũ như trong nghiên cứu gốc của
-    SALT.
+    \item \textbf{Quy trình thích nghi ngôn ngữ cải tiến}: Đề xuất và kiểm chứng một
+    quy trình chuyển giao ba giai đoạn áp dụng SALT lên kiến trúc NeoBERT -- lần đầu
+    tiên cho một kiến trúc Encoder thế hệ mới -- với ba cải tiến so với nghiên cứu
+    gốc: (1)~mở rộng tập neo bằng cặp dịch Anh--Việt khai thác tự động; (2)~khởi tạo
+    riêng lớp đầu ra tách rời, kèm độ chệch theo tần suất từ đơn và hệ số co trọng
+    số để tiên nghiệm dẫn dắt giai đoạn đầu; (3)~bổ sung giai đoạn căn chỉnh đóng
+    băng trước khi tiếp tục tiền huấn luyện.
 
     \item \textbf{Bộ mã nguồn công khai}: Bao gồm thuật toán trích xuất tập neo,
-    module hồi quy tuyến tính SALT và kịch bản huấn luyện thích nghi, phục vụ cho
-    cộng đồng nghiên cứu NLP tiếng Việt.
+    các mô-đun chiếu SALT cho lớp nhúng và lớp đầu ra, cùng kịch bản huấn luyện
+    thích nghi theo phiên, phục vụ cho cộng đồng nghiên cứu NLP tiếng Việt.
 
     \item \textbf{Đóng góp khoa học}: Kết quả thực nghiệm khẳng định tính khả thi
-    của việc linh hoạt tái sử dụng không gian biểu diễn từ các mô hình ngôn ngữ lớn
-    sẵn có để chuyển giao tri thức cho các ngôn ngữ ít nguồn lực, mở ra một hướng
-    tiếp cận tiết kiệm chi phí cho việc cập nhật và áp dụng các kiến trúc thế hệ mới.
+    của việc tái sử dụng không gian biểu diễn từ các mô hình sẵn có để chuyển giao
+    tri thức cho các ngôn ngữ ít nguồn lực, mở ra một hướng tiếp cận tiết kiệm chi
+    phí cho việc cập nhật và áp dụng các kiến trúc thế hệ mới.
+\end{itemize}
+
+% ============================================================
+\section{Cấu trúc đề tài}
+\label{sec:structure}
+
+Phần còn lại của khóa luận được tổ chức như sau:
+
+\begin{itemize}
+    \item \textbf{Chương 1 -- Tổng quan}: Giới thiệu bối cảnh và sự cần thiết của
+    đề tài, mục tiêu nghiên cứu, phạm vi nghiên cứu và các đóng góp chính.
+
+    \item \textbf{Chương 2 -- Cơ sở lý thuyết và các công trình liên quan}: Trình
+    bày kiến trúc Transformer và dòng mô hình Encoder-only, các đặc điểm chính của
+    NeoBERT, cơ sở hình học của không gian biểu diễn, cùng các phương pháp khởi tạo
+    nhúng xuyên ngôn ngữ dẫn tới kỹ thuật SALT.
+
+    \item \textbf{Chương 3 -- Phương pháp xây dựng Vietnamese NeoBERT}: Trình bày
+    chi tiết quy trình ba giai đoạn của đề tài: cắt tỉa từ vựng và trích xuất tập
+    neo, phép chiếu SALT cho cả lớp nhúng lẫn lớp đầu ra, giai đoạn căn chỉnh đóng
+    băng và tiếp tục tiền huấn luyện theo lịch WSD.
+
+    \item \textbf{Chương 4 -- Thực nghiệm và Đánh giá}: Mô tả dữ liệu, cấu hình
+    huấn luyện, các độ đo và phân tích kết quả thực nghiệm, bao gồm so sánh các
+    phương án khởi tạo và đánh giá trên tác vụ hạ nguồn.
+
+    \item \textbf{Chương 5 -- Kết luận và Hướng phát triển}: Tổng kết các kết quả
+    đạt được so với mục tiêu đề ra và đề xuất các hướng phát triển tiếp theo.
 \end{itemize}

@@ -1,2 +1,33 @@
 \chapter*{Tóm tắt}
-Nghiên cứu tập trung giải quyết bài toán xây dựng mô hình ngôn ngữ NeoBERT cho tiếng Việt bằng cách tái sử dụng không gian biểu diễn (embedding) từ mô hình tiền huấn luyện ViDeBERTa thông qua phương pháp Semantic Aware Linear Transfer (SALT). Thay vì huấn luyện lại từ đầu với chi phí khổng lồ, kỹ thuật SALT giúp thiết lập các đường hồi quy tuyến tính dựa trên tập từ vựng chung để ánh xạ đặc trưng ngữ nghĩa sang không gian của NeoBERT. Phương pháp này giúp mô hình thích nghi nhanh với tiếng Việt, xử lý ngữ cảnh dài (4096 tokens) mà không gặp phải hiện tượng quên lãng thảm họa (catastrophic forgetting).
+\label{summary}
+
+Các mô hình Encoder-only như BERT giữ vai trò nền tảng cho các bài toán hiểu ngôn ngữ
+tự nhiên, nhưng trong nhiều năm gần như không được cập nhật về kiến trúc. NeoBERT
+(2025) thu hẹp khoảng cách này bằng cách tích hợp các cải tiến từ thế hệ mô hình ngôn
+ngữ lớn -- RoPE, SwiGLU, Pre-RMSNorm, tỷ lệ sâu--hẹp tối ưu và ngữ cảnh 4.096 token --
+song chỉ được tiền huấn luyện trên tiếng Anh, trong khi các Encoder tiếng Việt hiện có
+vẫn dựa trên kiến trúc thế hệ cũ.
+
+Khóa luận xây dựng \textbf{ViNeoBERT} -- mô hình NeoBERT cho tiếng Việt -- bằng quy
+trình thích nghi ngôn ngữ ba giai đoạn thay vì huấn luyện lại từ đầu: (1)~khởi tạo lớp
+nhúng và lớp đầu ra bằng kỹ thuật Semantic Aware Linear Transfer (SALT), tái sử dụng
+không gian nhúng của mô hình tiếng Việt ViDeBERTa thông qua các ánh xạ tuyến tính cục
+bộ theo từng token; (2)~căn chỉnh đóng băng: chỉ huấn luyện hai ma trận vừa khởi tạo
+trên phần thân cố định; và (3)~tiếp tục tiền huấn luyện trên ngữ liệu CulturaX tiếng
+Việt theo lịch tốc độ học Warmup--Stable--Decay. So với SALT gốc, đề tài đưa ra ba cải
+tiến: mở rộng tập neo bằng cặp dịch Anh--Việt khai thác tự động (kèm cơ chế lọc từ đồng
+tự khác nghĩa), khởi tạo riêng lớp đầu ra tách rời với độ chệch theo tần suất từ đơn và
+hệ số co trọng số, cùng giai đoạn căn chỉnh đóng băng.
+
+Thực nghiệm so sánh tám phương án khởi tạo ở cùng ngân sách huấn luyện xác nhận từng
+lựa chọn thiết kế: nhóm khởi tạo SALT vượt mọi đối chứng ngẫu nhiên ở cả mô hình hóa
+ngôn ngữ lẫn tác vụ hạ nguồn. Trên bộ đánh giá gồm mười tác vụ hiểu tiếng Việt,
+ViNeoBERT sau 5 triệu tài liệu dẫn đầu 4/10 tác vụ (trong đó có đọc hiểu UIT-ViQuAD với
+76,2 điểm F1) và bằng hoặc vượt XLM-R-base ở 8/10 tác vụ, dù lượng tiếng Việt tiếp xúc
+ít hơn các mô hình đối sánh một đến hai bậc -- cho thấy tái sử dụng không gian biểu diễn
+sẵn có là con đường tiết kiệm và hiệu quả để đưa các kiến trúc Encoder thế hệ mới đến
+với tiếng Việt.
+
+\vspace{4mm}
+\noindent\textbf{Từ khóa:} NeoBERT, tiếng Việt, thích nghi ngôn ngữ, khởi tạo nhúng
+xuyên ngôn ngữ, SALT, tiếp tục tiền huấn luyện.

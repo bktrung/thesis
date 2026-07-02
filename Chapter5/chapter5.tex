@@ -1,10 +1,95 @@
 \chapter{Kết luận và Hướng phát triển}
+\label{chap:conclusion}
 
 \section{Kết luận}
-Tóm lược sự thành công của việc áp dụng SALT để tạo ra Vietnamese NeoBERT.
+\label{sec:conclusion}
+
+Khóa luận đã nghiên cứu và xây dựng thành công \textbf{ViNeoBERT} -- một mô hình
+Encoder hiện đại cho tiếng Việt -- bằng cách thích nghi NeoBERT thông qua kỹ thuật
+SALT được cải tiến, thay vì huấn luyện lại từ đầu. Đối chiếu với các mục tiêu đặt ra
+ở Chương~\ref{chap:intro}, đề tài đã đạt được các kết quả sau:
+
+\begin{itemize}
+  \item \textbf{Về nghiên cứu kiến trúc}: Chúng tôi đã phân tích các cải tiến kiến
+        trúc của NeoBERT (RoPE, SwiGLU, Pre-RMSNorm, tỷ lệ sâu--hẹp tối ưu) và xác
+        định đúng hai điểm mấu chốt ảnh hưởng tới việc chuyển giao: chuẩn hóa
+        Pre-RMSNorm nhạy với độ lớn của nhúng -- dẫn tới bước hiệu chỉnh chuẩn -- và
+        đầu giải mã tách rời đòi hỏi khởi tạo riêng cho lớp đầu ra
+        (Chương~\ref{chap:related}, \ref{chap:method}).
+
+  \item \textbf{Về phương pháp chuyển giao}: Chúng tôi đã triển khai thuật toán SALT
+        và cải tiến nó cho cặp ngôn ngữ Anh--Việt với ba đóng góp: (1)~mở rộng tập neo
+        bằng cặp dịch khai thác tự động, kèm cơ chế lọc từ đồng tự khác nghĩa đặc thù
+        cho ngôn ngữ hệ chữ Latin; (2)~áp dụng phép chiếu theo từng token cho cả lớp
+        đầu ra tách rời, kết hợp khởi tạo độ chệch theo tần suất từ đơn và hệ số co
+        trọng số $\gamma = 0{,}1$; (3)~bổ sung giai đoạn căn chỉnh đóng băng trước khi
+        tiếp tục tiền huấn luyện (Chương~\ref{chap:method}).
+
+  \item \textbf{Về kiểm chứng thực nghiệm}: Thí nghiệm so sánh tám phương án khởi tạo
+        ở cùng ngân sách (Mục~\ref{sec:exp-bakeoff}) xác nhận từng lựa chọn thiết kế:
+        nhóm khởi tạo SALT vượt mọi đối chứng ngẫu nhiên ở cả mô hình hóa ngôn ngữ lẫn
+        tác vụ hạ nguồn (F1 khoảng 66--68 so với 56 của đối chứng tốt nhất); chiếu
+        theo từng token tốt hơn ánh xạ toàn cục; hệ số co $\gamma=0{,}1$ là cần thiết
+        -- không co hoặc co không đủ khiến huấn luyện mắc kẹt và kết quả hạ nguồn tụt
+        dưới cả đối chứng ngẫu nhiên; và căn chỉnh đóng băng cải thiện nhất quán.
+
+  \item \textbf{Về hiệu quả của mô hình}: Sau 5 triệu tài liệu CulturaX, ViNeoBERT
+        dẫn đầu 4/10 tác vụ trong bảng đánh giá đa nhiệm -- đọc hiểu UIT-ViQuAD
+        (76,24 F1, hơn XLM-R-base 4,1 điểm), pseudo-perplexity, gán nhãn từ loại và
+        XNLI -- và đạt kết quả bằng hoặc cao hơn XLM-R-base ở 8/10 tác vụ
+        (Mục~\ref{sec:exp-mrc}). Đáng nói nhất, lượng tiếng Việt mô hình tiếp xúc chỉ
+        khoảng 5 tỷ token -- ít hơn một đến hai bậc so với PhoBERT (40 epoch trên 20GB,
+        bản v2 thêm 120GB OSCAR) hay XLM-R ($\sim$137GB tiếng Việt trong CC-100). Kết
+        quả này xác nhận giả thuyết trung tâm của đề tài: \textit{tái sử dụng không
+        gian biểu diễn sẵn có là con đường tiết kiệm để đưa các kiến trúc Encoder thế
+        hệ mới đến với tiếng Việt}.
+\end{itemize}
+
+Bên cạnh mô hình, đề tài đóng góp một quy trình ba giai đoạn có thể tái lập -- khởi
+tạo SALT cải tiến, căn chỉnh đóng băng, tiếp tục tiền huấn luyện theo lịch WSD với
+khả năng huấn luyện theo phiên -- cùng bộ mã nguồn công khai đi kèm.
 
 \section{Hạn chế của đề tài}
-Ví dụ: giới hạn về dữ liệu, phần cứng, khả năng áp dụng trên lĩnh vực đặc thù.
+\label{sec:limitations}
 
-\section{Hướng phát triển trong tương lai}
-Tiếp tục huấn luyện trên tập dữ liệu lớn hơn, mở rộng ứng dụng trên các bài toán sinh văn bản, v.v.
+Trong khuôn khổ thời gian và tài nguyên của một khóa luận, đề tài còn các hạn chế
+sau:
+
+\begin{itemize}
+  \item \textbf{Ngân sách huấn luyện}: 5 triệu tài liệu vẫn nhỏ so với dữ liệu tiền
+        huấn luyện của các mô hình đối sánh; ViNeoBERT chưa vượt PhoBERT-base-v2 ở
+        nhóm tác vụ phân loại câu ngắn, dù xu hướng đường cong học cho thấy khoảng
+        cách có thể tiếp tục thu hẹp khi tăng ngân sách.
+  \item \textbf{Phạm vi đánh giá}: bảng đánh giá đa nhiệm hiện so sánh với hai mô
+        hình cùng hạng \texttt{base}; các biến thể \texttt{large} và nhóm tác vụ truy
+        hồi thông tin chưa được đưa vào so sánh đầy đủ.
+  \item \textbf{Ngữ cảnh dài}: mô hình kế thừa trần ngữ cảnh 4.096 token của NeoBERT
+        về mặt kiến trúc, nhưng quá trình tiếp tục tiền huấn luyện dùng chuỗi tối đa
+        1.024 token và đề tài chưa kiểm chứng chất lượng ở ngữ cảnh dài.
+  \item \textbf{Bộ tách từ}: từ vựng kế thừa từ ViDeBERTa hoạt động ở mức âm tiết;
+        ảnh hưởng của việc không tách từ (so với PhoBERT dùng dữ liệu đã tách từ)
+        chưa được phân tích riêng.
+\end{itemize}
+
+\section{Hướng phát triển}
+\label{sec:future-work}
+
+Từ các kết quả và hạn chế trên, chúng tôi đề xuất bốn hướng phát triển:
+
+\begin{enumerate}
+  \item \textbf{Mở rộng ngân sách tiếp tục tiền huấn luyện}: tăng số tài liệu CulturaX
+        vượt mốc 5 triệu và khai thác thêm các pha làm nguội trên dữ liệu mới -- vốn
+        đã cho thấy hiệu quả bật điểm ở mốc cuối -- nhằm vượt các mô hình họ PhoBERT
+        trên các tác vụ hạ nguồn.
+  \item \textbf{Kiểm chứng và khai thác ngữ cảnh dài}: huấn luyện bổ sung ở độ dài
+        4.096 token và đánh giá trên các tác vụ đòi hỏi ngữ cảnh dài (hỏi đáp đa đoạn,
+        truy hồi tài liệu); khi cần vượt trần hiện tại, các kỹ thuật nội suy RoPE như
+        YaRN~\cite{peng2023yarn} là ứng viên tự nhiên.
+  \item \textbf{Mở rộng bộ đánh giá}: bổ sung các tác vụ suy luận ngôn ngữ tự nhiên,
+        gán nhãn chuỗi và truy hồi ngữ nghĩa cho tiếng Việt, nhằm đánh giá toàn diện
+        hơn chất lượng biểu diễn của mô hình ở vai trò một Encoder đa dụng.
+  \item \textbf{Tổng quát hóa quy trình}: áp dụng quy trình ba giai đoạn của đề tài
+        cho các ngôn ngữ ít tài nguyên khác hoặc các kiến trúc nền khác, qua đó kiểm
+        chứng tính tổng quát của các cải tiến (tập neo theo cặp dịch, khởi tạo lớp
+        đầu ra tách rời, căn chỉnh đóng băng) ngoài phạm vi cặp Anh--Việt và NeoBERT.
+\end{enumerate}

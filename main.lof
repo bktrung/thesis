@@ -1,8 +1,14 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Cấu trúc một khối Encoder của NeoBERT theo lối chuẩn hóa trước (Pre-RMSNorm): tín hiệu lần lượt qua RMSNorm, khối tự chú ý đa đầu có áp dụng RoPE trên truy vấn và khóa, rồi tới mạng truyền thẳng SwiGLU. Hai đường bên cạnh biểu diễn các kết nối tắt (residual connection).}}{11}{figure.2.1}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Luồng xử lý của một mô hình Encoder-only kiểu BERT.}}{9}{figure.2.1}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Kiến trúc NeoBERT.}}{12}{figure.2.2}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Sơ đồ tổng quan SALT}}{20}{figure.2.3}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT: khởi tạo lớp nhúng và lớp đầu ra bằng SALT từ ViDeBERTa sang không gian NeoBERT, căn chỉnh đóng băng phần thân, rồi tiếp tục tiền huấn luyện thích nghi trên ngữ liệu tiếng Việt.}}{22}{figure.3.1}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT.}}{23}{figure.3.1}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref {eq:wsd}.}}{33}{figure.3.2}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Mất mát MLM trên tập đánh giá của tám phương án khởi tạo.}}{40}{figure.4.1}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Điểm F1 trên UIT-ViQuAD của tám phương án khởi tạo sau 100 nghìn tài liệu CPT.}}{42}{figure.4.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo ngân sách tiếp tục tiền huấn luyện.}}{43}{figure.4.3}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

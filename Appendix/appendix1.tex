@@ -1,6 +1,43 @@
-\appendix
+\chapter{Bộ lọc chính tả tiếng Việt cho khai thác neo}
+\label{app:vi-filter}
 
-\chapter{Ngữ pháp tiếng Việt}
-\label{Appendix1}
+Phụ lục này mô tả chi tiết bộ lọc chính tả được dùng ở Mục~\ref{subsec:anchor-mining}
+để bảo đảm các ứng viên khai thác cặp dịch là từ tiếng Việt hợp lệ. Một token chỉ được
+giữ lại khi vượt qua \textit{toàn bộ} các quy tắc sau:
 
-Đây là phụ lục.
+\begin{enumerate}
+  \item \textbf{Ký tự bản địa}: loại mọi token chứa \textit{f, j, w, z} -- các ký tự
+        không thuộc bảng chữ cái tiếng Việt.
+  \item \textbf{Độ dài}: tối đa 7 ký tự cho một âm tiết.
+  \item \textbf{Một cụm nguyên âm}: token phải chứa \textit{đúng một} cụm nguyên âm
+        liền mạch (kể cả nguyên âm mang dấu thanh).
+  \item \textbf{Quy tắc phụ âm đầu}:
+        \begin{itemize}
+          \item \textit{k, gh, ngh} bắt buộc đứng trước các nguyên âm hàng trước
+                \textit{i, e, ê, y};
+          \item ngược lại, \textit{c, g, ng} không được đứng trước các nguyên âm này;
+          \item \textit{q} luôn đi kèm \textit{u};
+          \item \textit{p} không đứng một mình làm phụ âm đầu (loại các dạng vay mượn
+                như \textit{pô, pin}).
+        \end{itemize}
+  \item \textbf{Tổ hợp nguyên âm ngoại lai}: loại các chuỗi không xuất hiện trong âm
+        tiết tiếng Việt như \textit{ea, ee, oo, ii, uu, ion, eon}.
+  \item \textbf{Nguyên âm chưa trọn vẹn}: các nguyên âm như \textit{ă, â} (và các tổ
+        hợp \textit{iê, uô, ươ}) không được đứng cuối âm tiết mà phải có phụ âm cuối
+        đi kèm (loại các mảnh từ như \textit{nhắ, tầ, nghiê}).
+  \item \textbf{Phụ âm đầu/cuối hợp lệ}: phụ âm đầu phải thuộc tập
+        \{$\varnothing$, b, c, ch, d, đ, g, gh, gi, h, k, kh, l, m, n, ng, ngh, nh,
+        ph, q, qu, r, s, t, th, tr, v, x\}; phụ âm cuối phải thuộc tập
+        \{$\varnothing$, c, ch, m, n, ng, nh, p, t\}.
+  \item \textbf{Quy tắc thanh--phụ âm cuối}: âm tiết kết thúc bằng \textit{c, ch, p,
+        t} bắt buộc mang thanh sắc hoặc thanh nặng (loại các dạng sai như
+        \textit{sec, nhac, mit}).
+  \item \textbf{Danh sách loại trừ}: một danh sách nhỏ các chuỗi thỏa cấu trúc âm
+        tiết nhưng là nhiễu trong thực tế (ví dụ mảnh phiên âm, từ cổ ít dùng) được
+        loại thủ công.
+\end{enumerate}
+
+Ngoài ra, ở Tầng 3 của quá trình khai thác cặp dịch (Mục~\ref{subsec:anchor-mining}),
+một danh sách chặn (blacklist) gồm các từ chức năng và từ dễ nhập nhằng của tiếng Việt
+(\textit{các, những, được, để, thế, cái,~\ldots}) được áp dụng trước khi dịch, nhằm
+tránh tạo ra các cặp neo kém tin cậy từ những từ có phân bố ngữ nghĩa rộng.

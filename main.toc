@@ -3,63 +3,75 @@
 \contentsline {chapter}{Nhận xét của GV hướng dẫn}{iii}{chapter*.3}%
 \contentsline {chapter}{Nhận xét của GV phản biện}{iv}{chapter*.4}%
 \contentsline {chapter}{Lời cảm ơn}{v}{chapter*.5}%
-\contentsline {chapter}{Đề cương}{vi}{chapter*.6}%
-\contentsline {chapter}{Mục lục}{vii}{chapter*.7}%
-\contentsline {chapter}{Danh sách hình}{x}{chapter*.8}%
-\contentsline {chapter}{Danh sách bảng}{xi}{chapter*.9}%
-\contentsline {chapter}{Tóm tắt}{xi}{chapter*.10}%
-\contentsline {chapter}{\numberline {1}Giới thiệu}{1}{chapter.1}%
+\contentsline {chapter}{Đề cương}{vii}{chapter*.6}%
+\contentsline {chapter}{Danh sách các từ viết tắt}{xvii}{section*.8}%
+\contentsline {chapter}{Mục lục}{xvii}{section*.8}%
+\contentsline {chapter}{Danh sách hình}{xxii}{chapter*.9}%
+\contentsline {chapter}{Danh sách bảng}{xxiii}{chapter*.10}%
+\contentsline {chapter}{Tóm tắt}{xxiii}{chapter*.11}%
+\contentsline {chapter}{\numberline {1}Tổng quan}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Bối cảnh và sự cần thiết của đề tài}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Mục tiêu nghiên cứu}{3}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Phạm vi nghiên cứu}{4}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Đóng góp của đề tài}{4}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Cơ sở lý thuyết và các công trình liên quan}{6}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Kiến trúc Transformer và mô hình Encoder-only}{7}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Cơ chế tự chú ý trong kiến trúc Transformer}{7}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}BERT và mô hình hóa ngôn ngữ có mặt nạ}{8}{subsection.2.1.2}%
-\contentsline {subsection}{\numberline {2.1.3}Giới hạn của các mô hình Encoder thế hệ cũ}{9}{subsection.2.1.3}%
-\contentsline {section}{\numberline {2.2}Kiến trúc NeoBERT}{10}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Tổng quan}{10}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Tỷ lệ chiều sâu trên chiều rộng tối ưu}{11}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Mã hóa vị trí quay (Rotary Position Embeddings)}{12}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}Hàm kích hoạt SwiGLU}{12}{subsection.2.2.4}%
-\contentsline {subsection}{\numberline {2.2.5}Chuẩn hóa Pre-RMSNorm}{13}{subsection.2.2.5}%
-\contentsline {subsection}{\numberline {2.2.6}Dữ liệu và chiến lược tiền huấn luyện}{14}{subsection.2.2.6}%
-\contentsline {section}{\numberline {2.3}Hình học của không gian biểu diễn từ}{15}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Thích nghi ngôn ngữ và khởi tạo không gian nhúng}{16}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Thích nghi ngôn ngữ và hiện tượng quên lãng thảm họa}{16}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Các phương pháp khởi tạo không gian nhúng}{17}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Kỹ thuật Semantic Aware Linear Transfer (SALT)}{18}{subsection.2.4.3}%
-\contentsline {section}{\numberline {2.5}Nhận xét và định hướng}{19}{section.2.5}%
-\contentsline {chapter}{\numberline {3}Phương pháp xây dựng Vietnamese NeoBERT}{20}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Tổng quan phương pháp}{20}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Đặt vấn đề}{20}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Mô hình nguồn và mô hình hiến tặng}{21}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Quy trình ba giai đoạn}{21}{subsection.3.1.3}%
-\contentsline {section}{\numberline {3.2}Cắt tỉa và đồng bộ từ vựng}{22}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Trích xuất tập neo theo cặp dịch}{23}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Vai trò của tập neo}{23}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Lọc từ đầy đủ và hợp lệ}{24}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Khai thác cặp dịch ba tầng}{24}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Phép chiếu SALT cho lớp nhúng và lớp đầu ra}{25}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Lựa chọn neo bằng Sparsemax}{25}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Ánh xạ tuyến tính cục bộ theo từng token}{26}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}{26}{subsection.3.4.3}%
-\contentsline {subsection}{\numberline {3.4.4}Hiệu chỉnh chuẩn của lớp nhúng}{27}{subsection.3.4.4}%
-\contentsline {subsection}{\numberline {3.4.5}Khởi tạo độ chệch đầu ra theo tần suất}{27}{subsection.3.4.5}%
-\contentsline {section}{\numberline {3.5}Giai đoạn căn chỉnh đóng băng}{28}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Tiếp tục tiền huấn luyện thích nghi}{29}{section.3.6}%
-\contentsline {section}{\numberline {3.7}Tổng kết phương pháp}{30}{section.3.7}%
-\contentsline {chapter}{\numberline {4}Thực nghiệm và Đánh giá}{31}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Môi trường và dữ liệu thực nghiệm}{31}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Thiết lập các tham số huấn luyện (Hyperparameters)}{31}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Kịch bản đánh giá}{31}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Kết quả và Thảo luận}{32}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{33}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Kết luận}{33}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{33}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Hướng phát triển trong tương lai}{33}{section.5.3}%
-\contentsline {chapter}{Danh mục công trình của tác giả}{34}{section.5.3}%
-\contentsline {chapter}{Tài liệu tham khảo}{35}{Item.10}%
-\contentsline {chapter}{Phụ lục}{39}{chapter*.13}%
-\contentsline {chapter}{\numberline {A}Phụ lục A}{40}{appendix.A}%
+\contentsline {section}{\numberline {1.4}Đóng góp của đề tài}{5}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Cấu trúc đề tài}{6}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Cơ sở lý thuyết và các công trình liên quan}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Kiến trúc Transformer và mô hình Encoder-only}{8}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Cơ chế tự chú ý trong kiến trúc Transformer}{8}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}BERT và mô hình hóa ngôn ngữ có mặt nạ}{9}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Giới hạn của các mô hình Encoder thế hệ cũ}{10}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Kiến trúc NeoBERT}{11}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Tổng quan}{11}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Tỷ lệ chiều sâu trên chiều rộng tối ưu}{12}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Mã hóa vị trí quay (Rotary Position Embeddings)}{13}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Hàm kích hoạt SwiGLU}{14}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}Chuẩn hóa Pre-RMSNorm}{15}{subsection.2.2.5}%
+\contentsline {subsection}{\numberline {2.2.6}Dữ liệu và chiến lược tiền huấn luyện}{17}{subsection.2.2.6}%
+\contentsline {section}{\numberline {2.3}Chuyển giao không gian nhúng và thích nghi ngôn ngữ}{17}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Hình học của không gian biểu diễn}{17}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Thích nghi ngôn ngữ và rủi ro quên lãng}{18}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Khởi tạo nhúng có thông tin}{19}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}Semantic Aware Linear Transfer (SALT)}{19}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Nhận xét định hướng}{20}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Phương pháp xây dựng Vietnamese NeoBERT}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tổng quan phương pháp}{21}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Đặt vấn đề}{21}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Mô hình nguồn và mô hình hiến tặng}{22}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Quy trình ba giai đoạn}{22}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Cắt tỉa và đồng bộ từ vựng}{23}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Trích xuất tập neo (anchor set)}{24}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Vai trò của tập neo}{24}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Neo trùng lặp bề mặt và neo số}{25}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Mở rộng tập neo bằng cặp dịch ba tầng}{26}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Phép chiếu SALT cho lớp nhúng và lớp đầu ra}{27}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Lựa chọn neo bằng Sparsemax}{27}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Ánh xạ tuyến tính cục bộ theo từng token}{28}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}{29}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Hiệu chỉnh chuẩn của lớp nhúng}{29}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Khởi tạo độ chệch đầu ra theo tần suất}{30}{subsection.3.4.5}%
+\contentsline {subsection}{\numberline {3.4.6}Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{31}{subsection.3.4.6}%
+\contentsline {section}{\numberline {3.5}Giai đoạn căn chỉnh đóng băng}{32}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Tiếp tục tiền huấn luyện thích nghi}{32}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Tổng kết phương pháp}{34}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Thực nghiệm và Đánh giá}{35}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Môi trường và dữ liệu thực nghiệm}{35}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Môi trường thực nghiệm}{35}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Dữ liệu tiền huấn luyện}{36}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Dữ liệu đánh giá hạ nguồn}{36}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Cấu hình huấn luyện}{37}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Độ đo đánh giá}{38}{section.4.3}%
+\contentsline {section}{\numberline {4.4}So sánh các phương án khởi tạo}{39}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Các phương án so sánh}{39}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Kết quả mô hình hóa ngôn ngữ}{39}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Ảnh hưởng tới tác vụ hạ nguồn}{41}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{42}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Diễn tiến theo ngân sách huấn luyện}{42}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa nhiệm tại mốc 5 triệu tài liệu}{43}{subsection.4.5.2}%
+\contentsline {section}{\numberline {4.6}Thảo luận}{45}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{46}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kết luận}{46}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{48}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Hướng phát triển}{48}{section.5.3}%
+\contentsline {chapter}{Tài liệu tham khảo}{50}{Item.12}%
+\contentsline {chapter}{Phụ lục}{55}{chapter*.13}%
+\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{56}{appendix.A}%

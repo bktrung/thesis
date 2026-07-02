@@ -25,6 +25,9 @@
 \usepackage{graphicx}
 \graphicspath{ {Images/} }
 
+% Chèn file PDF (đề cương, biểu mẫu scan)
+\usepackage{pdfpages}
+
 % Chèn và định dạng mã nguồn
 \usepackage{listings}
 \usepackage{color}
@@ -105,7 +108,7 @@
   
 % Trang bìa
 \usepackage{tikz}
-\usetikzlibrary{calc,positioning,arrows.meta}
+\usetikzlibrary{calc,positioning,arrows.meta,fit}
 \newcommand\HRule{\rule{\textwidth}{1pt}}
 
 % ========================================================================================= %
@@ -141,7 +144,9 @@
 \include{Appendix/thanks}
 
 \addcontentsline{toc}{chapter}{Đề cương}
-\include{Appendix/proposal}
+\input{Appendix/proposal}
+
+\input{Appendix/abbreviations}
 
 % Mục lục, danh sách hình, danh sách bảng
 \addcontentsline{toc}{chapter}{Mục lục}
@@ -182,9 +187,9 @@
 % TÀI LIỆU THAM KHẢO & CÔNG TRÌNH CỦA TÁC GIẢ
 % ========================================================================================= %
 
-% Công trình của tác giả
-\addcontentsline{toc}{chapter}{Danh mục công trình của tác giả}
-\include{Appendix/publish}
+% Công trình của tác giả — nhóm chưa có công bố nên tạm ẩn; bỏ comment nếu có
+% \addcontentsline{toc}{chapter}{Danh mục công trình của tác giả}
+% \include{Appendix/publish}
 
 % Hiển thị toàn bộ tài liệu trong file references.bib
 \nocite{*} 
@@ -206,7 +211,6 @@
 \appendix
 \addcontentsline{toc}{chapter}{Phụ lục}
 
-\chapter{Phụ lục A}
-(Nội dung Phụ lục A được đặt tại đây)
+\include{Appendix/appendix1}
 
 \end{document}

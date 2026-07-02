@@ -91,9 +91,7 @@ Encoder-only kiểu BERT.
     \draw[->] (tok)--(ner);
     \draw[->] (mlm)--(pre);
   \end{tikzpicture}
-  \caption{Luồng xử lý của một mô hình Encoder-only kiểu BERT. Toàn bộ chuỗi được mã hóa
-    hai chiều qua các khối Transformer Encoder; các biểu diễn đầu ra sau đó được dùng cho
-    các nhóm tác vụ khác nhau.}
+  \caption{Luồng xử lý của một mô hình Encoder-only kiểu BERT.}
   \label{fig:encoder-only-pipeline}
 \end{figure}
 
@@ -121,7 +119,7 @@ chuyển giao một phần thân Encoder hiện đại sang không gian từ v�
 BERT và RoBERTa vẫn rất quan trọng, nhưng chúng mang nhiều giả định của giai đoạn đầu:
 ngữ cảnh thường giới hạn ở 512 token, mã hóa vị trí tuyệt đối khó mở rộng, và kiến trúc chưa
 có các thành phần hiện đại như RoPE, SwiGLU, RMSNorm hay FlashAttention. Khi độ dài chuỗi
-tăng từ 512 lên $4{,}096$ token, riêng ma trận chú ý đã tăng $64$ lần về số phần tử, nên
+tăng từ 512 lên 4.096 token, riêng ma trận chú ý đã tăng $64$ lần về số phần tử, nên
 việc mở rộng ngữ cảnh không thể chỉ dựa vào tăng độ dài đầu vào.
 
 Ngoài kiến trúc, quy mô dữ liệu cũng thay đổi mạnh. BERT được huấn luyện trên BooksCorpus
@@ -138,93 +136,219 @@ Encoder hiện đại để thích nghi sang tiếng Việt thay vì tiếp tụ
 \subsection{Tổng quan}
 \label{subsec:neobert-overview}
 
-NeoBERT~\cite{lebreton2025neobert} là một Encoder-only hiện đại được xây dựng với mục tiêu
-cập nhật dòng BERT/RoBERTa theo các thực hành kiến trúc mới. Mô hình có khoảng $250$ triệu
-tham số, gồm $28$ lớp Transformer, kích thước ẩn $768$, $12$ đầu chú ý và hỗ trợ ngữ cảnh
-tối đa $4{,}096$ token. Khác với BERT/RoBERTa, NeoBERT sử dụng RoPE, SwiGLU, Pre-RMSNorm
-và FlashAttention; đồng thời được tiền huấn luyện trên RefinedWeb với khoảng $2{,}1$ nghìn
-tỷ token.
+Về bản chất, NeoBERT~\cite{lebreton2025neobert} vẫn là một mô hình thuộc dòng BERT: mã
+hóa hai chiều toàn chuỗi và được tiền huấn luyện bằng tác vụ MLM. Điều làm nó khác biệt
+là toàn bộ ``phần cứng'' bên trong đã được thay mới theo những gì thế hệ mô hình ngôn ngữ
+lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $250$ triệu tham số, giữ kích thước
+ẩn $768$ như BERT-base nhưng sâu $28$ lớp, dùng $12$ đầu chú ý (mỗi đầu $64$ chiều), hỗ
+trợ ngữ cảnh 4.096 token, và được tiền huấn luyện trên khoảng $2{,}1$ nghìn tỷ token văn
+bản web tiếng Anh (RefinedWeb) với tỷ lệ che $20\%$.
 
-Trong phạm vi đề tài, NeoBERT được xem là \textit{kiến trúc đích}: phần thân Transformer
-đã được tiền huấn luyện mạnh trên tiếng Anh, còn lớp từ vựng và lớp nhúng cần được thay thế
-để phù hợp tiếng Việt. Vì vậy, phần này chỉ tập trung vào những đặc điểm ảnh hưởng trực tiếp
-đến quá trình chuyển giao: tỷ lệ sâu-hẹp, mã hóa vị trí, lớp truyền thẳng, chuẩn hóa và dữ
-liệu tiền huấn luyện. Cấu trúc đơn giản của một khối NeoBERT được minh họa trong
-Hình~\ref{fig:neobert-block}.
+Kiến trúc của mô hình được minh họa trong Hình~\ref{fig:neobert-arch}. So với BERT, có
+bốn thay đổi cốt lõi, cũng chính là bốn nội dung sẽ được phân tích trong các mục con tiếp
+theo: (1)~tỷ lệ chiều sâu trên chiều rộng được chọn lại theo phân tích lý thuyết -- sâu
+hơn nhưng không rộng hơn; (2)~nhúng vị trí tuyệt đối bị loại bỏ hoàn toàn, thay bằng phép
+quay RoPE áp dụng trên truy vấn và khóa bên trong từng khối; (3)~mạng truyền thẳng dùng
+cơ chế cổng SwiGLU thay cho GELU; và (4)~chuẩn hóa RMSNorm đặt \textit{trước} mỗi tầng
+con thay vì LayerNorm đặt sau. Ngoài ra, đầu MLM của NeoBERT là một lớp tuyến tính
+\textit{tách rời} khỏi ma trận nhúng đầu vào -- chi tiết tưởng nhỏ nhưng ảnh hưởng trực
+tiếp tới thiết kế phương pháp ở Chương~\ref{chap:method}.
 
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}[
-    node distance=5.5mm,
-    box/.style={draw, rounded corners, minimum width=44mm, minimum height=8mm, align=center, font=\small},
-    norm/.style={box, fill=blue!8},
-    attn/.style={box, fill=orange!15},
-    ffn/.style={box, fill=green!12},
-    add/.style={draw, circle, inner sep=1.2pt, font=\footnotesize},
+    node distance=4.5mm,
+    box/.style={draw, rounded corners, minimum width=40mm, minimum height=7.5mm, align=center, font=\small},
+    add/.style={draw, circle, inner sep=1.5pt, font=\small},
+    lbl/.style={font=\scriptsize\itshape, text=gray!90},
     >={Latex[length=2mm]}
   ]
-    \node (in) {\small $x$ \;(đầu vào khối)};
-    \node[norm, above=of in]   (n1)   {RMSNorm};
-    \node[attn, above=of n1]   (attn) {Tự chú ý đa đầu\\ (RoPE trên $Q,K$)};
-    \node[add,  above=of attn] (a1)   {$+$};
-    \node[norm, above=of a1]   (n2)   {RMSNorm};
-    \node[ffn,  above=of n2]   (ffn)  {Mạng truyền thẳng SwiGLU};
-    \node[add,  above=of ffn]  (a2)   {$+$};
-    \node[above=of a2]         (out)  {\small $x'$ \;(đầu ra khối)};
-    \draw[->] (in)--(n1); \draw[->] (n1)--(attn); \draw[->] (attn)--(a1);
-    \draw[->] (a1)--(n2); \draw[->] (n2)--(ffn);  \draw[->] (ffn)--(a2); \draw[->] (a2)--(out);
-    \draw[->] (in.east)  -- ++(3.0,0) |- (a1.east);   % kết nối tắt 1
-    \draw[->] (a1.west)  -- ++(-3.0,0) |- (a2.west);  % kết nối tắt 2
+    \node (in) {\small Chuỗi token};
+    \node[box, fill=orange!12, above=of in]  (emb) {Nhúng token};
+    \node[box, fill=blue!8,   above=7mm of emb] (n1)  {RMSNorm};
+    \node[box, fill=orange!15, above=of n1]  (att) {Tự chú ý đa đầu + RoPE};
+    \node[add, above=of att]                 (a1)  {$+$};
+    \node[box, fill=blue!8,   above=of a1]   (n2)  {RMSNorm};
+    \node[box, fill=green!12, above=of n2]   (ffn) {FFN SwiGLU};
+    \node[add, above=of ffn]                 (a2)  {$+$};
+    \node[box, fill=blue!8,   above=7mm of a2] (fn) {RMSNorm};
+    \node[box, fill=gray!10,  above=of fn]   (head) {Đầu MLM (tách rời)};
+    \node[above=4mm of head] (out) {\small Phân phối trên từ vựng};
+    % luồng chính
+    \draw[->] (in)--(emb);   \draw[->] (emb)--(n1);
+    \draw[->] (n1)--(att);   \draw[->] (att)--(a1);
+    \draw[->] (a1)--(n2);    \draw[->] (n2)--(ffn); \draw[->] (ffn)--(a2);
+    \draw[->] (a2)--(fn);    \draw[->] (fn)--(head); \draw[->] (head)--(out);
+    % kết nối tắt
+    \draw[->] ($(n1.south)+(0,-2mm)$) -- ++(-2.9,0) |- (a1.west);
+    \draw[->] ($(a1.north)+(0,1.5mm)$) -- ++(-2.9,0) |- (a2.west);
+    % khung x28
+    \node[draw, rounded corners, dashed, inner sep=3mm, fit=(n1)(att)(a1)(n2)(ffn)(a2),
+          label={[font=\small]right:$\times\,28$}] {};
   \end{tikzpicture}
-  \caption{Cấu trúc một khối Encoder của NeoBERT theo lối chuẩn hóa trước (Pre-RMSNorm):
-    tín hiệu lần lượt qua RMSNorm, khối tự chú ý đa đầu có áp dụng RoPE trên truy vấn và
-    khóa, rồi tới mạng truyền thẳng SwiGLU. Hai đường bên cạnh biểu diễn các kết nối tắt
-    (residual connection).}
-  \label{fig:neobert-block}
+  \caption{Kiến trúc NeoBERT.}
+  \label{fig:neobert-arch}
 \end{figure}
+
+Điểm cần chú ý khi đọc Hình~\ref{fig:neobert-arch}: khác với sơ đồ BERT quen thuộc,
+\textit{không có} khối nhúng vị trí cộng vào sau nhúng token -- thông tin vị trí được đưa
+vào bên trong từng khối qua RoPE; chuẩn hóa nằm \textit{trước} tầng tự chú ý và tầng
+truyền thẳng, còn hai kết nối tắt cộng thẳng vào luồng chính; và sau khối cuối cùng có
+một lớp RMSNorm khép lại trước khi tín hiệu đi vào các đầu tác vụ. Trong phạm vi đề tài,
+NeoBERT được xem là \textit{kiến trúc đích}: phần thân Transformer đã được tiền huấn
+luyện mạnh trên tiếng Anh và sẽ được giữ nguyên, còn lớp nhúng và đầu MLM gắn với từ vựng
+tiếng Anh là phần phải thay thế. Mỗi cải tiến dưới đây đều để lại một ràng buộc hoặc một
+thuận lợi cụ thể cho việc thay thế đó.
 
 \subsection{Tỷ lệ chiều sâu trên chiều rộng tối ưu}
 \label{subsec:depth-width}
 
-Dựa trên phân tích về quan hệ giữa chiều sâu và chiều rộng trong self-attention
-~\cite{levine2020limits}, NeoBERT giữ kích thước ẩn $768$ như BERT-base nhưng tăng số lớp
-lên $28$. Thiết kế này giúp mô hình có thêm nhiều bước biến đổi phi tuyến mà vẫn giữ được
-tính tương thích với các hạ tầng Encoder base. Đối với đề tài, điểm quan trọng là phần thân
-NeoBERT đủ sâu để học biểu diễn mạnh, nhưng chiều ẩn vẫn bằng $768$, thuận tiện cho việc
-chiếu không gian nhúng từ mô hình tiếng Việt sang không gian NeoBERT.
+Với một ngân sách tham số cố định, câu hỏi đầu tiên của thiết kế kiến trúc là phân bổ
+tham số vào \textit{chiều sâu} (số lớp $L$) hay \textit{chiều rộng} (kích thước ẩn $d$).
+Levine và cộng sự~\cite{levine2020limits} phân tích lý thuyết khả năng biểu diễn của
+self-attention và chỉ ra rằng hai đại lượng này phải tăng \textit{đồng bộ}: một mạng quá
+nông--rộng lãng phí tham số vì các phụ thuộc bậc cao giữa token không thể được hợp thành
+qua ít bước chú ý, trong khi một mạng quá sâu--hẹp lại bị chiều rộng chặn khả năng lưu trữ
+thông tin ở mỗi tầng. Từ đó tồn tại một \textit{vùng sâu--rộng tối ưu} cho từng cỡ mô hình.
+
+Theo phân tích này, các cấu hình BERT truyền thống (12 lớp $\times$ 768 hoặc 24 lớp
+$\times$ 1.024) nằm lệch về phía \textit{quá rộng so với độ sâu}. NeoBERT do đó giữ kích
+thước ẩn $768$ như BERT-base nhưng tăng số lớp lên $28$ -- trở thành một mô hình
+``sâu mà hẹp'' so với BERT-large dù có ít tham số hơn. Đối với đề tài, thiết kế này mang
+hai ý nghĩa: (1)~phần thân đủ sâu để học các biến đổi phi tuyến mạnh -- chính là tài sản
+mà quá trình chuyển giao muốn giữ nguyên; và (2)~chiều ẩn $768$ trùng với chiều nhúng của
+mô hình hiến tặng ViDeBERTa-base, giúp phép chiếu không gian nhúng ở
+Chương~\ref{chap:method} không phải xử lý thêm bước đổi chiều.
 
 \subsection{Mã hóa vị trí quay (Rotary Position Embeddings)}
 \label{subsec:rope}
 
-Mã hóa vị trí tuyệt đối của BERT bị giới hạn bởi độ dài huấn luyện ban đầu. NeoBERT thay
-bằng RoPE~\cite{su2023roformer}, trong đó thông tin vị trí được đưa vào trực tiếp khi tính
-điểm chú ý giữa truy vấn và khóa. Cách làm này giúp điểm chú ý phụ thuộc vào khoảng cách
-tương đối giữa hai token, phù hợp hơn với các chuỗi dài. Nhờ RoPE, NeoBERT có thể mở rộng
-ngữ cảnh từ $1{,}024$ lên $4{,}096$ token trong giai đoạn huấn luyện sau~\cite{lebreton2025neobert}.
-Các kỹ thuật như YaRN~\cite{peng2023yarn} cũng cho thấy RoPE có thể được hiệu chỉnh để hỗ
-trợ ngữ cảnh dài hơn, nhưng đây không phải trọng tâm của đề tài.
+BERT mã hóa vị trí bằng một bảng nhúng vị trí \textit{tuyệt đối} học được, cộng trực tiếp
+vào nhúng token: $x_i = e_i + p_i$. Cách làm này có hai nhược điểm: bảng $p$ bị giới hạn
+cứng bởi độ dài huấn luyện (512 với BERT), và điểm chú ý giữa hai token phụ thuộc vào vị
+trí tuyệt đối của chúng thay vì khoảng cách tương đối -- vốn mới là đại lượng mang ngữ
+nghĩa cú pháp.
+
+NeoBERT thay bằng RoPE~\cite{su2023roformer}: thông tin vị trí được đưa vào bằng cách
+\textit{quay} véc-tơ truy vấn và khóa trong từng mặt phẳng hai chiều. Cụ thể, véc-tơ
+$x \in \mathbb{R}^{d_h}$ tại vị trí $m$ được biến đổi như Công thức~\eqref{eq:rope}:
+\begin{equation}
+  \label{eq:rope}
+  \begin{aligned}
+    f(x, m) &= R_m\, x, \qquad
+    R_m = \mathrm{diag}\big(R_{m,1}, \ldots, R_{m,d_h/2}\big),\\[1mm]
+    R_{m,i} &=
+    \begin{pmatrix}
+      \cos m\theta_i & -\sin m\theta_i \\
+      \sin m\theta_i & \phantom{-}\cos m\theta_i
+    \end{pmatrix}
+  \end{aligned}
+\end{equation}
+Trong đó:
+\begin{itemize}
+  \item $R_m$ là ma trận quay khối-chéo: mỗi cặp chiều $(2i-1, 2i)$ của $x$ được quay một
+        góc $m\theta_i$;
+  \item $\theta_i = 10.000^{-2(i-1)/d_h}$ là tần số quay của cặp chiều thứ $i$ -- các cặp
+        chiều đầu quay nhanh (nắm quan hệ cục bộ), các cặp sau quay chậm (nắm quan hệ xa);
+  \item $d_h$ là số chiều của mỗi đầu chú ý ($64$ với NeoBERT).
+\end{itemize}
+Tính chất mấu chốt của phép quay là tích vô hướng giữa truy vấn tại vị trí $m$ và khóa
+tại vị trí $n$ chỉ phụ thuộc vào \textit{khoảng cách tương đối} $n - m$, như
+Công thức~\eqref{eq:rope-rel}:
+\begin{equation}
+  \label{eq:rope-rel}
+  \big\langle R_m\, q,\; R_n\, k \big\rangle = q^\top R_{n-m}\, k
+\end{equation}
+Nhờ đó RoPE mang lại đồng thời: (1)~tính \textit{tương đối} của điểm chú ý; (2)~\textit{không
+thêm tham số} -- không còn bảng nhúng vị trí; (3)~khả năng \textit{mở rộng ngữ cảnh}: vì
+không có bảng vị trí cứng, NeoBERT nâng ngữ cảnh từ 1.024 lên 4.096 token chỉ bằng một
+giai đoạn huấn luyện bổ sung~\cite{lebreton2025neobert}, và các kỹ thuật nội suy như
+YaRN~\cite{peng2023yarn} có thể kéo dài thêm nữa; (4)~phép quay là biến đổi \textit{trực
+giao} nên bảo toàn độ lớn véc-tơ -- nhất quán với triết lý chuẩn hóa theo độ lớn của
+RMSNorm. Đối với đề tài, RoPE còn mang một thuận lợi quan trọng: thông tin vị trí
+\textit{không nằm trong ma trận nhúng}, nên việc thay thế toàn bộ lớp nhúng tiếng Việt
+không đụng chạm tới cơ chế vị trí của mô hình.
 
 \subsection{Hàm kích hoạt SwiGLU}
 \label{subsec:swiglu}
 
-BERT sử dụng hàm kích hoạt GELU~\cite{hendrycks2016gelu} trong lớp truyền thẳng. NeoBERT
-thay thế bằng SwiGLU~\cite{shazeer2020glu}, một biến thể thuộc họ \textit{đơn vị tuyến tính có cổng}
-(Gated Linear Unit -- GLU). Thay vì chỉ biến đổi phi tuyến từng chiều, cơ chế cổng cho phép
-mô hình điều tiết đặc trưng nào được truyền tiếp qua FFN. Đây là một cải tiến nhỏ về kiến
-trúc nhưng hữu ích trong các Transformer hiện đại, đặc biệt khi kết hợp với thiết kế sâu hơn.
+Trong BERT, mạng truyền thẳng của mỗi khối là hai phép chiếu với hàm kích hoạt
+GELU~\cite{hendrycks2016gelu} ở giữa, như Công thức~\eqref{eq:ffn-bert}:
+\begin{equation}
+  \label{eq:ffn-bert}
+  \mathrm{FFN}_{\mathrm{GELU}}(x) = \mathrm{GELU}(x W_1 + b_1)\, W_2 + b_2
+\end{equation}
+Trong đó $W_1 \in \mathbb{R}^{d \times 4d}$ và $W_2 \in \mathbb{R}^{4d \times d}$ lần
+lượt mở rộng rồi thu hẹp chiều biểu diễn. Mọi chiều của biểu diễn trung gian đều đi qua
+cùng một phi tuyến -- không có cơ chế nào cho phép mô hình \textit{chọn lọc} thông tin
+truyền qua.
+
+NeoBERT thay bằng SwiGLU~\cite{shazeer2020glu}, một biến thể thuộc họ \textit{đơn vị
+tuyến tính có cổng} (Gated Linear Unit -- GLU), như Công thức~\eqref{eq:swiglu}:
+\begin{equation}
+  \label{eq:swiglu}
+  \mathrm{FFN}_{\mathrm{SwiGLU}}(x) = \big(\mathrm{SiLU}(x W_g) \odot (x W_u)\big)\, W_d,
+  \qquad \mathrm{SiLU}(z) = z \cdot \sigma(z)
+\end{equation}
+Trong đó:
+\begin{itemize}
+  \item $W_g, W_u \in \mathbb{R}^{d \times d_{ff}}$ là hai phép chiếu song song: nhánh
+        \textit{cổng} (qua phi tuyến SiLU) và nhánh \textit{giá trị} (tuyến tính);
+  \item $\odot$ là phép nhân theo từng phần tử: nhánh cổng quyết định \textit{mỗi chiều}
+        của nhánh giá trị được truyền qua bao nhiêu;
+  \item $W_d \in \mathbb{R}^{d_{ff} \times d}$ chiếu về chiều gốc; cả ba ma trận đều
+        không dùng bias;
+  \item $\sigma$ là hàm sigmoid.
+\end{itemize}
+Vì SwiGLU dùng \textit{ba} ma trận thay vì hai, chiều trung gian được thu lại theo quy
+tắc $d_{ff} = \tfrac{2}{3} \cdot 4d$ để giữ nguyên ngân sách tham số~\cite{shazeer2020glu}.
+Với NeoBERT: $d = 768$, chiều trung gian danh nghĩa $4d = 3.072$, sau điều chỉnh
+$\tfrac{2}{3}$ còn $d_{ff} = 2.048$. Thực nghiệm của Shazeer cho thấy các biến thể GLU
+cải thiện chất lượng tiền huấn luyện và tinh chỉnh so với GELU/ReLU ở cùng chi phí; cơ
+chế cổng đặc biệt hữu ích khi kết hợp với thiết kế sâu, nơi khả năng điều tiết luồng
+thông tin qua từng tầng trở nên quan trọng.
 
 \subsection{Chuẩn hóa Pre-RMSNorm}
 \label{subsec:rmsnorm}
 
-NeoBERT đặt chuẩn hóa trước các khối attention và FFN, theo hướng Pre-LayerNorm
-~\cite{xiong2020layer}. Đồng thời, mô hình dùng RMSNorm~\cite{zhang2019rmsnorm} thay cho
-LayerNorm. RMSNorm chuẩn hóa theo độ lớn của véc-tơ thay vì đồng thời trừ trung bình và
-chia phương sai, nhờ đó đơn giản hơn về tính toán.
+Cải tiến thứ tư gồm hai quyết định độc lập nhưng bổ trợ nhau: \textit{loại} chuẩn hóa
+(RMSNorm thay cho LayerNorm) và \textit{vị trí} chuẩn hóa (trước thay vì sau tầng con).
 
-Chi tiết này quan trọng đối với đề tài vì lớp nhúng tiếng Việt được khởi tạo mới sẽ đi qua
-RMSNorm ngay từ đầu. Nếu phân phối độ lớn của các hàng nhúng lệch quá xa so với NeoBERT gốc,
-tín hiệu đưa vào phần thân Transformer có thể bị sai lệch. Vì vậy, Chương~\ref{chap:method}
-có thêm bước hiệu chỉnh chuẩn cho lớp nhúng sau khi chiếu.
+\textbf{RMSNorm.} LayerNorm truyền thống chuẩn hóa bằng cả trung bình lẫn phương sai:
+$\mathrm{LN}(x) = \gamma \odot (x - \mu)/\sqrt{\sigma^2 + \epsilon} + \beta$. Zhang và
+Sennrich~\cite{zhang2019rmsnorm} chỉ ra rằng thành phần \textit{tái định tâm} (trừ $\mu$)
+đóng góp không đáng kể, và đề xuất RMSNorm chỉ chuẩn hóa theo độ lớn, như
+Công thức~\eqref{eq:rmsnorm}:
+\begin{equation}
+  \label{eq:rmsnorm}
+  \mathrm{RMSNorm}(x) = \frac{x}{\mathrm{RMS}(x)} \odot g, \qquad
+  \mathrm{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2 + \epsilon}
+\end{equation}
+Trong đó $g \in \mathbb{R}^d$ là véc-tơ khuếch đại học được và $\epsilon$ là hằng số ổn
+định. RMSNorm bỏ được phép trừ trung bình và tham số dịch $\beta$, nhẹ hơn về tính toán mà
+chất lượng tương đương -- do đó trở thành lựa chọn mặc định của các kiến trúc hiện đại.
+
+\textbf{Pre-norm.} Về vị trí, BERT dùng Post-LN (chuẩn hóa \textit{sau} khi cộng kết nối
+tắt), còn NeoBERT dùng Pre-norm (chuẩn hóa \textit{trước} mỗi tầng con), như
+Công thức~\eqref{eq:preln}:
+\begin{equation}
+  \label{eq:preln}
+  \underbrace{x_{l+1} = \mathrm{LN}\big(x_l + F_l(x_l)\big)}_{\text{Post-LN (BERT)}}
+  \qquad\text{so với}\qquad
+  \underbrace{x_{l+1} = x_l + F_l\big(\mathrm{LN}(x_l)\big)}_{\text{Pre-norm (NeoBERT)}}
+\end{equation}
+Trong đó $F_l$ là tầng con thứ $l$ (chú ý hoặc FFN). Xiong và cộng
+sự~\cite{xiong2020layer} chứng minh rằng với Post-LN, độ lớn gradient tại thời điểm khởi
+tạo tăng theo độ sâu -- buộc phải khởi động tốc độ học rất thận trọng; với Pre-norm,
+đường kết nối tắt là một ``xa lộ'' đồng nhất không bị chuẩn hóa cắt ngang, gradient chảy
+ổn định qua mọi tầng. Với 28 lớp -- sâu hơn hẳn thế hệ BERT -- lựa chọn Pre-RMSNorm là
+điều kiện để NeoBERT huấn luyện ổn định.
+
+Đối với đề tài, đặc điểm này để lại một ràng buộc trực tiếp: lớp nhúng tiếng Việt khởi
+tạo mới sẽ đi qua RMSNorm ngay tầng đầu tiên, mà RMSNorm chuẩn hóa \textit{theo độ lớn}
+của véc-tơ. Nếu phân phối độ lớn của các hàng nhúng lệch xa so với NeoBERT gốc, tín hiệu
+đưa vào phần thân sẽ bị sai lệch có hệ thống. Vì vậy, Chương~\ref{chap:method} có bước
+hiệu chỉnh chuẩn cho lớp nhúng sau khi chiếu.
 
 \subsection{Dữ liệu và chiến lược tiền huấn luyện}
 \label{subsec:neobert-pretrain}
@@ -278,6 +402,17 @@ Rủi ro của CPT là mô hình có thể phải học lại từ tín hiệu �
 đều gợi ý rằng điểm khởi đầu của lớp nhúng ảnh hưởng lớn tới ổn định huấn luyện. Vì vậy,
 đề tài xem khởi tạo nhúng là bước quyết định trước khi CPT.
 
+Một khía cạnh thực hành quan trọng khác của CPT là \textit{lịch tốc độ học}. Lịch cosine
+truyền thống yêu cầu cam kết trước tổng số bước huấn luyện -- điều khó đáp ứng khi CPT diễn
+ra theo nhiều phiên nối tiếp trên hạ tầng tính toán giới hạn. Lịch
+Warmup--Stable--Decay (WSD)~\cite{hu2024minicpm} tách quá trình thành pha khởi động, pha ổn
+định ở tốc độ học đỉnh và pha làm nguội ngắn, cho phép dừng và tiếp tục linh hoạt; Hägele
+và cộng sự~\cite{hagele2024scaling} cho thấy cách tiếp cận này đạt chất lượng tương đương
+cosine, đồng thời xác định dạng làm nguội $1-\sqrt{\cdot}$ là hiệu quả nhất ở cùng ngân
+sách. Ngoài ra, khi huấn luyện tiếp từ một điểm kiểm tra đã làm nguội, tốc độ học cần được
+khởi động lại thay vì giữ ở mức gần 0~\cite{ibrahim2024continual}. Các kết quả này là cơ
+sở cho lịch huấn luyện nhiều phiên được thiết kế ở Chương~\ref{chap:method}.
+
 \subsection{Khởi tạo nhúng có thông tin}
 \label{subsec:init-methods}
 
@@ -297,16 +432,17 @@ từ vựng nguồn.
 SALT của Lee và cộng sự~\cite{lee2025salt} khởi tạo từ vựng đích bằng cách chuyển biểu diễn
 từ một mô hình tiền huấn luyện ở ngôn ngữ đích sang không gian của mô hình nguồn. Thay vì
 học một ánh xạ chung cho toàn bộ từ vựng, SALT dùng các token neo trong phần từ vựng chồng
-lấp để ước lượng ánh xạ cục bộ cho từng token mới. Sơ đồ tổng quan của phương pháp được
-minh họa trong Hình~\ref{fig:salt-summary}.
+lấp để ước lượng ánh xạ cục bộ cho từng token mới. Hình~\ref{fig:salt-summary} minh họa
+luồng xử lý này: với mỗi token không trùng (ví dụ \textit{pedestrian}), phương pháp tìm các
+neo gần nghĩa nhất trong phần chồng lấp, xếp các cặp nhúng tương ứng của chúng ở hai không
+gian thành hai ma trận, học một ánh xạ tuyến tính cục bộ $X$ giữa hai ma trận đó, rồi áp
+dụng $X$ lên nhúng gốc của token để thu về nhúng trong không gian mô hình nguồn.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{images/salt-summary.png}
-  \caption[Sơ đồ tổng quan SALT]{Sơ đồ tổng quan SALT: token không trùng được ánh xạ thông
-    qua các token neo gần về ngữ nghĩa trong phần từ vựng chồng lấp, sau đó dùng hồi quy
-    tuyến tính cục bộ để chuyển nhúng sang không gian mô hình nguồn. Hình trích từ Lee và
-    cộng sự~\cite{lee2025salt}.}
+  \caption[Sơ đồ tổng quan SALT]{Sơ đồ tổng quan SALT (Nguồn: Lee và cộng
+    sự~\cite{lee2025salt}).}
   \label{fig:salt-summary}
 \end{figure}
 
