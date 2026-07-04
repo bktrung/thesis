@@ -96,15 +96,22 @@ Encoder-only kiểu BERT.
 \end{figure}
 
 Khác với các mô hình ngôn ngữ tự hồi quy chỉ mô hình hóa xác suất từ trái sang phải, BERT
-được tiền huấn luyện bằng tác vụ mô hình hóa ngôn ngữ có mặt nạ (Masked Language Modeling
--- MLM). Một số token trong chuỗi bị che hoặc thay đổi, sau đó mô hình dự đoán lại token
-gốc dựa trên ngữ cảnh còn lại:
+được tiền huấn luyện đồng thời trên hai tác vụ tự giám sát. Tác vụ thứ nhất và chủ yếu là
+mô hình hóa ngôn ngữ có mặt nạ (Masked Language Modeling -- MLM): $15\%$ token trong chuỗi
+được chọn ngẫu nhiên, trong đó $80\%$ thay bằng token đặc biệt \texttt{[MASK]}, $10\%$ thay
+bằng token ngẫu nhiên, và $10\%$ giữ nguyên -- cơ chế này giúp giảm sự bất nhất giữa
+huấn luyện (có \texttt{[MASK]}) và tinh chỉnh (không có \texttt{[MASK]}). Mô hình dự đoán lại
+token gốc dựa trên ngữ cảnh còn lại:
 \begin{equation}
   \label{eq:mlm}
   \mathcal{L}_{\mathrm{MLM}} = -\sum_{i \in \mathcal{M}} \log P\!\left(x_i \mid x_{\setminus \mathcal{M}}\right)
 \end{equation}
 Trong đó $\mathcal{M}$ là tập vị trí bị che. Cách huấn luyện này buộc mô hình học biểu diễn
-hai chiều thay vì chỉ dự đoán token kế tiếp.
+hai chiều thay vì chỉ dự đoán token kế tiếp. Tác vụ thứ hai là dự đoán câu tiếp theo
+(Next Sentence Prediction -- NSP): phân loại nhị phân xem câu $B$ có thực sự theo sau câu
+$A$ trong văn bản gốc hay không. Tuy nhiên, NSP về sau được Liu và cộng
+sự~\cite{liu2019roberta} chứng minh là không cần thiết và có thể gây hại, nên RoBERTa và
+các mô hình hiện đại kế tiếp đã loại bỏ hoàn toàn.
 
 Tiếp nối BERT, Liu và cộng sự~\cite{liu2019roberta} đề xuất RoBERTa với các cải tiến về
 quy trình tiền huấn luyện, nổi bật là loại bỏ NSP, dùng mặt nạ động và tăng quy mô dữ liệu.
@@ -142,7 +149,9 @@ là toàn bộ ``phần cứng'' bên trong đã được thay mới theo nhữn
 lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $245$ triệu tham số, giữ kích thước
 ẩn $768$ như BERT-base nhưng sâu $28$ lớp, dùng $12$ đầu chú ý (mỗi đầu $64$ chiều), hỗ
 trợ ngữ cảnh 4.096 token, và được tiền huấn luyện trên khoảng $2{,}1$ nghìn tỷ token văn
-bản web tiếng Anh (RefinedWeb) với tỷ lệ che $20\%$.
+bản web tiếng Anh (RefinedWeb); mục tiêu tiền huấn luyện là MLM thuần túy (bỏ NSP theo
+RoBERTa), tỷ lệ che $20\%$, và luôn dùng token \texttt{[MASK]} để che (bỏ quy tắc
+80/10/10 của BERT).
 
 Kiến trúc của mô hình được minh họa trong Hình~\ref{fig:neobert-arch}. So với BERT, có
 bốn thay đổi cốt lõi, cũng chính là bốn nội dung sẽ được phân tích trong các mục con tiếp
@@ -161,59 +170,121 @@ tiếp tới thiết kế phương pháp ở Chương~\ref{chap:method}.
     box/.style={draw, rounded corners=2pt, minimum width=40mm, minimum height=8mm, align=center, font=\small},
     io/.style={draw, rounded corners=2pt, minimum width=28mm, minimum height=7mm, align=center, font=\footnotesize, fill=gray!8},
     add/.style={draw, circle, inner sep=0pt, font=\small, minimum size=5mm, fill=white},
-    rope/.style={draw, rounded corners=2pt, minimum width=13mm, minimum height=7mm, align=center, font=\footnotesize, fill=green!20},
-    sb/.style={draw, rounded corners=1.5pt, minimum width=15mm, minimum height=5.5mm, align=center, font=\scriptsize},
+    sb/.style={draw, rounded corners=1.5pt, minimum width=17mm, minimum height=5.5mm, align=center, font=\scriptsize},
     arr/.style={->, semithick, >={Latex[length=2mm]}},
     res/.style={->, semithick, gray!55, densely dashed, >={Latex[length=1.8mm]}},
   ]
-    % ---- main column ----
+
+    % ============================================================
+    % MAIN COLUMN
+    % ============================================================
     \node[io] (in) {Input text};
-    \node[box, fill=gray!14, above=6mm of in] (emb) {Token embedding};
-    \node[box, fill=red!12, above=10mm of emb] (n1) {RMSNorm};
+    \node[box, fill=gray!14, above=6mm of in]   (emb)  {Token embedding};
+    \node[box, fill=red!12,  above=10mm of emb] (n1)   {Pre-RMSNorm};
     \node[box, fill=orange!24, above=4mm of n1] (attn) {Multi-Head Attention};
-    \node[add, above=5mm of attn] (a1) {$+$};
-    \node[box, fill=red!12, above=6mm of a1] (n2) {RMSNorm};
-    \node[box, fill=violet!18, above=4mm of n2] (ffn) {Feed-Forward (SwiGLU)};
-    \node[add, above=5mm of ffn] (a2) {$+$};
-    \node[box, fill=red!12, above=8mm of a2] (fn) {Final RMSNorm};
-    \node[box, fill=blue!10, above=5mm of fn] (head) {Decoupled MLM head};
-    \node[io, above=5mm of head] (out) {Token probabilities};
+    \node[add, above=5mm of attn]               (a1)   {$+$};
+    \node[box, fill=red!12,  above=6mm of a1]   (n2)   {Pre-RMSNorm};
+    \node[box, fill=violet!18, above=4mm of n2] (ffn)  {Feed-Forward (SwiGLU)};
+    \node[add, above=5mm of ffn]                (a2)   {$+$};
+    \node[box, fill=red!12,  above=8mm of a2]   (fn)   {Final RMSNorm};
+    \node[box, fill=blue!10, above=5mm of fn]   (head) {MLM head};
+    \node[io,  above=5mm of head]               (out)  {Token probabilities};
 
     \foreach \a/\b in {in/emb, emb/n1, n1/attn, attn/a1, a1/n2, n2/ffn, ffn/a2, a2/fn, fn/head, head/out}
       \draw[arr] (\a)--(\b);
 
-    % ---- RoPE into attention ----
-    \node[rope, right=8mm of attn] (rope) {RoPE};
-    \draw[arr] (rope)--(attn);
-
     % ---- per-layer residual connections ----
     \coordinate (r1) at ($(emb.north)!0.5!(n1.south)$);
     \coordinate (r2) at ($(a1.north)!0.5!(n2.south)$);
-    \draw[res] (r1) -- ++(-2.9,0) |- (a1.west);
-    \draw[res] (r2) -- ++(-2.9,0) |- (a2.west);
+    \draw[res] (r1) -- ++(-2.6,0) |- (a1.west);
+    \draw[res] (r2) -- ++(-2.6,0) |- (a2.west);
 
     % ---- x28 dashed block frame ----
     \node[draw=black!55, densely dashed, rounded corners=4pt,
-          fit=(n1)(attn)(a1)(n2)(ffn)(a2)(rope), inner xsep=3mm, inner ysep=3mm] (blk) {};
-    \node[font=\small\bfseries] at ($(blk.south east)+(-4mm,4mm)$) {$\times\,28$};
+          fit=(n1)(attn)(a1)(n2)(ffn)(a2), inner xsep=3mm, inner ysep=3mm] (blk) {};
+    \node[font=\small\bfseries] at ($(blk.south east)+(-5mm,4mm)$) {$\times\,28$};
 
-    % ---- SwiGLU zoom-out callout ----
-    \coordinate (cbase) at ($(ffn.east)+(30mm,-8mm)$);
-    \node[sb, fill=violet!18] (cg) at (cbase) {Linear $W_g$};
-    \node[sb, fill=yellow!35, above=4mm of cg] (csilu) {SiLU};
-    \node[add, above=4mm of csilu] (cx) {$\odot$};
-    \node[sb, fill=blue!14, right=7mm of cx] (cu) {Linear $W_u$};
-    \node[sb, fill=violet!18, above=4mm of cx] (cd) {Linear $W_d$};
-    \node[font=\scriptsize, below=3mm of cg] (cin) {$x$};
+    % ============================================================
+    % RIGHT CALLOUT: SwiGLU FFN
+    % ============================================================
+    \node[sb, fill=violet!18] (cg)  at ($(ffn.east)+(32mm,-8mm)$) {Linear $W_g$};
+    \node[sb, fill=yellow!30, above=4mm of cg]  (csilu) {SiLU};
+    \node[add, above=4mm of csilu]              (cx)    {$\odot$};
+    \node[sb, fill=blue!14,  right=8mm of cx]   (cu)    {Linear $W_u$};
+    \node[sb, fill=violet!18, above=4mm of cx]  (cd)    {Linear $W_d$};
+    \node[font=\scriptsize, below=3mm of cg]    (cin)   {$x$};
+
     \draw[arr] (cin)--(cg);
     \draw[arr] (cg)--(csilu);
     \draw[arr] (csilu)--(cx);
-    \draw[arr] (cu)--(cx);
+    \draw[arr] (cu.west)--(cx.east);
     \draw[arr] (cx)--(cd);
+
     \node[draw=violet!60, densely dashed, rounded corners=3pt,
           fit=(cg)(csilu)(cx)(cu)(cd)(cin), inner sep=2.5mm] (cframe) {};
-    \node[font=\scriptsize\bfseries, violet!60] at ($(cframe.north)+(0,2.6mm)$) {SwiGLU FFN};
-    \draw[semithick, violet!55, densely dashed] (ffn.east) to[out=25,in=180] (cframe.west);
+    \node[font=\scriptsize\bfseries, violet!60]
+          at ($(cframe.north)+(0,3mm)$) {SwiGLU FFN};
+    \draw[semithick, violet!55, densely dashed]
+          (ffn.east) to[out=0,in=180] (cframe.west);
+
+    % ============================================================
+    % LEFT CALLOUT: Multi-Head Attention (with RoPE)
+    % ============================================================
+    % Anchor: left of the attention block
+    % Layout (bottom to top): x_in -> W_qkv -> split Q/K/V
+    %   Q -> RoPE -> Q_r \
+    %   K -> RoPE -> K_r  >-> Scaled Dot-Product -> W_o -> out
+    %   V ----------/
+
+    \node[font=\scriptsize] (ain) at ($(attn.west)+(-38mm,-16mm)$) {$x$};
+
+    \node[sb, fill=orange!20, above=4mm of ain]    (wqkv)  {$W_{qkv}$ (fused)};
+
+    % Q branch
+    \node[sb, fill=cyan!15,  above left=6mm and 10mm of wqkv]  (q)     {$Q$};
+    \node[sb, fill=green!25, above=4mm of q]                    (ropeq) {RoPE};
+    \node[font=\scriptsize,  above=3mm of ropeq]                (qr)    {$Q_r$};
+
+    % K branch
+    \node[sb, fill=cyan!15,  above=6mm of wqkv]                (k)     {$K$};
+    \node[sb, fill=green!25, above=4mm of k]                    (ropek) {RoPE};
+    \node[font=\scriptsize,  above=3mm of ropek]                (kr)    {$K_r$};
+
+    % V branch
+    \node[sb, fill=cyan!15,  above right=6mm and 10mm of wqkv] (v)     {$V$};
+    \node[font=\scriptsize,  above=10mm of v]                   (vp)    {$V$};
+
+    % Attention op
+    \node[sb, fill=orange!30, above=14mm of k] (sdp) {Attn$(Q_r,K_r,V)$};
+
+    % W_o
+    \node[sb, fill=orange!20, above=4mm of sdp] (wo) {$W_o$};
+    \node[font=\scriptsize,   above=3mm of wo]  (aout) {out};
+
+    % arrows inside MHA callout
+    \draw[arr] (ain)--(wqkv);
+    \draw[arr] (wqkv) -- (q.south);
+    \draw[arr] (wqkv) -- (k.south);
+    \draw[arr] (wqkv) -- (v.south);
+    \draw[arr] (q)--(ropeq);
+    \draw[arr] (ropeq)--(qr);
+    \draw[arr] (k)--(ropek);
+    \draw[arr] (ropek)--(kr);
+    \draw[arr] (v)--(vp);
+    \draw[arr] (qr) |- (sdp.west);
+    \draw[arr] (kr) |- (sdp.west);
+    \draw[arr] (vp) |- (sdp.east);
+    \draw[arr] (sdp)--(wo);
+    \draw[arr] (wo)--(aout);
+
+    % callout frame
+    \node[draw=orange!70, densely dashed, rounded corners=3pt,
+          fit=(ain)(wqkv)(q)(ropeq)(qr)(k)(ropek)(kr)(v)(vp)(sdp)(wo)(aout),
+          inner sep=2.5mm] (aframe) {};
+    \node[font=\scriptsize\bfseries, orange!80]
+          at ($(aframe.north)+(0,3mm)$) {Multi-Head Attention};
+    \draw[semithick, orange!65, densely dashed]
+          (attn.west) to[out=180,in=0] (aframe.east);
 
   \end{tikzpicture}
   \caption{Kiến trúc NeoBERT~\cite{lebreton2025neobert}.}
@@ -255,61 +326,148 @@ Chương~\ref{chap:method} không phải xử lý thêm bước đổi chiều.
 \label{subsec:rope}
 
 BERT mã hóa vị trí bằng một bảng nhúng vị trí \textit{tuyệt đối} học được, cộng trực tiếp
-vào nhúng token: $x_i = e_i + p_i$. Cách làm này có hai nhược điểm: bảng $p$ bị giới hạn
-cứng bởi độ dài huấn luyện (512 với BERT), và điểm chú ý giữa hai token phụ thuộc vào vị
-trí tuyệt đối của chúng thay vì khoảng cách tương đối -- vốn mới là đại lượng mang ngữ
-nghĩa cú pháp.
+vào nhúng token trước khối Transformer đầu tiên: $h_i = e_i + p_i$. Cách tiếp cận này mang
+hai hạn chế căn bản: (1)~bảng $p$ bị giới hạn cứng bởi độ dài huấn luyện (512 với BERT),
+không thể mở rộng sang chuỗi dài hơn mà không huấn luyện lại; (2)~điểm chú ý giữa hai
+token phụ thuộc vào vị trí tuyệt đối thay vì khoảng cách tương đối -- vốn mới là đại lượng
+mang ý nghĩa cú pháp, vì ``token $A$ đứng trước token $B$ hai bước'' quan trọng hơn
+``token $A$ ở vị trí 37''. Ngoài ra, thông tin vị trí phải lan truyền qua từng lớp chuẩn
+hóa và phi tuyến, dễ bị suy giảm ở mạng sâu.
 
-NeoBERT thay bằng RoPE~\cite{su2023roformer}: thông tin vị trí được đưa vào bằng cách
-\textit{quay} véc-tơ truy vấn và khóa trong từng mặt phẳng hai chiều. Cụ thể, véc-tơ
-$x \in \mathbb{R}^{d_h}$ tại vị trí $m$ được biến đổi như Công thức~\eqref{eq:rope}:
+Mục tiêu hình thức của mã hóa vị trí tương đối là tìm hàm biến đổi $f_q, f_k$ sao cho
+tích vô hướng giữa truy vấn tại vị trí $m$ và khóa tại vị trí $n$ chỉ phụ thuộc vào nội
+dung token và khoảng cách tương đối:
+\begin{equation}
+  \label{eq:rope-goal}
+  \bigl\langle f_q(x_m, m),\; f_k(x_n, n) \bigr\rangle = g(x_m,\, x_n,\, m - n).
+\end{equation}
+
+\textbf{Dẫn xuất từ trường hợp 2D.}
+Su và cộng sự~\cite{su2023roformer} bắt đầu với trường hợp $d = 2$, khai thác hình học
+mặt phẳng phức. Véc-tơ $q = W_q x_m \in \mathbb{R}^2$ được xem như số phức
+$q = \|q\|e^{i\theta_q}$, và tương tự cho $k$. Điều kiện ban đầu yêu cầu
+$f_q(x_m, 0) = W_q x_m$ và $f_k(x_n, 0) = W_k x_n$ (véc-tơ không mang thông tin vị trí
+khi ở vị trí 0). Từ đó, Su và cộng sự chỉ ra rằng một nghiệm thỏa mãn
+Công thức~\eqref{eq:rope-goal} là:
+\begin{equation}
+  \label{eq:rope-2d}
+  f_q(x_m, m) = (W_q x_m)\,e^{im\theta}, \qquad
+  f_k(x_n, n) = (W_k x_n)\,e^{in\theta},
+\end{equation}
+với $\theta \in \mathbb{R}$ là hằng số tần số quay. Ý nghĩa hình học rất trực quan: mỗi
+token được \textit{quay} thêm một góc tỷ lệ với vị trí của nó trong mặt phẳng phức. Tích
+vô hướng trở thành:
+\[
+  \bigl\langle f_q(x_m, m),\; f_k(x_n, n) \bigr\rangle
+  = \mathrm{Re}\!\left[(W_q x_m)(W_k x_n)^*\, e^{i(m-n)\theta}\right],
+\]
+chỉ phụ thuộc vào $m - n$ -- thỏa mãn ràng buộc trong Công thức~\eqref{eq:rope-goal}.
+Đây là trực giác cốt lõi của RoPE: \textit{mã hóa vị trí bằng phép quay, không phải phép
+cộng}.
+
+\textbf{Dạng tổng quát cho véc-tơ $d_h$ chiều.}
+Để mở rộng sang $x \in \mathbb{R}^{d_h}$ ($d_h$ chẵn), không gian được chia thành $d_h/2$
+mặt phẳng con hai chiều độc lập, mỗi mặt phẳng quay với tần số riêng $\theta_i$.
+Ma trận quay khối-chéo $R_{\Theta,m}$ kết hợp tất cả mặt phẳng con:
 \begin{equation}
   \label{eq:rope}
   \begin{aligned}
-    f(x, m) &= R_m\, x, \qquad
-    R_m = \mathrm{diag}\big(R_{m,1}, \ldots, R_{m,d_h/2}\big),\\[1mm]
+    R_{\Theta,m} &= \mathrm{diag}\!\left(R_{m,1}, \ldots, R_{m,d_h/2}\right),\\[1mm]
     R_{m,i} &=
     \begin{pmatrix}
       \cos m\theta_i & -\sin m\theta_i \\
       \sin m\theta_i & \phantom{-}\cos m\theta_i
-    \end{pmatrix}
+    \end{pmatrix},
+    \qquad \theta_i = 10000^{-2(i-1)/d_h}.
   \end{aligned}
 \end{equation}
 Trong đó:
 \begin{itemize}
-  \item $R_m$ là ma trận quay khối-chéo: mỗi cặp chiều $(2i-1, 2i)$ của $x$ được quay một
-        góc $m\theta_i$;
-  \item $\theta_i = 10.000^{-2(i-1)/d_h}$ là tần số quay của cặp chiều thứ $i$ -- các cặp
-        chiều đầu quay nhanh (nắm quan hệ cục bộ), các cặp sau quay chậm (nắm quan hệ xa);
-  \item $d_h$ là số chiều của mỗi đầu chú ý ($64$ với NeoBERT).
+  \item $\theta_i = 10000^{-2(i-1)/d_h}$ tạo dải tần số hình học: các cặp chiều thấp
+        (nhỏ $i$) có $\theta_i$ lớn, \textit{quay nhanh}, nắm bắt quan hệ cục bộ giữa các
+        token gần nhau; các cặp chiều cao (lớn $i$) có $\theta_i$ nhỏ, \textit{quay chậm},
+        mã hóa quan hệ toàn cục. Thiết kế này phản chiếu mã hóa sinusoidal của Transformer
+        gốc nhưng đưa thông tin vị trí vào qua phép quay thay vì phép cộng;
+  \item $R_{\Theta,m}$ là ma trận trực giao ($R_{\Theta,m}^\top R_{\Theta,m} = I$), bảo toàn
+        hoàn toàn độ lớn của véc-tơ -- không có bước nào thêm hay bớt năng lượng tín hiệu;
+  \item $d_h = 64$ là số chiều mỗi đầu chú ý trong NeoBERT.
 \end{itemize}
-Tính chất mấu chốt của phép quay là tích vô hướng giữa truy vấn tại vị trí $m$ và khóa
-tại vị trí $n$ chỉ phụ thuộc vào \textit{khoảng cách tương đối} $n - m$, như
-Công thức~\eqref{eq:rope-rel}:
-\begin{equation}
-  \label{eq:rope-rel}
-  \big\langle R_m\, q,\; R_n\, k \big\rangle = q^\top R_{n-m}\, k
-\end{equation}
-Hình~\ref{fig:rope} trực quan hóa cơ chế quay và tính chất tương đối này.
-Nhờ đó RoPE mang lại đồng thời: (1)~tính \textit{tương đối} của điểm chú ý; (2)~\textit{không
-thêm tham số} -- không còn bảng nhúng vị trí; (3)~khả năng \textit{mở rộng ngữ cảnh}: vì
-không có bảng vị trí cứng, NeoBERT nâng ngữ cảnh từ 1.024 lên 4.096 token chỉ bằng một
-giai đoạn huấn luyện bổ sung~\cite{lebreton2025neobert}, và các kỹ thuật nội suy như
-YaRN~\cite{peng2023yarn} có thể kéo dài thêm nữa; (4)~phép quay là biến đổi \textit{trực
-giao} nên bảo toàn độ lớn véc-tơ -- nhất quán với triết lý chuẩn hóa theo độ lớn của
-RMSNorm. Đối với đề tài, RoPE còn mang một thuận lợi quan trọng: thông tin vị trí
-\textit{không nằm trong ma trận nhúng}, nên việc thay thế toàn bộ lớp nhúng tiếng Việt
-không đụng chạm tới cơ chế vị trí của mô hình.
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=\textwidth]{images/rope_paper_fig.png}
-  \caption[Cơ chế mã hóa vị trí quay (RoPE)]{Minh họa cơ chế mã hóa vị trí quay
-    (RoPE): mỗi cặp chiều của truy vấn/khóa được quay một góc tỷ lệ với vị trí $m$,
-    khiến điểm chú ý chỉ phụ thuộc khoảng cách tương đối $n-m$ (Nguồn: Su và cộng
-    sự~\cite{su2023roformer}).}
+  \includegraphics[width=\textwidth]{images/roformer_RoPE_v2.pdf}
+  \caption[Cơ chế mã hóa vị trí quay (RoPE)]{Minh họa cơ chế RoPE (Nguồn: Su và cộng sự~\cite{su2023roformer}).}
   \label{fig:rope}
 \end{figure}
+
+Hình~\ref{fig:rope} minh họa cơ chế quay. Phép biến đổi và tính chất tương đối được viết
+gọn như Công thức~\eqref{eq:rope-rel}:
+\begin{equation}
+  \label{eq:rope-rel}
+  q_m = R_{\Theta,m}\,W_q x_m, \quad
+  k_n = R_{\Theta,n}\,W_k x_n, \quad
+  q_m^\top k_n = x_m^\top W_q^\top\,R_{\Theta,n-m}\,W_k x_n,
+\end{equation}
+trong đó $R_{\Theta,n-m} = R_{\Theta,m}^\top R_{\Theta,n}$. Tích của hai ma trận trực giao
+vẫn là ma trận trực giao, và tích vô hướng $q_m^\top k_n$ chỉ phụ thuộc vào $n - m$ --
+xác nhận RoPE thỏa mãn ràng buộc trong Công thức~\eqref{eq:rope-goal}.
+
+\textbf{Triển khai hiệu quả.}
+Do $R_{\Theta,m}$ thưa (chỉ $2d_h$ phần tử khác 0 trên ma trận $d_h \times d_h$), phép nhân
+ma trận đầy đủ tốn $O(d_h^2)$ là lãng phí. Su và cộng sự~\cite{su2023roformer} cung cấp
+cách tính tương đương bằng phép nhân theo từng phần tử (Hadamard), hoàn toàn tránh phép
+nhân ma trận:
+\begin{equation}
+  \label{eq:rope-efficient}
+  R_{\Theta,m}\,x =
+  \begin{pmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ \vdots \\ x_{d_h-1} \\ x_{d_h}
+  \end{pmatrix}
+  \otimes
+  \begin{pmatrix} \cos m\theta_1 \\ \cos m\theta_1 \\ \cos m\theta_2 \\ \cos m\theta_2
+    \\ \vdots \\ \cos m\theta_{d_h/2} \\ \cos m\theta_{d_h/2}
+  \end{pmatrix}
+  +
+  \begin{pmatrix} -x_2 \\ \phantom{-}x_1 \\ -x_4 \\ \phantom{-}x_3
+    \\ \vdots \\ -x_{d_h} \\ \phantom{-}x_{d_h-1}
+  \end{pmatrix}
+  \otimes
+  \begin{pmatrix} \sin m\theta_1 \\ \sin m\theta_1 \\ \sin m\theta_2 \\ \sin m\theta_2
+    \\ \vdots \\ \sin m\theta_{d_h/2} \\ \sin m\theta_{d_h/2}
+  \end{pmatrix}.
+\end{equation}
+Mỗi chiều chỉ tham gia đúng hai phép nhân và một phép cộng -- tổng chi phí $O(d_h)$, dễ
+vectorize hoàn toàn trên GPU mà không cần xây dựng ma trận quay tường minh.
+
+\textbf{Tính chất suy giảm đường dài (long-term decay).}
+Một tính chất quan trọng của RoPE là điểm chú ý \textit{suy giảm tự nhiên} khi khoảng
+cách $|n - m|$ tăng. Viết tích vô hướng dưới dạng tổng số phức:
+\begin{equation}
+  \label{eq:rope-complex}
+  q_m^\top k_n = \mathrm{Re}\!\left[
+    \sum_{i=0}^{d_h/2-1} q_{[2i:2i+1]}\,k_{[2i:2i+1]}^*\;e^{i(m-n)\theta_i}
+  \right],
+\end{equation}
+trong đó $q_{[2i:2i+1]}$ là cặp chiều thứ $i$ của $q$ biểu diễn như số phức. Áp dụng biến
+đổi Abel (tổng từng phần), cận trên tuyệt đối của biểu thức này tỉ lệ với
+$\frac{1}{d_h/2}\sum_{j}|S_j|$, với $S_j = \sum_{i=0}^{j-1}e^{i(m-n)\theta_i}$. Khi
+$|n-m|$ lớn, các số hạng $e^{i(m-n)\theta_i}$ trải đều trên vòng tròn đơn vị và triệt
+tiêu lẫn nhau, khiến $|S_j|$ -- và theo đó điểm chú ý -- giảm dần theo khoảng cách. Tính
+chất này hoàn toàn tự nhiên từ bản chất quay và phù hợp với trực giác ngôn ngữ học rằng
+hai token xa nhau nên ít liên quan hơn, mà không cần thêm bất kỳ ràng buộc kỹ thuật nào.
+
+\textbf{Mở rộng ngữ cảnh.}
+Vì không có bảng vị trí cứng, NeoBERT nâng ngữ cảnh từ 1.024 lên 4.096 token chỉ bằng
+một pha huấn luyện bổ sung~\cite{lebreton2025neobert}. Xa hơn nữa, kỹ thuật
+YaRN~\cite{peng2023yarn} nội suy tần số $\theta_i$ để kéo dài ngữ cảnh mà không cần
+huấn luyện lại toàn bộ mô hình -- một lợi thế trực tiếp từ kiến trúc không dùng bảng vị
+trí cứng.
+
+Tổng kết lại, RoPE mang bốn thuận lợi đồng thời: (1)~\textit{tính tương đối} của điểm
+chú ý (Công thức~\eqref{eq:rope-rel}); (2)~\textit{không thêm tham số} -- không có bảng
+nhúng vị trí; (3)~\textit{bảo toàn chuẩn} -- phép quay trực giao không thay đổi độ lớn
+véc-tơ, nhất quán với triết lý chuẩn hóa theo độ lớn của RMSNorm; (4)~thông tin vị trí
+\textit{không nằm trong ma trận nhúng}, nên việc thay thế toàn bộ lớp nhúng tiếng Việt
+không đụng chạm tới cơ chế vị trí của mô hình.
 
 \subsection{Hàm kích hoạt SwiGLU}
 \label{subsec:swiglu}
@@ -401,19 +559,33 @@ thông tin qua từng tầng trở nên quan trọng.
 Cải tiến thứ tư gồm hai quyết định độc lập nhưng bổ trợ nhau: \textit{loại} chuẩn hóa
 (RMSNorm thay cho LayerNorm) và \textit{vị trí} chuẩn hóa (trước thay vì sau tầng con).
 
-\textbf{RMSNorm.} LayerNorm truyền thống chuẩn hóa bằng cả trung bình lẫn phương sai:
-$\mathrm{LN}(x) = \gamma \odot (x - \mu)/\sqrt{\sigma^2 + \epsilon} + \beta$. Zhang và
-Sennrich~\cite{zhang2019rmsnorm} chỉ ra rằng thành phần \textit{tái định tâm} (trừ $\mu$)
-đóng góp không đáng kể, và đề xuất RMSNorm chỉ chuẩn hóa theo độ lớn, như
-Công thức~\eqref{eq:rmsnorm}:
+\textbf{RMSNorm.} LayerNorm truyền thống chuẩn hóa véc-tơ đầu vào $a \in \mathbb{R}^d$
+bằng cách trừ trung bình rồi chia độ lệch chuẩn, như Công thức~\eqref{eq:layernorm}:
+\begin{equation}
+  \label{eq:layernorm}
+  \bar{a}_i = \frac{a_i - \mu}{\sigma}\, g_i + \beta_i, \qquad
+  \mu = \frac{1}{d}\sum_{i=1}^{d} a_i, \qquad
+  \sigma = \sqrt{\frac{1}{d}\sum_{i=1}^{d}(a_i - \mu)^2 + \epsilon}
+\end{equation}
+Trong đó $g, \beta \in \mathbb{R}^d$ lần lượt là véc-tơ khuếch đại và dịch học được.
+Quá trình này yêu cầu \textit{hai lượt duyệt} qua $d$ phần tử: lượt đầu tính $\mu$,
+lượt sau tính $\sigma$ (vì $\sigma$ phụ thuộc $\mu$ đã biết). Ngoài chi phí tính toán,
+LayerNorm còn mang $d$ tham số bổ sung $\beta$ chỉ để tái định tâm đầu ra.
+
+Zhang và Sennrich~\cite{zhang2019rmsnorm} lập luận rằng đặc tính \textit{tái định tâm}
+(phép trừ $\mu$) không phải nguồn gốc thực sự của hiệu quả LayerNorm -- mà chính là đặc
+tính \textit{tái tỷ lệ} (chia theo độ lớn). Từ đó họ đề xuất RMSNorm, chỉ chuẩn hóa
+theo căn trung bình bình phương (Root Mean Square), như Công thức~\eqref{eq:rmsnorm}:
 \begin{equation}
   \label{eq:rmsnorm}
-  \mathrm{RMSNorm}(x) = \frac{x}{\mathrm{RMS}(x)} \odot g, \qquad
-  \mathrm{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2 + \epsilon}
+  \bar{a}_i = \frac{a_i}{\mathrm{RMS}(a)}\, g_i, \qquad
+  \mathrm{RMS}(a) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} a_i^2 + \epsilon}
 \end{equation}
-Trong đó $g \in \mathbb{R}^d$ là véc-tơ khuếch đại học được và $\epsilon$ là hằng số ổn
-định. RMSNorm bỏ được phép trừ trung bình và tham số dịch $\beta$, nhẹ hơn về tính toán mà
-chất lượng tương đương -- do đó trở thành lựa chọn mặc định của các kiến trúc hiện đại.
+Trong đó $g \in \mathbb{R}^d$ là véc-tơ khuếch đại học được. RMSNorm bỏ hoàn toàn
+$\mu$ và $\beta$: chỉ cần \textit{một lượt} duyệt qua $d$ phần tử để tính tổng bình
+phương, không có phép trừ trung bình, và giảm đi $d$ tham số. Thực nghiệm cho thấy
+RMSNorm đạt chất lượng tương đương hoặc tốt hơn LayerNorm ở cùng chi phí -- do đó trở
+thành lựa chọn mặc định của các kiến trúc hiện đại như LLaMA, Gemma và NeoBERT.
 
 \textbf{Pre-norm.} Về vị trí, BERT dùng Post-LN (chuẩn hóa \textit{sau} khi cộng kết nối
 tắt), còn NeoBERT dùng Pre-norm (chuẩn hóa \textit{trước} mỗi tầng con), như
@@ -465,9 +637,11 @@ nhúng tiếng Anh bằng tiếng Việt.
     Ngữ cảnh tối đa                    & 4.096 token \\
     \hline
     Dữ liệu tiền huấn luyện           & RefinedWeb ($\approx$2,1 nghìn tỷ token) \\
-    Mục tiêu huấn luyện               & MLM với tỷ lệ che 20\% \\
-    Bộ tối ưu                          & AdamW, $\beta = (0{,}9;\; 0{,}95)$ \\
-    Lịch tốc độ học                    & Cosine decay (peak $6{\times}10^{-4}$, khởi động 2.000 bước) \\
+    Mục tiêu huấn luyện               & MLM, không có NSP; tỷ lệ che 20\%; luôn dùng \texttt{[MASK]} \\
+    Bộ tối ưu                          & AdamW, $\beta = (0{,}9;\; 0{,}95)$, weight decay $0{,}1$ \\
+    Gradient clipping                  & norm tối đa $1{,}0$ \\
+    Lịch tốc độ học                    & Cosine decay (peak $6{\times}10^{-4}$, khởi động 2.000 bước, \\
+                                       & \ làm nguội về 10\% trong 90\% số bước) \\
     Batch size hiệu dụng               & $\sim$2 triệu token/bước \\
     Số bước huấn luyện                 & $\approx$1 triệu bước (pha chính) \\
     Tối ưu bộ nhớ                      & FlashAttention-2 \\
@@ -478,10 +652,13 @@ nhúng tiếng Anh bằng tiếng Việt.
 \end{table}
 
 NeoBERT được tiền huấn luyện trên RefinedWeb~\cite{penedo2023refinedweb} -- kho ngữ liệu web
-quy mô lớn xây dựng từ CommonCrawl, tổng cộng $\approx$2,1 nghìn tỷ token. Mô hình sử dụng
-mục tiêu MLM với tỷ lệ che $20\%$~\cite{wettig2023mask} -- cao hơn 15\% của BERT gốc, được
-chứng minh tối ưu hơn cho các mô hình Encoder hiện đại -- và tối ưu bằng AdamW với lịch
-cosine (làm nguội về 10\% tốc độ học đỉnh trong 90\% số bước).
+quy mô lớn xây dựng từ CommonCrawl, tổng cộng $\approx$2,1 nghìn tỷ token. Về mục tiêu
+huấn luyện, NeoBERT chỉ dùng MLM (bỏ NSP theo RoBERTa~\cite{liu2019roberta}), tăng tỷ lệ
+che lên $20\%$~\cite{wettig2023mask} -- cao hơn 15\% của BERT, được chứng minh tối ưu hơn
+cho các Encoder hiện đại -- và đơn giản hóa lược đồ che bằng cách \textit{luôn} thay token
+được chọn bằng \texttt{[MASK]} (bỏ quy tắc 80/10/10 của BERT). Tối ưu bằng AdamW với
+$\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}1$, gradient clipping norm tối đa $1{,}0$ và
+lịch cosine (làm nguội về 10\% tốc độ học đỉnh trong 90\% số bước).
 FlashAttention-2~\cite{dao2023flashattention2} được dùng để giảm chi phí bộ nhớ khi huấn
 luyện trên chuỗi dài.
 

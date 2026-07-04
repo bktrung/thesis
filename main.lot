@@ -1,14 +1,14 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Cấu hình kiến trúc và huấn luyện của NeoBERT~\blx@tocontentsinit {0}\cite {lebreton2025neobert}.}}{18}{table.2.1}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Cấu hình kiến trúc và huấn luyện của NeoBERT~\blx@tocontentsinit {0}\cite {lebreton2025neobert}.}}{22}{table.2.1}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces So sánh bộ tách từ của PhoBERT và ViDeBERTa.}}{28}{table.3.1}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces So sánh bộ tách từ của PhoBERT và ViDeBERTa.}}{31}{table.3.1}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Thống kê dữ liệu sử dụng trong thực nghiệm.}}{43}{table.4.1}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Tổng hợp các tác vụ đánh giá hạ nguồn tiếng Việt.}}{45}{table.4.2}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces So sánh các mô hình Encoder tiếng Việt và đa ngữ được đánh giá trong đề tài.}}{45}{table.4.3}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Siêu tham số của các giai đoạn huấn luyện.}}{46}{table.4.4}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Lượng dữ liệu tiếng Việt các mô hình đã duyệt trong tiền huấn luyện.}}{55}{table.4.5}%
-\contentsline {table}{\numberline {4.6}{\ignorespaces Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token.}}{55}{table.4.6}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Thống kê dữ liệu sử dụng trong thực nghiệm.}}{46}{table.4.1}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Tổng hợp các tác vụ đánh giá hạ nguồn tiếng Việt.}}{48}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces So sánh các mô hình Encoder tiếng Việt và đa ngữ được đánh giá trong đề tài.}}{48}{table.4.3}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Siêu tham số của các giai đoạn huấn luyện.}}{49}{table.4.4}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Lượng dữ liệu tiếng Việt các mô hình đã duyệt trong tiền huấn luyện.}}{58}{table.4.5}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token.}}{58}{table.4.6}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
