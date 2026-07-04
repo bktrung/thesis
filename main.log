@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  2 JUL 2026 23:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  4 JUL 2026 16:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1358,7 +1358,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 ]) [6] (./Appendix/proposal.tex
-<Appendix/DeCuong.pdf, id=353, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=357, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf>
 Package pdftex.def Info: Appendix/DeCuong.pdf  used on input line 2.
@@ -1367,7 +1367,7 @@ File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf>
 Package pdftex.def Info: Appendix/DeCuong.pdf  used on input line 2.
 (pdftex.def)             Requested size: 614.29349pt x 794.96806pt.
-<Appendix/DeCuong.pdf, id=356, page=1, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=360, page=1, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 1>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page1 used on input line 2.
@@ -1393,7 +1393,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page1 used on input line 2.
 
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=396, page=2, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=400, page=2, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 2>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page2 used on input line 2.
@@ -1409,7 +1409,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page2 used on input line 2.
  [8
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=401, page=3, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=405, page=3, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 3>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page3 used on input line 2.
@@ -1425,7 +1425,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page3 used on input line 2.
  [9
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=406, page=4, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=410, page=4, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 4>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page4 used on input line 2.
@@ -1441,7 +1441,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page4 used on input line 2.
  [10
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=417, page=5, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=421, page=5, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 5>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page5 used on input line 2.
@@ -1457,7 +1457,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page5 used on input line 2.
  [11
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=423, page=6, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=427, page=6, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 6>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page6 used on input line 2.
@@ -1473,7 +1473,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page6 used on input line 2.
  [12
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=428, page=7, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=432, page=7, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 7>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page7 used on input line 2.
@@ -1489,7 +1489,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page7 used on input line 2.
  [13
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=433, page=8, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=437, page=8, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 8>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page8 used on input line 2.
@@ -1505,7 +1505,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page8 used on input line 2.
  [14
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=438, page=9, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=442, page=9, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 9>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page9 used on input line 2.
@@ -1521,7 +1521,7 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page9 used on input line 2.
  [15
 
  <./Appendix/DeCuong.pdf>]
-<Appendix/DeCuong.pdf, id=443, page=10, 614.295pt x 794.97pt>
+<Appendix/DeCuong.pdf, id=447, page=10, 614.295pt x 794.97pt>
 File: Appendix/DeCuong.pdf Graphic file (type pdf)
 <use Appendix/DeCuong.pdf, page 10>
 Package pdftex.def Info: Appendix/DeCuong.pdf , page10 used on input line 2.
@@ -1545,7 +1545,13 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page10 used on input line 2.
 \tf@toc=\write6
 \openout6 = `main.toc'.
 
- [21] (./main.lof)
+ [21] (./main.lof
+Overfull \hbox (2.69533pt too wide) in paragraph at lines 14--14
+ [][] [][]\T5/cmr/m/n/14.4 Pseudo-perplexity theo ^^_Î d†i chuÈi tr˜Óc (tr°i) v
+† sau (ph£i) 
+ []
+
+)
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
@@ -1562,14 +1568,14 @@ Package pdftex.def Info: Appendix/DeCuong.pdf , page10 used on input line 2.
 ]
 \openout2 = `Appendix/summary.aux'.
 
-
-(./Appendix/summary.tex [24
+ (./Appendix/summary.tex [24
 
 
 ]) [25]
 \openout2 = `Chapter1/chapter1.aux'.
 
- (./Chapter1/chapter1.tex
+
+(./Chapter1/chapter1.tex
 Ch∆∞∆°ng 1.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
@@ -1618,7 +1624,7 @@ has been already used, duplicate ignored
 l.214 T
        heo ph√¢n t√≠ch n√†y, c√°c c·∫•u h√¨nh BERT truy·ªÅn th·ªëng (12 l·ªõ...
 ] [13] [14] [15] [16] [17] [18]
-<images/salt-summary.png, id=804, 1264.725pt x 471.7625pt>
+<images/salt-summary.png, id=811, 1264.725pt x 471.7625pt>
 File: images/salt-summary.png Graphic file (type png)
 <use images/salt-summary.png>
 Package pdftex.def Info: images/salt-summary.png  used on input line 443.
@@ -1663,17 +1669,17 @@ Ch∆∞∆°ng 4.
 
 
 ]
-Underfull \hbox (badness 6188) in paragraph at lines 49--49
+Underfull \hbox (badness 6188) in paragraph at lines 51--51
 []|\T5/cmr/m/n/12 Ti∏p tˆc ti∑n hußn
  []
 
 
-Underfull \hbox (badness 3364) in paragraph at lines 50--52
+Underfull \hbox (badness 3364) in paragraph at lines 52--54
 []|$\OMS/cmsy/m/n/12 ^^X$\T5/cmr/m/n/12 18 nghºn c•u h‰i
  []
 
 
-Underfull \hbox (badness 2376) in paragraph at lines 52--52
+Underfull \hbox (badness 2376) in paragraph at lines 54--54
 []|\T5/cmr/m/n/12 BÎ ^^_°nh gi° ^^_a nhiªm
  []
 
@@ -1682,82 +1688,105 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.72   \item \textbf
+l.74   \item \textbf
                     {Ph√¢n lo·∫°i vƒÉn b·∫£n}: UIT-VSFC (ph·∫£n h·ªìi sinh v...
-] [37
+] [37] [38
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.121 
-      ] [38]
-<images/eval_loss_overlay.png, id=985, 642.7212pt x 424.4658pt>
-File: images/eval_loss_overlay.png Graphic file (type png)
-<use images/eval_loss_overlay.png>
-Package pdftex.def Info: images/eval_loss_overlay.png  used on input line 190.
-(pdftex.def)             Requested size: 455.24411pt x 300.64742pt.
- [39
-pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
-as been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.204 
-      ] [40
+l.149   \item \textbf
+                     {H·ªá s·ªë t∆∞∆°ng quan Matthews (MCC)($\uparrow$)} cho...
+]
+Overfull \hbox (5.55943pt too wide) in paragraph at lines 154--158
+[]\T5/cmr/bx/n/14.4 nDCG@10 ($\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) v† MRR (
+$\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) \T5/cmr/m/n/14.4 cho truy hÁi v† x∏p 
+h§ng l§i: nDCG@10
+ []
+
+[39]
+<images/beforeandaftersalt.png, id=997, 858.5676pt x 393.1488pt>
+File: images/beforeandaftersalt.png Graphic file (type png)
+<use images/beforeandaftersalt.png>
+Package pdftex.def Info: images/beforeandaftersalt.png  used on input line 183.
+
+(pdftex.def)             Requested size: 455.24411pt x 208.45786pt.
+ [40
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.213 
-       <./images/eval_loss_overlay.png>]
-<images/hardtask_MRC-ViQuAD_bar.png, id=1002, 705.837pt x 352.6776pt>
-File: images/hardtask_MRC-ViQuAD_bar.png Graphic file (type png)
-<use images/hardtask_MRC-ViQuAD_bar.png>
-Package pdftex.def Info: images/hardtask_MRC-ViQuAD_bar.png  used on input line
- 230.
-(pdftex.def)             Requested size: 455.24411pt x 227.47261pt.
-
-Overfull \hbox (13.89369pt too wide) in paragraph at lines 235--243
-\T5/cmr/m/n/14.4 ng®u nhi∂n tËt nhßt (kho£ng 56). Th˘ t¸ trong nh‚m SALT -- \T5
-/cmtt/m/n/14.4 freezealigned
- []
-
-[41] [42
+l.209 
+       <./images/beforeandaftersalt.png>] [41]
+<images/gamma_scale_loss.png, id=1013, 542.025pt x 303.534pt>
+File: images/gamma_scale_loss.png Graphic file (type png)
+<use images/gamma_scale_loss.png>
+Package pdftex.def Info: images/gamma_scale_loss.png  used on input line 237.
+(pdftex.def)             Requested size: 418.82375pt x 234.55093pt.
+ [42
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.267 
-       <./images/hardtask_MRC-ViQuAD_bar.png>]
-<images/mrc_learning_curve.png, id=1019, 570.4512pt x 352.1958pt>
-File: images/mrc_learning_curve.png Graphic file (type png)
-<use images/mrc_learning_curve.png>
-Package pdftex.def Info: images/mrc_learning_curve.png  used on input line 270.
+l.261   \item \textbf
+                     {Bu·ªôc tr·ªçng s·ªë}: l·ªõp ƒë·∫ßu ra sao ch√©p nguy√™...
+ <./images/gamma_scale_loss.png>]
+<images/init_strategy_100k.png, id=1023, 621.522pt x 281.853pt>
+File: images/init_strategy_100k.png Graphic file (type png)
+<use images/init_strategy_100k.png>
+Package pdftex.def Info: images/init_strategy_100k.png  used on input line 277.
 
-(pdftex.def)             Requested size: 455.24411pt x 281.06914pt.
+(pdftex.def)             Requested size: 432.48051pt x 196.13025pt.
  [43
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.317   \item \textbf
-                     {Hi·ªáu qu·∫£ d·ªØ li·ªáu -- ƒëi·ªÉm m·∫•u ch·ªët}: l∆∞...
- <./images/mrc_learning_curve.png>] [44
-pdfTeX warning (ext4): destination with the same identifier (name{table.4.4}) h
+l.290 
+       <./images/init_strategy_100k.png>] [44]
+<images/mrc_learning_curve.png, id=1045, 570.4512pt x 352.1958pt>
+File: images/mrc_learning_curve.png Graphic file (type png)
+<use images/mrc_learning_curve.png>
+Package pdftex.def Info: images/mrc_learning_curve.png  used on input line 328.
+
+(pdftex.def)             Requested size: 455.24411pt x 281.06914pt.
+ [45
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.343 
+       <./images/mrc_learning_curve.png>] [46
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.333 \end{itemize}
-                   ]) [45]
+l.390   \item \textbf
+                     {Hi·ªáu qu·∫£ d·ªØ li·ªáu -- ƒëi·ªÉm m·∫•u ch·ªët}: l∆∞...
+] [47]
+<images/ctx4096_pppl.png, id=1071, 2005.4925pt x 834.11626pt>
+File: images/ctx4096_pppl.png Graphic file (type png)
+<use images/ctx4096_pppl.png>
+Package pdftex.def Info: images/ctx4096_pppl.png  used on input line 435.
+(pdftex.def)             Requested size: 455.24411pt x 189.33537pt.
+ [48]) [49
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.181 \include{Chapter4/chapter4}
+                                  <./images/ctx4096_pppl.png>] [50]
 \openout2 = `Chapter5/chapter5.aux'.
 
- (./Chapter5/chapter5.tex
+
+(./Chapter5/chapter5.tex
 Ch∆∞∆°ng 5.
-[46
+[51
 
 
 
 
-] [47] [48]) [49]
+] [52] [53]) [54]
 
 Package biblatex Warning: Keyword 'Viet' not found on input line 201.
 
@@ -1789,7 +1818,7 @@ Overfull \hbox (68.11682pt too wide) in paragraph at lines 206--206
 it/14.4 arXiv preprint arXiv:2412.19437\T5/cmr/m/n/14.4 ,
  []
 
-[50
+[55
 
 
 
@@ -1817,7 +1846,7 @@ Overfull \hbox (5.33499pt too wide) in paragraph at lines 206--206
 its (GELUs),''
  []
 
-[51]
+[56]
 Overfull \hbox (5.11415pt too wide) in paragraph at lines 206--206
 []\T5/cmr/m/n/14.4 Penedo, G., Malar-tic, Q., Hess-low, D., \T5/cmr/m/it/14.4 e
 t al.\T5/cmr/m/n/14.4 , ``The Re-fined-Web dataset
@@ -1829,21 +1858,21 @@ Overfull \hbox (14.79668pt too wide) in paragraph at lines 206--206
 Learn-ing Rep-re-sen-ta-tions (ICLR)\T5/cmr/m/n/14.4 ,
  []
 
-[52]
+[57]
 Overfull \hbox (8.5162pt too wide) in paragraph at lines 206--206
 \T5/cmr/m/it/14.4 tions on Ma-chine Learn-ing Re-search (TMLR)\T5/cmr/m/n/14.4 
 , 2024, arXiv:2403.08763. 
  []
 
-[53] [54] [55]
+[58] [59] [60]
 \openout2 = `Appendix/appendix1.aux'.
 
  (./Appendix/appendix1.tex
 Ph·ª• l·ª•c A.
-[56
+[61
 
 
-]) [57] (./main.aux (./Appendix/commitment.aux) (./Appendix/edit.aux)
+]) [62] (./main.aux (./Appendix/commitment.aux) (./Appendix/edit.aux)
 (./Appendix/advisor.aux) (./Appendix/reviewer.aux) (./Appendix/thanks.aux)
 (./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
 (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
@@ -1857,17 +1886,17 @@ L3 programming layer <2024-01-22>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: A7D9C0853C1E4F34C03616EBE1F24E9C;16894.
+(rerunfilecheck)             Checksum: 1804CDED273F1AA37BF22167B1D39062;17336.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33449 strings out of 474222
- 627755 string characters out of 5748733
- 1937975 words of memory out of 5000000
- 54845 multiletter control sequences out of 15000+600000
- 583751 words of font info for 91 fonts, out of 8000000 for 9000
+ 33472 strings out of 474222
+ 628286 string characters out of 5748733
+ 1941975 words of memory out of 5000000
+ 54861 multiletter control sequences out of 15000+600000
+ 582930 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,17n,87p,1081b,1466s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
@@ -1890,10 +1919,10 @@ re/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/vntex/vnr/vnr8.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt
 10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (84 pages, 837534 bytes).
+Output written on main.pdf (89 pages, 1200538 bytes).
 PDF statistics:
- 1260 PDF objects out of 1440 (max. 8388607)
- 1090 compressed objects within 11 object streams
- 254 named destinations out of 1000 (max. 500000)
- 714 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1312 PDF objects out of 1440 (max. 8388607)
+ 1132 compressed objects within 12 object streams
+ 261 named destinations out of 1000 (max. 500000)
+ 732 words of extra memory for PDF output out of 10000 (max. 10000000)
 

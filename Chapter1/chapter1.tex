@@ -117,9 +117,10 @@ UIT-ViCTSD) tới gán nhãn từ loại và tương đồng ngữ nghĩa.
 NeoBERT từ đầu do hạn chế tài nguyên tính toán. Phạm vi bài toán chỉ bao gồm các
 tác vụ NLU và trích xuất đặc trưng (Feature Extraction), không bao gồm các bài toán
 sinh văn bản tự do của các mô hình Decoder-only. Mô hình kế thừa kiến trúc hỗ trợ
-ngữ cảnh tới 4.096 token của NeoBERT, tuy nhiên việc kiểm chứng và tinh chỉnh
-chuyên biệt cho ngữ cảnh dài nằm ngoài phạm vi đề tài và được để lại như hướng
-phát triển.
+ngữ cảnh tới 4.096 token của NeoBERT và được huấn luyện bổ sung một pha ngắn ở độ
+dài này; việc kiểm chứng ngữ cảnh dài giới hạn ở độ đo nội tại (pseudo-perplexity
+theo độ dài chuỗi), còn đánh giá hạ nguồn chuyên biệt cho ngữ cảnh dài được để lại
+như hướng phát triển.
 
 % ============================================================
 \section{Đóng góp của đề tài}

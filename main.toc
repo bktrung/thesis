@@ -61,17 +61,18 @@
 \contentsline {section}{\numberline {4.2}Cấu hình huấn luyện}{37}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Độ đo đánh giá}{38}{section.4.3}%
 \contentsline {section}{\numberline {4.4}So sánh các phương án khởi tạo}{39}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Các phương án so sánh}{39}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Kết quả mô hình hóa ngôn ngữ}{39}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Ảnh hưởng tới tác vụ hạ nguồn}{41}{subsection.4.4.3}%
-\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{42}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Diễn tiến theo ngân sách huấn luyện}{42}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa nhiệm tại mốc 5 triệu tài liệu}{43}{subsection.4.5.2}%
-\contentsline {section}{\numberline {4.6}Thảo luận}{45}{section.4.6}%
-\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{46}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Kết luận}{46}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{48}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Hướng phát triển}{48}{section.5.3}%
-\contentsline {chapter}{Tài liệu tham khảo}{50}{Item.12}%
-\contentsline {chapter}{Phụ lục}{55}{chapter*.13}%
-\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{56}{appendix.A}%
+\contentsline {subsection}{\numberline {4.4.1}Kiểm chứng hình học của phép chiếu SALT}{39}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Lựa chọn hệ số co trọng số đầu ra}{41}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Vì sao chọn SALT kết hợp căn chỉnh đóng băng}{43}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{44}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Diễn tiến theo ngân sách huấn luyện}{45}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa nhiệm tại mốc 5 tỷ token}{46}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Mở rộng ngữ cảnh lên 4.096 token}{48}{subsection.4.5.3}%
+\contentsline {section}{\numberline {4.6}Thảo luận}{49}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{51}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kết luận}{51}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{53}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Hướng phát triển}{53}{section.5.3}%
+\contentsline {chapter}{Tài liệu tham khảo}{55}{Item.12}%
+\contentsline {chapter}{Phụ lục}{60}{chapter*.13}%
+\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{61}{appendix.A}%

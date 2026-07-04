@@ -19,12 +19,13 @@ tiến: mở rộng tập neo bằng cặp dịch Anh--Việt khai thác tự đ
 tự khác nghĩa), khởi tạo riêng lớp đầu ra tách rời với độ chệch theo tần suất từ đơn và
 hệ số co trọng số, cùng giai đoạn căn chỉnh đóng băng.
 
-Thực nghiệm so sánh tám phương án khởi tạo ở cùng ngân sách huấn luyện xác nhận từng
-lựa chọn thiết kế: nhóm khởi tạo SALT vượt mọi đối chứng ngẫu nhiên ở cả mô hình hóa
-ngôn ngữ lẫn tác vụ hạ nguồn. Trên bộ đánh giá gồm mười tác vụ hiểu tiếng Việt,
-ViNeoBERT sau 5 triệu tài liệu dẫn đầu 4/10 tác vụ (trong đó có đọc hiểu UIT-ViQuAD với
-76,2 điểm F1) và bằng hoặc vượt XLM-R-base ở 8/10 tác vụ, dù lượng tiếng Việt tiếp xúc
-ít hơn các mô hình đối sánh một đến hai bậc -- cho thấy tái sử dụng không gian biểu diễn
+Thực nghiệm so sánh có kiểm soát ở cùng ngân sách huấn luyện xác nhận từng lựa chọn
+thiết kế, từ hệ số co trọng số đầu ra tới khởi tạo riêng hai ma trận và giai đoạn căn
+chỉnh đóng băng. Trên bộ đánh giá gồm đọc hiểu UIT-ViQuAD và mười hai tác
+vụ hiểu tiếng Việt khác, ViNeoBERT sau khoảng 5 tỷ token đạt 76,2 điểm F1 đọc hiểu (hơn
+XLM-R-base 4,1 điểm) và cao hơn XLM-R-base ở 11/12 tác vụ còn lại, dù lượng tiếng Việt tiếp xúc
+ít hơn các mô hình đối sánh một đến hai bậc; một pha mở rộng ngắn ở độ dài 4.096 token
+giữ chất lượng ổn định trên toàn dải ngữ cảnh. Kết quả cho thấy tái sử dụng không gian biểu diễn
 sẵn có là con đường tiết kiệm và hiệu quả để đưa các kiến trúc Encoder thế hệ mới đến
 với tiếng Việt.
 

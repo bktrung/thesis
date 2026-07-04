@@ -1,0 +1,12 @@
+{
+  "arm": "trung_naive_random_zerobias",
+  "pre": {
+    "eval_loss": 16.25064468383789,
+    "eval_perplexity": 11417349.972713372
+  },
+  "post": {
+    "eval_loss": 5.492845058441162,
+    "eval_perplexity": 242.9474241579634
+  },
+  "global_step": 182
+}

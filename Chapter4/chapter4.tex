@@ -8,8 +8,9 @@ luyện (Mục~\ref{sec:exp-setup}--\ref{sec:exp-config}), cùng các độ đo 
 (1)~\textit{phương án khởi tạo nào là tốt nhất?} -- trả lời bằng thí nghiệm so sánh các
 phương án khởi tạo ở cùng ngân sách huấn luyện (Mục~\ref{sec:exp-bakeoff}); và
 (2)~\textit{mô hình cuối cùng đạt chất lượng ra sao so với các mô hình hiện có?} -- trả lời
-bằng đường cong chất lượng theo mốc ngân sách và bảng đánh giá đa nhiệm trên mười tác vụ
-hiểu tiếng Việt (Mục~\ref{sec:exp-mrc}). Cuối chương là phần thảo luận chung
+bằng đường cong chất lượng theo mốc ngân sách, bảng đánh giá đa nhiệm trên mười hai
+tác vụ hiểu tiếng Việt, và kiểm chứng ngữ cảnh dài sau pha mở rộng lên 4.096 token
+(Mục~\ref{sec:exp-mrc}). Cuối chương là phần thảo luận chung
 (Mục~\ref{sec:exp-discussion}).
 
 % ======================================================================
@@ -33,7 +34,8 @@ học được khóa theo bước toàn cục nên không bị khởi động l�
 Giai đoạn căn chỉnh đóng băng và tiếp tục tiền huấn luyện sử dụng phần tiếng Việt của
 CulturaX~\cite{nguyen2023culturax} -- kho ngữ liệu web đa ngữ quy mô lớn đã được làm sạch
 và khử trùng lặp qua nhiều tầng lọc. Dữ liệu được truyền trực tuyến (streaming) theo từng
-phiên huấn luyện; tổng ngân sách sử dụng là 5 triệu tài liệu đầu tiên của kho ngữ liệu.
+phiên huấn luyện; tổng ngân sách sử dụng xấp xỉ 5 tỷ token, tương đương khoảng 20GB
+văn bản.
 Bảng~\ref{tab:data-stats} tóm tắt thống kê dữ liệu sử dụng trong đề tài.
 
 \begin{table}[ht]
@@ -46,10 +48,10 @@ Bảng~\ref{tab:data-stats} tóm tắt thống kê dữ liệu sử dụng trong
     \textbf{Dữ liệu} & \textbf{Vai trò} & \textbf{Quy mô sử dụng} \\
     \hline
     CulturaX (tiếng Việt) & Căn chỉnh đóng băng & $\sim$20 triệu token \\
-    CulturaX (tiếng Việt) & Tiếp tục tiền huấn luyện & 5 triệu tài liệu ($\sim$5 tỷ token) \\
+    CulturaX (tiếng Việt) & Tiếp tục tiền huấn luyện & $\sim$5 tỷ token ($\sim$20GB văn bản) \\
     UIT-ViQuAD 2.0 (câu hỏi trả lời được) & Tinh chỉnh hạ nguồn (chính) & $\sim$18 nghìn câu hỏi huấn luyện \\
     % TODO(user): số dòng chính xác train/val/test sau khi lọc answerable + chia đôi validation
-    Bộ đánh giá đa nhiệm (Mục~\ref{subsec:exp-eval-data}) & Tinh chỉnh hạ nguồn & 9 tác vụ bổ sung \\
+    Bộ đánh giá đa nhiệm (Mục~\ref{subsec:exp-eval-data}) & Tinh chỉnh hạ nguồn & 12 tác vụ bổ sung \\
     \hline
   \end{tabular}
 \end{table}
@@ -71,12 +73,19 @@ năng lực khác nhau của một Encoder:
         kháng, khó hơn đáng kể) và QNLI bản tiếng Việt (suy luận câu hỏi--câu).
   \item \textbf{Phân loại văn bản}: UIT-VSFC (phản hồi sinh viên), UIT-VSMEC (cảm xúc đa
         lớp), UIT-ViCTSD (bình luận độc hại).
+  \item \textbf{Tính chấp nhận được về ngữ pháp}: bộ dữ liệu kiểu CoLA cho tiếng Việt
+        (ViCoLA-syn), trong đó câu sai ngữ pháp được sinh tự động từ câu đúng; mô hình
+        phải phân biệt hai loại câu.
   \item \textbf{Gán nhãn chuỗi}: gán nhãn từ loại trên treebank Universal Dependencies
         Vietnamese-VTB.
   \item \textbf{Tương đồng ngữ nghĩa}: bộ STS bản tiếng Việt, đo tương quan giữa điểm dự
-        đoán và điểm do con người gán.
-  \item \textbf{Mô hình hóa ngôn ngữ}: pseudo-perplexity trên một mẫu văn bản tiếng Việt
-        giữ lại, đo trực tiếp chất lượng MLM mà không cần tinh chỉnh.
+        đoán và điểm do con người gán; và tác vụ phát hiện diễn đạt lại (paraphrase) --
+        phân loại nhị phân cặp câu tương đương ngữ nghĩa xây dựng từ dữ liệu STS.
+  \item \textbf{Biểu diễn câu}: truy hồi ngữ cảnh và xếp hạng lại, xây dựng từ các cặp
+        (câu hỏi, đoạn văn) của UIT-ViQuAD. Hai tác vụ này được đánh giá theo đúng giao
+        thức mà NeoBERT dùng cho MTEB~\cite{lebreton2025neobert}: lấy biểu diễn câu bằng
+        gộp trung bình (mean pooling) rồi tinh chỉnh tương phản nhẹ, áp dụng \textit{đồng
+        nhất} cho mọi mô hình so sánh.
 \end{itemize}
 
 % ======================================================================
@@ -95,17 +104,16 @@ giá trị được giữ cố định cho \textit{mọi} phương án khởi t�
   \resizebox{\textwidth}{!}{%
   \begin{tabular}{llll}
     \hline
-    \textbf{Siêu tham số} & \textbf{Căn chỉnh đóng băng} & \textbf{CPT (WSD)} & \textbf{Tinh chỉnh MRC} \\
+    \textbf{Siêu tham số} & \textbf{Căn chỉnh đóng băng} & \textbf{CPT (WSD)} & \textbf{Mở rộng ngữ cảnh} \\
     \hline
-    Tốc độ học đỉnh        & $10^{-4}$        & $10^{-4}$          & $2\times10^{-5}$ \\
-    Khởi động (warmup)     & 10\% số bước     & 2\% (chặn $[20, 500]$ bước) & không \\
-    Độ dài chuỗi tối đa    & 1.024            & 1.024              & 384 \\
-    Batch size hiệu dụng   & $32 \times 4 = 128$ & $32 \times 16 = 512$ & 8 \\
-    Tỷ lệ che MLM          & 20\%             & 20\%               & -- \\
-    Bộ tối ưu              & \multicolumn{2}{c}{AdamW, $\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}01$} & AdamW \\
-    Lịch tốc độ học        & tuyến tính       & WSD (làm nguội cosine/$1-\sqrt{\cdot}$) & tuyến tính \\
-    Số epoch               & 1 lượt ($\sim$20M token) & theo phiên 1M tài liệu & 5 (dừng sớm, patience 2) \\
-    Số hạt giống (seed)    & --               & --                 & 5 \\
+    Tốc độ học đỉnh        & $10^{-4}$        & $10^{-4}$          & $10^{-5}$ \\
+    Khởi động (warmup)     & 10\% số bước     & 2\% (chặn $[20, 500]$ bước) & 50 bước \\
+    Độ dài chuỗi tối đa    & 1.024            & 1.024              & 4.096 \\
+    Batch size hiệu dụng   & $32 \times 4 = 128$ & $32 \times 16 = 512$ & $4 \times 32 = 128$ \\
+    Tỷ lệ che MLM          & 20\%             & 20\%               & 20\% \\
+    Bộ tối ưu              & \multicolumn{3}{c}{AdamW, $\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}01$} \\
+    Lịch tốc độ học        & tuyến tính       & WSD (làm nguội cosine/$1-\sqrt{\cdot}$) & hằng số sau khởi động \\
+    Số epoch               & 1 lượt ($\sim$20M token) & theo phiên $\sim$1 tỷ token & 1 lượt ($\sim$200M token) \\
     \hline
   \end{tabular}%
   }
@@ -113,11 +121,12 @@ giá trị được giữ cố định cho \textit{mọi} phương án khởi t�
 
 Đối với bước khởi tạo SALT, các siêu tham số chính gồm: số neo kích hoạt tối đa qua
 sparsemax là 64, ngưỡng số neo tối thiểu cho ánh xạ cục bộ $k_0 = 8$, hệ số co trọng số
-đầu ra $\gamma = 0{,}1$, và độ chệch đầu ra được ước lượng từ 20.000 tài liệu CulturaX
-(Mục~\ref{sec:salt-proj}). Cột tinh chỉnh trong Bảng~\ref{tab:hyperparams} mô tả cấu
-hình cho tác vụ chính (hỏi đáp đọc hiểu); các tác vụ còn lại trong bộ đánh giá đa nhiệm
-được tinh chỉnh theo quy trình tương tự với siêu tham số phù hợp từng tác vụ, giữ đồng
-nhất giữa các mô hình so sánh.
+đầu ra $\gamma = 0{,}1$, và độ chệch đầu ra được ước lượng từ một mẫu CulturaX
+khoảng 20 triệu token (Mục~\ref{sec:salt-proj}). Ở bước tinh chỉnh hạ nguồn, tác vụ
+chính (hỏi đáp đọc hiểu) dùng AdamW với tốc độ học $2\times10^{-5}$, chuỗi tối đa 384,
+batch 8, tối đa 5 epoch (dừng sớm); các tác vụ còn lại trong bộ đánh giá đa nhiệm được
+tinh chỉnh theo quy trình tương tự với siêu tham số phù hợp từng tác vụ, giữ đồng nhất
+giữa các mô hình so sánh.
 
 % ======================================================================
 \section{Độ đo đánh giá}
@@ -131,206 +140,354 @@ tính trung bình trên 5 lần chạy với hạt giống khác nhau và báo c
         tác vụ mô hình hóa ngôn ngữ có mặt nạ trên tập giữ lại (held-out) của CulturaX, và
         perplexity tương ứng $\mathrm{PPL} = \exp(\mathcal{L}_{\mathrm{MLM}})$ -- dùng để
         theo dõi quá trình huấn luyện.
-  \item \textbf{Pseudo-perplexity (PPPL)($\downarrow$)}~\cite{salazar2020mlmscoring}: với
-        mô hình MLM, xác suất một câu được ước lượng bằng cách che lần lượt từng token và
-        lấy tích các xác suất khôi phục; PPPL là nghịch đảo trung bình hình học của các
-        xác suất này. Do các mô hình dùng bộ từ vựng khác nhau, PPPL chỉ mang tính tham
-        khảo tương đối giữa các mô hình.
   \item \textbf{Exact Match (EM)($\uparrow$) và F1($\uparrow$)} cho hỏi đáp đọc hiểu: EM
         là tỷ lệ câu trả lời trùng khớp hoàn toàn với đáp án chuẩn sau chuẩn hóa; F1 đo
         mức chồng lấp ở cấp token giữa câu trả lời dự đoán và đáp án chuẩn.
   \item \textbf{Accuracy, F1-macro, F1-weighted ($\uparrow$)} cho các tác vụ phân loại và
         suy luận: F1-macro lấy trung bình đều giữa các lớp (phù hợp dữ liệu lệch lớp),
         F1-weighted lấy trung bình theo tỷ trọng lớp.
+  \item \textbf{Hệ số tương quan Matthews (MCC)($\uparrow$)} cho tác vụ chấp nhận được về
+        ngữ pháp: độ đo cân bằng cho phân loại nhị phân lệch lớp, nhận giá trị trong
+        $[-1;\,1]$ -- quy ước chuẩn của bộ CoLA gốc.
   \item \textbf{Hệ số tương quan Spearman ($\uparrow$)} cho tác vụ tương đồng ngữ nghĩa:
         đo tương quan hạng giữa điểm dự đoán và điểm con người gán.
+  \item \textbf{nDCG@10 ($\uparrow$) và MRR ($\uparrow$)} cho truy hồi và xếp hạng lại:
+        nDCG@10 đo chất lượng danh sách 10 kết quả đầu với chiết khấu theo vị trí; MRR là
+        trung bình nghịch đảo thứ hạng của ngữ cảnh đúng. Hai tác vụ này được chạy một
+        lần theo giao thức biểu diễn câu chung nên không kèm độ lệch chuẩn.
 \end{itemize}
 
 % ======================================================================
 \section{So sánh các phương án khởi tạo}
 \label{sec:exp-bakeoff}
 
-\subsection{Các phương án so sánh}
-\label{subsec:exp-arms}
+Mục này kiểm chứng các lựa chọn thiết kế của phương pháp theo ba bước. Trước hết, chúng
+tôi kiểm tra trực quan xem phép chiếu SALT có thực sự đưa từ vựng tiếng Việt vào đúng
+không gian của NeoBERT hay không (Mục~\ref{subsec:exp-salt-geometry}). Sau đó, hai quyết
+định thiết kế được kiểm chứng bằng thí nghiệm có kiểm soát ở \textit{cùng ngân sách dữ
+liệu và cùng cấu hình}, mỗi thí nghiệm chỉ thay đổi đúng thành phần đang xét: chọn hệ số
+co trọng số đầu ra $\gamma$ (Mục~\ref{subsec:exp-gamma}), và chọn chiến lược khởi tạo
+hai ma trận từ vựng (Mục~\ref{subsec:exp-init-strategy}).
 
-Để định lượng đóng góp của từng thành phần khởi tạo, chúng tôi huấn luyện CPT tám phương án
-khởi tạo khác nhau ở \textit{cùng ngân sách dữ liệu và cùng cấu hình}, mô tả trong
-Bảng~\ref{tab:arms}. Các phương án ngẫu nhiên đóng vai trò đối chứng; các phương án còn lại
-lần lượt thay đổi một thành phần của phương pháp để cô lập tác dụng của nó.
+\subsection{Kiểm chứng hình học của phép chiếu SALT}
+\label{subsec:exp-salt-geometry}
 
-\begin{table}[ht]
-  \caption{Các phương án khởi tạo trong thí nghiệm so sánh.}
-  \label{tab:arms}
-  \centering
-  \small
-  \begin{tabular}{p{34mm}p{100mm}}
-    \hline
-    \textbf{Phương án} & \textbf{Mô tả} \\
-    \hline
-    \texttt{freezealigned}   & Khởi tạo SALT theo token cho cả hai ma trận + căn chỉnh đóng băng (quy trình đầy đủ của đề tài). \\
-    \texttt{decpertoken}     & Như trên nhưng \textit{không} có giai đoạn căn chỉnh đóng băng. \\
-    \texttt{globalmap}       & Nhúng SALT theo token; lớp đầu ra dựng bằng \textit{một ánh xạ tuyến tính toàn cục} từ không gian nhúng sang không gian đầu ra, $\gamma=0{,}1$. \\
-    \texttt{decscale05}      & Như \texttt{globalmap} nhưng $\gamma = 0{,}5$. \\
-    \texttt{decscale10}      & Như \texttt{globalmap} nhưng $\gamma = 1{,}0$ (không co). \\
-    \texttt{dectied}         & Lớp đầu ra sao chép ma trận nhúng tại khởi tạo (mô phỏng buộc trọng số). \\
-    \texttt{random-meannorm} & Đối chứng: nhúng ngẫu nhiên có hiệu chỉnh độ lớn theo NeoBERT -- khác SALT \textit{duy nhất} ở chỗ không mang ngữ nghĩa. \\
-    \texttt{naive-random}    & Đối chứng ngây thơ: nhúng ngẫu nhiên $\mathcal{N}(0;\,0{,}02)$, độ chệch đầu ra bằng 0 (cách làm mặc định khi thay từ vựng). \\
-    \hline
-  \end{tabular}
-\end{table}
-
-\subsection{Kết quả mô hình hóa ngôn ngữ}
-\label{subsec:exp-lm-results}
-
-Hình~\ref{fig:loss-overlay} trình bày mất mát đánh giá của tám phương án theo ngân sách
-huấn luyện. Có thể rút ra ba quan sát chính:
+Trước khi so sánh các phương án bằng huấn luyện, chúng tôi kiểm chứng trực tiếp câu hỏi
+căn bản nhất của phương pháp: \textit{phép chiếu SALT có thực sự đưa các vectơ tiếng Việt
+vào đúng vùng không gian mà phần thân NeoBERT mong đợi hay không?}
+Hình~\ref{fig:salt-before-after} trực quan hóa lớp nhúng đầu vào tại thời điểm khởi tạo,
+trước khi bất kỳ bước huấn luyện nào diễn ra.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{images/eval_loss_overlay.png}
-  \caption{Mất mát MLM trên tập đánh giá của tám phương án khởi tạo.}
-  \label{fig:loss-overlay}
+  \includegraphics[width=\textwidth]{images/beforeandaftersalt.png}
+  \caption{Phân bố nhúng của từ vựng tiếng Việt so với không gian NeoBERT trước (trái)
+    và sau (phải) phép chiếu SALT.}
+  \label{fig:salt-before-after}
 \end{figure}
 
-\textbf{Thứ nhất, khởi tạo SALT mang lại lợi thế ngay từ bước 0 và duy trì suốt quá trình.}
-Các phương án SALT với $\gamma = 0{,}1$ khởi đầu ở mức mất mát xấp xỉ 7,2 -- đúng vùng
-entropy từ đơn của tiếng Việt như phân tích ở Mục~\ref{subsec:freq-bias} -- và hội tụ về
-khoảng 3,0--3,1. Trong khi đó, đối chứng \texttt{naive-random} khởi đầu ở mức trên 16 (cao
-hơn cả mức ngẫu nhiên $\log|\mathcal{V}_t| \approx 10{,}3$ do độ chệch bằng 0 kết hợp trọng
-số chưa chuẩn hóa) và chỉ hội tụ về khoảng 5,5. Đối chứng \texttt{random-meannorm} -- vốn
-chỉ khác SALT ở việc thiếu tín hiệu ngữ nghĩa -- hội tụ về khoảng 3,5, vẫn kém nhóm SALT
-một khoảng cách rõ; điều này cho thấy phần lợi thế còn lại đến từ chính \textit{ngữ nghĩa}
-được chuyển giao, không chỉ từ việc chuẩn hóa độ lớn.
+Về cách dựng hình: mỗi điểm là vectơ nhúng của một token, giảm chiều bằng PCA với
+\textit{hệ trục chung} (joint PCA basis) -- các thành phần chính được tính trên hợp của
+cả hai tập vectơ, nên vị trí tương đối giữa hai đám mây có thể so sánh trực tiếp. Hai
+trục là hai thành phần chính đầu tiên, giải thích lần lượt 4\% và 1\% phương sai
+(``PC1 (4\% var)'', ``PC2 (1\% var)'' trong hình); tỷ lệ nhỏ này là điều bình thường với
+không gian 768 chiều, nhưng hai hướng ``lớn nhất'' đó đủ để bộc lộ độ lệch mang tính
+hệ thống giữa hai không gian. Quan trọng nhất, \textit{các token neo và token đặc biệt
+đã bị loại khỏi hình} -- chúng được sao chép nguyên vẹn từ NeoBERT nên nếu giữ lại sẽ
+tạo ra sự chồng lấp giả tạo; phần chồng lấp quan sát được vì vậy hoàn toàn là sản phẩm
+của các ánh xạ cục bộ theo token (Mục~\ref{sec:salt-proj}), không phải của các dòng
+sao chép.
 
-\textbf{Thứ hai, giả thuyết về hệ số co trọng số đầu ra được xác nhận.} Đúng như phân tích
-ở Mục~\ref{subsec:dec-scale}: phương án không co ($\gamma=1{,}0$) khởi đầu ở mức xấp xỉ
-10,1 -- gần mức ngẫu nhiên, tức các logit nhiễu đã nhấn chìm hoàn toàn tiên nghiệm tần suất;
-phương án co một nửa ($\gamma=0{,}5$) khởi đầu ở 8,1. Quan trọng hơn, cả hai đều \textit{mắc
-kẹt} quanh mức 6,6--6,9 cho tới hết ngân sách -- thấp hơn cả đối chứng ngẫu nhiên ngây thơ
--- cho thấy khởi đầu sai lệch ở lớp đầu ra không chỉ làm chậm mà còn đẩy quá trình tối ưu
-vào vùng khó phục hồi. Phương án buộc trọng số \texttt{dectied} khởi đầu tệ nhất (trên 21),
-phù hợp với phân tích về khác biệt hình học giữa hai ma trận ở Mục~\ref{sec:geometry}.
+Ở hình bên trái (``Before SALT''), đám mây nhúng thô của từ vựng ViDeBERTa sau cắt tỉa
+(``ViDeBERTa-pruned (raw)'', màu vàng) nằm lệch hẳn khỏi đám mây NeoBERT gốc
+(``NeoBERT (original)'', màu xanh): khoảng cách giữa hai tâm (centroid) trên mặt phẳng
+PCA là 0,8 đơn vị. Hai mô hình được huấn luyện hoàn toàn độc lập nên không gian nhúng
+của chúng khác nhau cả về \textit{vị trí} lẫn \textit{thang độ lớn}: đám mây ViDeBERTa
+trải rộng hơn hẳn so với đám mây NeoBERT. Nếu tiêm thẳng các vectơ thô này vào mô hình,
+phần thân sẽ nhận đầu vào lệch phân phối ở cả hai phương diện đó, và các khối Pre-RMSNorm
+vốn nhạy với độ lớn sẽ khuếch đại sai lệch qua 28 tầng.
 
-\textbf{Thứ ba, căn chỉnh đóng băng cải thiện nhất quán.} Đường cong \texttt{freezealigned}
-nằm dưới \texttt{decpertoken} ở mọi mốc ngân sách -- giai đoạn căn chỉnh giúp mô hình khởi
-đầu CPT từ trạng thái ổn định hơn và duy trì lợi thế đó trong suốt quá trình.
+Ở hình bên phải (``After SALT''), các vectơ sau phép chiếu (``SALT-projected (injected)''
+-- tức các dòng thực sự được tiêm vào mô hình) đã phủ chồng lên đám mây NeoBERT: khoảng
+cách hai tâm giảm còn 0,3 -- chỉ còn khoảng một phần ba so với trước -- và độ trải thu
+về khớp với thang độ lớn của NeoBERT. Nói cách khác, phép chiếu theo token đưa từ vựng
+tiếng Việt về đúng \textit{vị trí} trong không gian mà phần thân NeoBERT được huấn luyện
+để xử lý, còn bước hiệu chỉnh chuẩn (Mục~\ref{sec:salt-proj}) đưa chúng về đúng
+\textit{thang độ lớn}, trong khi cấu trúc ngữ nghĩa tương đối giữa các token vẫn được
+bảo toàn. Có thể thấy phần đuôi màu vàng còn vươn nhẹ lên phía trên theo
+PC2 -- chủ yếu là các token hiếm rơi vào nhánh trung bình có trọng số hoặc khởi tạo
+ngẫu nhiên (Mục~\ref{sec:salt-proj}); chính giai đoạn căn chỉnh đóng băng ở bước kế tiếp
+sẽ kéo nốt phần này về khớp với phần thân. Đây cũng là lời giải thích hình học cho quan
+sát mở đầu mục sau: mô hình khởi đầu CPT với mất mát chỉ 7,21 thay vì mức đoán ngẫu
+nhiên trên 10.
 
-\subsection{Ảnh hưởng tới tác vụ hạ nguồn}
-\label{subsec:exp-downstream-rank}
+\subsection{Lựa chọn hệ số co trọng số đầu ra}
+\label{subsec:exp-gamma}
 
-Chất lượng mô hình hóa ngôn ngữ không phải lúc nào cũng đồng nghĩa với chất lượng hạ nguồn.
-Vì vậy, sau cùng một ngân sách CPT 100 nghìn tài liệu, mỗi phương án được tinh chỉnh trên
-UIT-ViQuAD với cấu hình đồng nhất; mỗi cột trong Hình~\ref{fig:init-ranking} là trung bình
-qua các hạt giống với thanh lỗi là độ lệch chuẩn, đường đứt nét đỏ đánh dấu đối chứng ngẫu
-nhiên tốt nhất. Kết quả cho thấy thứ hạng hạ nguồn nhất quán với thứ hạng mô hình hóa ngôn
-ngữ.
+Thí nghiệm đầu tiên trả lời câu hỏi: \textit{cần co trọng số đầu ra sau phép chiếu SALT
+tới mức nào?} Ba phương án giống hệt nhau về khởi tạo -- SALT theo token cho cả hai ma
+trận, độ chệch đầu ra theo tần suất từ đơn -- và chỉ khác đúng hệ số co
+$\gamma \in \{0{,}1;\ 0{,}5;\ 1{,}0\}$ được tiếp tục tiền huấn luyện ở cùng cấu hình.
+Hình~\ref{fig:gamma-loss} trình bày mất mát đánh giá, kèm hai mức tham chiếu: entropy từ
+đơn tiếng Việt ($\approx 7{,}3$) -- mức mất mát khi mô hình dự đoán thuần theo tần suất
+-- và mức đoán ngẫu nhiên $\log|\mathcal{V}_t| \approx 10{,}3$.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{images/hardtask_MRC-ViQuAD_bar.png}
-  \caption{Điểm F1 trên UIT-ViQuAD của tám phương án khởi tạo sau 100 nghìn tài liệu CPT.}
-  \label{fig:init-ranking}
+  \includegraphics[width=0.92\textwidth]{images/gamma_scale_loss.png}
+  \caption{Mất mát MLM trên tập đánh giá của ba giá trị hệ số co $\gamma$.}
+  \label{fig:gamma-loss}
 \end{figure}
 
-Ba phương án SALT dẫn đầu với F1 khoảng 66--68, vượt xa đối chứng ngẫu nhiên tốt nhất
-(khoảng 56). Thứ tự trong nhóm SALT -- \texttt{freezealigned} $>$ \texttt{decpertoken} $>$
-\texttt{globalmap} -- ủng hộ cả hai lựa chọn thiết kế của đề tài: chiếu \textit{theo từng
-token} cho lớp đầu ra tốt hơn ánh xạ toàn cục, và giai đoạn căn chỉnh đóng băng mang lại
-lợi ích bổ sung. Đáng chú ý, hai phương án $\gamma$ lớn tụt xuống \textit{dưới} cả đối
-chứng ngẫu nhiên (khoảng 42--47), khẳng định rằng khởi tạo đầu ra sai lệch gây tổn hại lâu
-dài chứ không chỉ làm chậm khởi đầu. Dựa trên kết quả này, phương án \texttt{freezealigned}
-được chọn làm mô hình chính để huấn luyện với toàn bộ ngân sách.
+Kết quả khớp từng điểm với phân tích ở Mục~\ref{subsec:dec-scale}. Phương án không co
+($\gamma=1{,}0$) khởi đầu ở 10,18 -- sát mức đoán ngẫu nhiên: các logit nhiễu từ ma trận
+vừa chiếu đã nhấn chìm hoàn toàn tiên nghiệm tần suất cài trong độ chệch. Phương án co
+một nửa ($\gamma=0{,}5$) khởi đầu ở 8,13, lơ lửng giữa hai mức tham chiếu. Chuẩn gradient
+ở những bước đầu phản ánh đúng mức sai lệch: 68,4 với $\gamma=1{,}0$ và 15,8 với
+$\gamma=0{,}5$, so với chỉ 2,1 của $\gamma=0{,}1$ -- các cập nhật đầu tiên của hai phương
+án $\gamma$ lớn đủ mạnh để phá vỡ cấu trúc ngữ nghĩa mà SALT vừa dựng, và hệ quả là cả
+hai \textit{mắc kẹt} quanh mức 6,61--6,75 cho tới hết ngân sách. Ngược lại, phương án
+$\gamma=0{,}1$ khởi đầu ngay tại vùng entropy từ đơn (7,21) -- tiên nghiệm tần suất được
+bảo toàn làm điểm xuất phát -- rồi hội tụ về 3,14, bỏ xa hai phương án còn lại trong
+suốt quá trình. Do đó, $\gamma=0{,}1$ được chọn cho mọi thí nghiệm về sau.
+
+\subsection{Vì sao chọn SALT kết hợp căn chỉnh đóng băng}
+\label{subsec:exp-init-strategy}
+
+Thí nghiệm thứ hai so sánh ba chiến lược khởi tạo hai ma trận từ vựng, tương ứng ba mức
+đầu tư tăng dần:
+
+\begin{itemize}
+  \item \textbf{Buộc trọng số}: lớp đầu ra sao chép nguyên ma trận nhúng tại khởi tạo --
+        thói quen kế thừa từ các kiến trúc buộc trọng số, bỏ qua việc NeoBERT dùng đầu
+        giải mã tách rời;
+  \item \textbf{SALT hai ma trận}: chiếu theo token \textit{riêng} cho lớp nhúng và lớp
+        đầu ra với $\gamma=0{,}1$ (Mục~\ref{subsec:both-matrices});
+  \item \textbf{SALT + căn chỉnh đóng băng}: như trên, thêm giai đoạn huấn luyện phụ trợ
+        $\sim$20 triệu token chỉ cho hai ma trận trên phần thân đóng băng trước khi CPT
+        (Mục~\ref{sec:freeze}).
+\end{itemize}
+
+Cả ba được tiếp tục tiền huấn luyện tới cùng mốc $\sim$100 triệu token, đo mất mát trên
+tập đánh giá, rồi tinh chỉnh trên UIT-ViQuAD với cấu hình đồng nhất qua ba hạt giống.
+Hình~\ref{fig:init-strategy} tổng hợp cả hai mặt so sánh.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.95\textwidth]{images/init_strategy_100k.png}
+  \caption{So sánh ba chiến lược khởi tạo tại cùng mốc $\sim$100 triệu token CPT.}
+  \label{fig:init-strategy}
+\end{figure}
+
+Chiến lược buộc trọng số thất bại rõ rệt ở cả hai mặt: mất mát 6,24 (perplexity
+$\approx 513$, Hình~\ref{fig:init-strategy}a) và chỉ 54,09 $\pm$ 2,04 điểm F1
+(Hình~\ref{fig:init-strategy}b). Nguyên nhân đã được phân tích ở Mục~\ref{sec:geometry}:
+lớp nhúng và lớp đầu ra đảm nhận hai vai trò hình học khác nhau, nên ép chúng dùng chung
+một ma trận tại khởi tạo khiến cả hai nhiệm vụ cùng bị tổn hại -- phương án này khởi đầu
+ở mức mất mát 21,67, tệ nhất trong mọi thí nghiệm của đề tài. Khởi tạo SALT riêng cho
+từng ma trận khắc phục triệt để: mất mát giảm còn 3,14 (perplexity 23,2) và F1 tăng vọt
+lên 67,52 $\pm$ 1,61 -- hơn chiến lược buộc trọng số 13,4 điểm.
+
+Bổ sung giai đoạn căn chỉnh đóng băng cải thiện thêm một nấc rõ rệt ở cả hai mặt: mất
+mát còn 2,85 (perplexity 17,2) -- tương đương giảm khoảng 26\% perplexity so với không
+căn chỉnh -- nhờ hai ma trận đã kịp ``khớp'' với nhau và với phần thân trước khi bước
+vào CPT; và ở hạ nguồn, phương án này đạt 72,15 $\pm$ 0,12 điểm F1 tại cùng mốc ngân
+sách -- cao hơn 4,6 điểm so với không căn chỉnh, đồng thời độ lệch chuẩn giữa các hạt
+giống giảm hơn một bậc (0,12 so với 1,61), tức mô hình vừa tốt hơn vừa ổn định hơn khi
+tinh chỉnh. Chi phí đổi lại chỉ là $\sim$20 triệu token huấn luyện hai ma trận
+(Bảng~\ref{tab:hyperparams}). Do đó, \textit{SALT kết hợp căn chỉnh đóng băng} được chọn
+làm mô hình chính để huấn luyện với toàn bộ ngân sách.
 
 % ======================================================================
 \section{Kết quả của mô hình cuối}
 \label{sec:exp-mrc}
 
-Mô hình chính được tiếp tục tiền huấn luyện tới 5 triệu tài liệu CulturaX theo lịch WSD.
-Chúng tôi phân tích kết quả theo hai góc nhìn: diễn tiến chất lượng theo ngân sách huấn
-luyện (Mục~\ref{subsec:exp-curve}) và bức tranh đa nhiệm tại mốc cuối
-(Mục~\ref{subsec:exp-multitask}). Đối sánh là hai họ mô hình phổ biến nhất với tiếng
-Việt: PhoBERT~\cite{nguyen2020phobert} -- đơn ngữ, huấn luyện trên dữ liệu đã tách từ --
-và XLM-R~\cite{conneau2020xlmr} -- đa ngữ.
+Mô hình chính được tiếp tục tiền huấn luyện tới khoảng 5 tỷ token CulturaX theo lịch WSD.
+Chúng tôi phân tích kết quả theo ba góc nhìn: diễn tiến chất lượng theo ngân sách huấn
+luyện (Mục~\ref{subsec:exp-curve}), bức tranh đa nhiệm tại mốc cuối
+(Mục~\ref{subsec:exp-multitask}), và khả năng xử lý ngữ cảnh dài sau pha mở rộng lên
+4.096 token (Mục~\ref{subsec:exp-ctx4096}). Đối sánh là hai họ mô hình phổ biến nhất với tiếng
+Việt -- PhoBERT~\cite{nguyen2020phobert}, đơn ngữ, huấn luyện trên dữ liệu đã tách từ,
+và XLM-R~\cite{conneau2020xlmr}, đa ngữ -- ở cả hai cỡ \texttt{base} và \texttt{large}.
 
 \subsection{Diễn tiến theo ngân sách huấn luyện}
 \label{subsec:exp-curve}
 
 Tại mỗi mốc ngân sách, điểm kiểm tra được làm nguội rồi tinh chỉnh trên UIT-ViQuAD;
-Hình~\ref{fig:mrc-curve} thể hiện kết quả (trong hình, các mốc của ViNeoBERT được ký hiệu
-``SALT (ours)''). Ba điểm đáng chú ý: \textit{thứ nhất}, chỉ sau 0,5 triệu tài liệu
-($\sim$10\% ngân sách), ViNeoBERT đã vượt XLM-R-base -- phản ánh trực tiếp giá trị của
-khởi tạo có thông tin: mô hình không phải học lại tiếng Việt từ đầu. \textit{Thứ hai},
-đường cong có đoạn chững quanh vùng 1--4 triệu tài liệu trước khi bật lên ở mốc 5 triệu
--- mốc được áp dụng pha làm nguội trên dữ liệu mới như mô tả ở Mục~\ref{sec:cpt} -- cho
-thấy còn dư địa cải thiện nếu tăng ngân sách. \textit{Thứ ba}, khoảng cách với các mô
-hình lớn hơn (đường đứt nét phía trên) thu hẹp dần theo ngân sách.
+Hình~\ref{fig:mrc-curve} thể hiện điểm F1 theo lượng token đã tiếp tục tiền huấn luyện
+(thang log). Đối sánh chính là họ PhoBERT (hai đường đứt nét đậm) -- cùng là mô hình
+đơn ngữ chuyên cho tiếng Việt nên là mốc tham chiếu trực tiếp của đề tài; hai đường chấm
+xám của XLM-R chỉ mang tính tham khảo, vì đây là mô hình đa ngữ với tiếng Việt chỉ là
+một trong một trăm ngôn ngữ.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{images/mrc_learning_curve.png}
-  \caption{Điểm F1 trên UIT-ViQuAD theo ngân sách tiếp tục tiền huấn luyện.}
+  \includegraphics[width=\textwidth]{images/mrc_curve_tokens.png}
+  \caption{Điểm F1 trên UIT-ViQuAD theo lượng token tiếp tục tiền huấn luyện.}
   \label{fig:mrc-curve}
 \end{figure}
 
-\subsection{Đánh giá đa nhiệm tại mốc 5 triệu tài liệu}
-\label{subsec:exp-multitask}
+Điểm nổi bật nhất của đường cong là \textit{tốc độ}: ngay tại mốc đầu tiên -- 0,1 tỷ
+token, tức chỉ 2\% ngân sách -- ViNeoBERT đã đạt 72,15 điểm F1, cao hơn mọi chiến lược
+khởi tạo đối chứng ở Mục~\ref{subsec:exp-init-strategy} và chỉ còn cách kết quả cuối
+4,5 điểm; sang mốc 0,5 tỷ token, mô hình đã vượt kết quả \textit{cuối cùng} của
+XLM-R-base (74,79 so với 73,32). Đây chính là giá trị thực tiễn của khởi tạo SALT:
+phần thân kế thừa không phải ``học lại tiếng Việt từ đầu'', nên phần lớn chất lượng đến
+ngay từ những trăm triệu token đầu tiên. Sau đó đường cong chững quanh vùng 1--4 tỷ
+token trước khi bật lên 76,62 ở mốc 5 tỷ -- mốc được áp dụng pha làm nguội trên dữ liệu
+mới (Mục~\ref{sec:cpt}) -- thu hẹp khoảng cách với PhoBERT-base-v2 còn 0,8 điểm và với
+PhoBERT-large còn 1,4 điểm, với xu hướng vẫn đang đi lên.
 
-Để có bức tranh toàn diện hơn một tác vụ đơn lẻ, mô hình cuối được đánh giá trên mười tác
-vụ thuộc sáu nhóm năng lực (Mục~\ref{subsec:exp-eval-data}), so với hai mô hình cùng hạng
-tham số. Kết quả trình bày trong Bảng~\ref{tab:multitask}.
+Khoảng cách còn lại đó cần được đặt cạnh lượng dữ liệu mà mỗi mô hình đã tiêu thụ,
+tóm tắt trong Bảng~\ref{tab:tokens-seen}. PhoBERT huấn luyện 40 epoch trên kho 20GB
+($\sim$3,5 tỷ token mỗi lượt): bản base chạy 540 nghìn bước với batch 1.024 chuỗi
+256 token, bản large 1,08 triệu bước với batch 512 -- cả hai đều duyệt xấp xỉ
+\textit{140 tỷ token}~\cite{nguyen2020phobert}; bản base-v2 còn được huấn luyện thêm
+trên 120GB văn bản OSCAR-2301 (kho $\sim$25 tỷ token mỗi lượt, số bước không được công
+bố). XLM-R huấn luyện 1,5 triệu bước với batch 8.192 chuỗi 512 token -- tổng cỡ
+\textit{6,3 nghìn tỷ token} đa ngữ; riêng phần tiếng Việt trong CC-100 đã là 24,76 tỷ
+token (137,3~GiB), và với tỷ lệ lấy mẫu $\alpha = 0{,}3$ lượng tiếng Việt mô hình này
+đã duyệt ước tính ở mức hàng trăm tỷ token~\cite{conneau2020xlmr}. Trong khi đó,
+ViNeoBERT duyệt đúng \textit{một lượt} qua 5 tỷ token -- tức chỉ khoảng \textbf{3,5\%}
+lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Việt của XLM-R -- nhưng đạt
+99,0\% điểm F1 của PhoBERT-base-v2 và 98,3\% của PhoBERT-large trên tác vụ này.
 
 \begin{table}[ht]
-  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 triệu tài liệu (trung bình $\pm$ độ lệch
-    chuẩn qua 5 lần chạy; kết quả tốt nhất mỗi hàng in đậm; ô ``--'' chưa được đo).}
-  \label{tab:multitask}
+  \caption{Lượng dữ liệu tiếng Việt các mô hình đã duyệt trong tiền huấn luyện.}
+  \label{tab:tokens-seen}
   \centering
   \small
   \resizebox{\textwidth}{!}{%
-  \begin{tabular}{llccc}
+  \begin{tabular}{lllc}
     \hline
-    \textbf{Tác vụ} & \textbf{Độ đo} & \textbf{PhoBERT-base-v2} & \textbf{XLM-R-base} & \textbf{ViNeoBERT} \\
+    \textbf{Mô hình} & \textbf{Kho ngữ liệu} & \textbf{Token đã duyệt} & \textbf{So với ViNeoBERT} \\
     \hline
-    MRC-ViQuAD        & F1 ($\uparrow$)          & --                        & 72,10 $\pm$ 1,98          & \textbf{76,24 $\pm$ 2,08} \\
-    Pseudo-perplexity & PPPL ($\downarrow$)      & 6,53                      & 3,38                      & \textbf{2,85} \\
-    QNLI (vi)         & Accuracy ($\uparrow$)    & \textbf{0,8895 $\pm$ 0,0056} & 0,8594 $\pm$ 0,0032    & 0,8791 $\pm$ 0,0033 \\
-    STS (vi)          & Spearman ($\uparrow$)    & \textbf{0,8560 $\pm$ 0,0038} & 0,8233 $\pm$ 0,0068    & 0,8392 $\pm$ 0,0041 \\
-    UD-VTB (POS)      & F1-macro ($\uparrow$)    & 0,7801 $\pm$ 0,0046       & 0,7827 $\pm$ 0,0014       & \textbf{0,8089 $\pm$ 0,0047} \\
-    UIT-VSFC          & F1-weighted ($\uparrow$) & \textbf{0,9353 $\pm$ 0,0037} & 0,9288 $\pm$ 0,0025    & 0,9261 $\pm$ 0,0013 \\
-    UIT-VSMEC         & F1-macro ($\uparrow$)    & \textbf{0,6398 $\pm$ 0,0164} & 0,6177 $\pm$ 0,0113    & 0,6163 $\pm$ 0,0199 \\
-    UIT-ViCTSD        & F1-macro ($\uparrow$)    & \textbf{0,7450 $\pm$ 0,0040} & 0,7072 $\pm$ 0,0245    & 0,7315 $\pm$ 0,0158 \\
-    ViANLI            & F1-macro ($\uparrow$)    & \textbf{0,4508 $\pm$ 0,0104} & 0,3634 $\pm$ 0,0555    & 0,4239 $\pm$ 0,0127 \\
-    XNLI (vi)         & F1-macro ($\uparrow$)    & 0,7700 $\pm$ 0,0071       & 0,7556 $\pm$ 0,0060       & \textbf{0,7706 $\pm$ 0,0045} \\
+    PhoBERT (base/large) & 20GB ($\sim$3,5 tỷ token) & $\sim$140 tỷ (40 epoch) & gấp $\sim$28 lần \\
+    PhoBERT-base-v2      & 140GB ($\sim$25 tỷ token) & không công bố ($\geq$ bản gốc) & gấp $\geq$ 28 lần \\
+    XLM-R (base/large)   & CC-100 2,5TB; phần vi 24,76 tỷ token & $\sim$6.300 tỷ (đa ngữ); vi ước hàng trăm tỷ & gấp hàng chục lần \\
+    ViNeoBERT            & 20GB ($\sim$5 tỷ token)   & 5 tỷ (một lượt) & -- \\
     \hline
   \end{tabular}%
   }
 \end{table}
 
-Từ Bảng~\ref{tab:multitask}, chúng tôi rút ra ba nhận xét:
+\subsection{Đánh giá đa nhiệm tại mốc 5 tỷ token}
+\label{subsec:exp-multitask}
+
+Để có bức tranh toàn diện hơn một tác vụ đơn lẻ, mô hình cuối được đánh giá trên mười hai
+tác vụ thuộc năm nhóm năng lực (Mục~\ref{subsec:exp-eval-data}), so với bốn mô hình đối
+sánh: hai bản \texttt{base} cùng hạng tham số và hai bản \texttt{large} lớn hơn đáng kể
+(PhoBERT-large khoảng 370 triệu, XLM-R-large khoảng 550 triệu tham số, so với 245 triệu
+của ViNeoBERT). Kết quả trình bày trong Bảng~\ref{tab:multitask}: mỗi ô là trung bình
+$\pm$ độ lệch chuẩn qua 5 lần chạy, riêng hai tác vụ biểu diễn câu chạy một lần
+(Mục~\ref{sec:exp-metrics}).
+
+\begin{table}[ht]
+  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token (kết quả tốt nhất mỗi hàng
+    in đậm).}
+  \label{tab:multitask}
+  \centering
+  \small
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{llccccc}
+    \hline
+    \textbf{Tác vụ} & \textbf{Độ đo} & \textbf{PhoBERT-base-v2} & \textbf{PhoBERT-large} & \textbf{XLM-R-base} & \textbf{XLM-R-large} & \textbf{ViNeoBERT} \\
+    \hline
+    UIT-VSFC     & F1-weighted ($\uparrow$) & 0,9345 $\pm$ 0,0038 & \textbf{0,9356 $\pm$ 0,0024} & 0,9281 $\pm$ 0,0023 & 0,9312 $\pm$ 0,0031 & 0,9284 $\pm$ 0,0014 \\
+    UIT-VSMEC    & F1-macro ($\uparrow$)    & \textbf{0,6415 $\pm$ 0,0145} & 0,6132 $\pm$ 0,0209 & 0,6145 $\pm$ 0,0112 & 0,3125 $\pm$ 0,3171 & 0,6163 $\pm$ 0,0199 \\
+    UIT-ViCTSD   & F1-macro ($\uparrow$)    & 0,7455 $\pm$ 0,0040 & \textbf{0,7526 $\pm$ 0,0143} & 0,7110 $\pm$ 0,0228 & 0,5759 $\pm$ 0,1442 & 0,7315 $\pm$ 0,0158 \\
+    ViCoLA-syn   & MCC ($\uparrow$)         & \textbf{0,8103 $\pm$ 0,0044} & 0,7915 $\pm$ 0,0124 & 0,7827 $\pm$ 0,0138 & 0,4845 $\pm$ 0,4423 & 0,7789 $\pm$ 0,0042 \\
+    XNLI (vi)    & Accuracy ($\uparrow$)    & 0,7720 $\pm$ 0,0086 & 0,7769 $\pm$ 0,0050 & 0,7541 $\pm$ 0,0057 & \textbf{0,8000 $\pm$ 0,0049} & 0,7714 $\pm$ 0,0038 \\
+    ViANLI       & F1-macro ($\uparrow$)    & \textbf{0,4529 $\pm$ 0,0105} & 0,3882 $\pm$ 0,1242 & 0,3625 $\pm$ 0,0543 & 0,1666 $\pm$ 0,0002 & 0,4273 $\pm$ 0,0221 \\
+    QNLI (vi)    & Accuracy ($\uparrow$)    & 0,8872 $\pm$ 0,0036 & 0,8861 $\pm$ 0,0039 & 0,8592 $\pm$ 0,0032 & \textbf{0,8940 $\pm$ 0,0060} & 0,8791 $\pm$ 0,0033 \\
+    UD-VTB (POS) & F1-macro ($\uparrow$)    & 0,7799 $\pm$ 0,0050 & 0,7879 $\pm$ 0,0069 & 0,7827 $\pm$ 0,0014 & 0,8062 $\pm$ 0,0089 & \textbf{0,8089 $\pm$ 0,0047} \\
+    STS (vi)     & Spearman ($\uparrow$)    & 0,8557 $\pm$ 0,0039 & 0,8509 $\pm$ 0,0049 & 0,8226 $\pm$ 0,0078 & \textbf{0,8644 $\pm$ 0,0023} & 0,8392 $\pm$ 0,0041 \\
+    Paraphrase (STS) & F1-macro ($\uparrow$) & 0,9351 $\pm$ 0,0063 & 0,9400 $\pm$ 0,0102 & 0,9016 $\pm$ 0,0134 & \textbf{0,9437 $\pm$ 0,0064} & 0,9276 $\pm$ 0,0084 \\
+    Truy hồi (ViQuAD)     & nDCG@10 ($\uparrow$) & \textbf{0,4719} & 0,4659 & 0,1386 & 0,2565 & 0,4061 \\
+    Xếp hạng lại (ViQuAD) & MRR ($\uparrow$)     & \textbf{0,8922} & 0,8794 & 0,5282 & 0,6741 & 0,8448 \\
+    \hline
+  \end{tabular}%
+  }
+\end{table}
+
+Từ Bảng~\ref{tab:multitask}, chúng tôi rút ra bốn nhận xét:
 
 \begin{itemize}
-  \item \textbf{Bức tranh chung}: ViNeoBERT dẫn đầu 4/10 tác vụ -- đọc hiểu (hơn
-        XLM-R-base 4,1 điểm F1), pseudo-perplexity, gán nhãn từ loại và XNLI -- và đạt
-        kết quả bằng hoặc cao hơn XLM-R-base ở 8/10 tác vụ. PhoBERT-base-v2 giữ ưu thế ở
-        nhóm phân loại câu ngắn (VSFC, VSMEC, ViCTSD) và ViANLI; đáng chú ý, ở VSFC
-        khoảng cách chỉ dưới 1 điểm -- vùng đã bão hòa, mọi mô hình tốt đều đạt
-        trên 0,92.
+  \item \textbf{Bức tranh chung}: so với XLM-R-base -- mô hình đa ngữ cùng hạng tham số
+        và là đối sánh tự nhiên nhất của một Encoder mới thích nghi -- ViNeoBERT đạt kết
+        quả cao hơn ở 11/12 tác vụ (ngoại lệ duy nhất là ViCoLA-syn với khoảng cách
+        0,004, nằm trong một độ lệch chuẩn); tính cả tác vụ đọc hiểu ở
+        Mục~\ref{subsec:exp-curve}, tỷ lệ là 12/13. ViNeoBERT cũng dẫn đầu \textit{cả
+        bảng} ở gán nhãn từ loại, vượt cả hai bản \texttt{large}. PhoBERT giữ ưu thế ở
+        nhóm phân loại câu ngắn (VSFC, VSMEC, ViCTSD, ViCoLA-syn, ViANLI) và hai tác vụ
+        biểu diễn câu, song khoảng cách ở nhiều tác vụ chỉ dưới 1 điểm (VSFC, XNLI,
+        QNLI, paraphrase) -- vùng đã bão hòa, mọi mô hình tốt đều nằm sát nhau.
+  \item \textbf{Ổn định khi tinh chỉnh}: XLM-R-large tuy dẫn đầu các tác vụ suy luận và
+        tương đồng ngữ nghĩa cỡ lớn (XNLI, QNLI, STS, paraphrase) nhưng \textit{bất ổn
+        nghiêm trọng} trên các bộ dữ liệu nhỏ: độ lệch chuẩn lên tới 0,3171 (VSMEC),
+        0,4423 (ViCoLA-syn), 0,1442 (ViCTSD), và sụp đổ hoàn toàn ở ViANLI (0,1666) --
+        hiện tượng bất ổn tinh chỉnh đã biết của các mô hình lớn trên dữ liệu ít. Ngược
+        lại, ViNeoBERT ổn định trên toàn bộ 12 tác vụ với độ lệch chuẩn không quá 0,023.
   \item \textbf{Hiệu quả dữ liệu -- điểm mấu chốt}: lượng tiếng Việt mà ViNeoBERT tiếp
-        xúc chỉ khoảng 5 tỷ token (một lượt qua 5 triệu tài liệu). Để so sánh: PhoBERT
+        xúc chỉ khoảng 5 tỷ token, tương đương khoảng 20GB văn bản duyệt đúng một
+        lượt. Để so sánh: PhoBERT
         được huấn luyện 40 epoch trên kho 20GB văn bản (1GB Wikipedia + 19GB tin
         tức)~\cite{nguyen2020phobert}, tức lượng token đã duyệt lớn hơn ViNeoBERT
         khoảng 30 lần; bản base-v2 còn được huấn luyện bổ sung trên 120GB văn bản
         OSCAR-2301. XLM-R được huấn luyện trên 2,5TB dữ liệu CC-100, trong đó riêng phần
         tiếng Việt đã khoảng 137GB~\cite{conneau2020xlmr} -- gấp nhiều lần toàn bộ ngân
         sách của đề tài. Việc một mô hình chỉ ``đọc'' lượng tiếng Việt ít hơn một đến hai
-        bậc như vậy vẫn cạnh tranh sòng phẳng, thậm chí dẫn đầu ở các tác vụ khó, chứng
-        minh trực tiếp luận điểm của đề tài: khởi tạo có thông tin cho phép kế thừa năng
-        lực của phần thân đã huấn luyện thay vì học lại từ đầu.
-  \item \textbf{Phân bố điểm mạnh}: các tác vụ ViNeoBERT dẫn đầu (đọc hiểu span dài,
-        gán nhãn từ loại, mô hình hóa ngôn ngữ) đều gắn với chất lượng \textit{biểu diễn
-        theo ngữ cảnh ở cấp token} -- đúng phần năng lực được kế thừa từ phần thân
-        NeoBERT; trong khi các tác vụ phân loại câu ngắn dựa nhiều vào từ vựng bề mặt,
-        nơi PhoBERT hưởng lợi từ tách từ tiếng Việt và 40 epoch dữ liệu trong miền.
+        bậc như vậy vẫn cạnh tranh sòng phẳng với cả các bản \texttt{large}, chứng minh
+        trực tiếp luận điểm của đề tài: khởi tạo có thông tin cho phép kế thừa năng lực
+        của phần thân đã huấn luyện thay vì học lại từ đầu.
+  \item \textbf{Phân bố điểm mạnh}: các tác vụ ViNeoBERT mạnh nhất (đọc hiểu span dài,
+        gán nhãn từ loại) đều gắn với chất lượng \textit{biểu diễn theo ngữ cảnh ở cấp
+        token} -- đúng phần năng lực được kế thừa từ phần thân NeoBERT. Ở nhóm biểu diễn
+        câu, ViNeoBERT bỏ xa cả hai bản XLM-R (nDCG@10 0,4061 so với 0,1386 và 0,2565;
+        MRR 0,8448 so với 0,5282 và 0,6741) và tiệm cận họ PhoBERT -- vốn hưởng lợi từ
+        tách từ tiếng Việt và dữ liệu trong miền cho các tác vụ dựa nhiều vào từ vựng
+        bề mặt.
 \end{itemize}
+
+\subsection{Mở rộng ngữ cảnh lên 4.096 token}
+\label{subsec:exp-ctx4096}
+
+NeoBERT được tiền huấn luyện theo hai pha: pha chính ở độ dài 1.024 token, sau đó một
+pha ngắn ở độ dài 4.096 token để kích hoạt toàn bộ trần ngữ
+cảnh~\cite{lebreton2025neobert}. ViNeoBERT kế thừa kiến trúc hỗ trợ 4.096 token (tần số
+RoPE được tính sẵn tới độ dài này), nhưng toàn bộ quá trình CPT dùng chuỗi 1.024 token
+-- vì vậy chúng tôi tái hiện pha thứ hai tương tự: từ điểm kiểm tra đã làm nguội ở mốc
+5 tỷ token, mô hình được huấn luyện tiếp khoảng 200 triệu token ($\sim$4\% ngân sách
+CPT) ở độ dài 4.096, trên phần dữ liệu CulturaX \textit{chưa từng thấy} (bốn đoạn 1.024
+liên tiếp được ghép thành một chuỗi 4.096), với tốc độ học hằng số $10^{-5}$ -- một phần
+mười đỉnh CPT (cột ``Mở rộng ngữ cảnh'' trong Bảng~\ref{tab:hyperparams}).
+
+Khả năng ngữ cảnh dài được kiểm chứng theo đúng giao thức của NeoBERT:
+\textit{pseudo-perplexity} (PPPL)~\cite{salazar2020mlmscoring} theo độ dài chuỗi. Với
+mô hình MLM, PPPL của một chuỗi được ước lượng bằng cách che lần lượt từng vị trí và
+lấy tích xác suất khôi phục; PPPL càng thấp và càng \textit{ổn định theo độ dài} thì mô
+hình khai thác ngữ cảnh xa càng tốt. Trong Hình~\ref{fig:ctx4096}, mỗi điểm là một văn
+bản dài (1.000--4.096 token) lấy từ Wikipedia tiếng Việt; PPPL mỗi điểm được xấp xỉ
+bằng lấy mẫu 32 vị trí che (subsampled masking), và \textit{cùng} tập cặp (văn bản, độ
+dài) được dùng cho cả hai điểm kiểm tra nên hai hình so sánh được trực tiếp.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{images/ctx4096_pppl.png}
+  \caption{Pseudo-perplexity theo độ dài chuỗi trước (trái) và sau (phải) pha mở rộng
+    ngữ cảnh 4.096 token.}
+  \label{fig:ctx4096}
+\end{figure}
+
+Kết quả tái hiện đúng hiện tượng mà NeoBERT báo cáo. Trước pha mở rộng (hình trái,
+``Before -- decay (seq-1024)''): nhờ tính chất tương đối của RoPE, mô hình ngoại suy
+được một phần ra ngoài độ dài huấn luyện -- PPPL giữ ổn định quanh 2--3 tới khoảng
+2.500--3.000 token -- nhưng vượt ngưỡng đó chất lượng sụp đổ nhanh, nhiều điểm vượt 10
+và có điểm lên tới trên 25: ngữ cảnh xa không những không giúp mà còn gây nhiễu dự
+đoán. Sau pha mở rộng (hình phải, ``After -- ctx4096 (seq-4096)''): đám mây điểm phẳng
+quanh 2--3 trên \textit{toàn dải} tới 4.096 token, không còn xu hướng tăng theo độ
+dài. Nói cách khác, chỉ với $\sim$200 triệu token huấn luyện bổ sung, trần ngữ cảnh
+4.096 token kế thừa từ kiến trúc đã trở thành năng lực sử dụng được trong thực tế.
 
 % ======================================================================
 \section{Thảo luận}
@@ -338,19 +495,21 @@ Từ Bảng~\ref{tab:multitask}, chúng tôi rút ra ba nhận xét:
 
 Kết quả thực nghiệm khép vòng với các mục tiêu đặt ra ở Chương~\ref{chap:intro}. Thí
 nghiệm so sánh khởi tạo (Mục~\ref{sec:exp-bakeoff}) chứng minh từng lựa chọn thiết kế của
-phương pháp đều đóng góp dương: khởi tạo SALT vượt mọi đối chứng ngẫu nhiên ở cả mô hình
-hóa ngôn ngữ lẫn hạ nguồn; chiếu theo từng token cho lớp đầu ra tốt hơn ánh xạ toàn cục;
-hệ số co $\gamma=0{,}1$ là bắt buộc -- các giá trị lớn hơn gây tổn hại không phục hồi; và
-căn chỉnh đóng băng cải thiện nhất quán. Đánh giá theo ngân sách (Mục~\ref{sec:exp-mrc})
-cho thấy phương pháp đạt hiệu quả dữ liệu cao: vượt XLM-R-base chỉ với 0,5 triệu tài
-liệu, và ở mốc 5 triệu tài liệu dẫn đầu 4/10 tác vụ trong bảng đánh giá đa nhiệm dù lượng
-tiếng Việt tiếp xúc ít hơn các mô hình đối sánh một đến hai bậc.
+phương pháp đều đóng góp dương: phép chiếu SALT đưa từ vựng tiếng Việt về đúng vị trí và
+thang độ lớn của không gian NeoBERT (khoảng cách tâm giảm từ 0,8 còn 0,3); hệ số co
+$\gamma=0{,}1$ là cần thiết -- không co hoặc co không đủ khiến huấn luyện mắc kẹt; khởi
+tạo SALT riêng cho hai ma trận vượt xa cách buộc trọng số mặc định (67,52 so với 54,09
+điểm F1); và căn chỉnh đóng băng giảm khoảng 26\% perplexity, nâng F1 lên 72,15 với chi
+phí không đáng kể. Đánh giá theo ngân sách (Mục~\ref{sec:exp-mrc})
+cho thấy phương pháp đạt hiệu quả dữ liệu cao: vượt XLM-R-base chỉ với khoảng 0,5 tỷ
+token; ở mốc 5 tỷ token, mô hình cao hơn XLM-R-base ở 11/12 tác vụ đa nhiệm, dẫn
+đầu cả bảng ở gán nhãn từ loại và giữ độ ổn định tinh chỉnh tốt hơn hẳn các bản
+\texttt{large}, dù lượng tiếng Việt tiếp xúc ít hơn các mô hình đối sánh một đến hai bậc.
 
-Chúng tôi cũng lưu ý hai giới hạn của thực nghiệm. Thứ nhất, bảng đánh giá đa nhiệm hiện
-so sánh với hai mô hình cùng hạng \texttt{base}; các biến thể \texttt{large} mới xuất
-hiện ở đường cong theo ngân sách và sẽ được bổ sung vào bảng đa nhiệm. Bên cạnh đó, một
-số tác vụ phân loại (như UIT-VSFC) đã bão hòa nên ít phân hóa giữa các mô hình tốt. Thứ
-hai, ngân sách 5 triệu tài liệu vẫn nhỏ so với dữ liệu tiền huấn luyện của các mô hình
-đối sánh; xu hướng của đường cong học cho thấy khoảng cách còn lại nhiều khả năng tiếp
-tục thu hẹp khi tăng ngân sách. Các giới hạn này được thảo luận tiếp ở
-Chương~\ref{chap:conclusion}.
+Chúng tôi cũng lưu ý hai giới hạn của thực nghiệm. Thứ nhất, một số tác vụ phân loại
+(như UIT-VSFC) đã bão hòa nên ít phân hóa giữa các mô hình tốt, và hai tác vụ biểu diễn
+câu mới được chạy một lần nên chưa ước lượng được phương sai. Thứ hai, ngân sách 5 tỷ
+token ($\sim$20GB văn bản) vẫn nhỏ so với dữ liệu tiền huấn luyện của các mô hình đối
+sánh; xu hướng của
+đường cong học cho thấy khoảng cách còn lại nhiều khả năng tiếp tục thu hẹp khi tăng
+ngân sách. Các giới hạn này được thảo luận tiếp ở Chương~\ref{chap:conclusion}.

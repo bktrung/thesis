@@ -1,0 +1,12 @@
+{
+  "arm": "trung_salt_decscale05",
+  "pre": {
+    "eval_loss": 8.134644508361816,
+    "eval_perplexity": 3410.6034122490355
+  },
+  "post": {
+    "eval_loss": 6.612301826477051,
+    "eval_perplexity": 744.1940542858737
+  },
+  "global_step": 182
+}

@@ -1,0 +1,12 @@
+{
+  "arm": "trung_random_meannorm",
+  "pre": {
+    "eval_loss": 7.2294416427612305,
+    "eval_perplexity": 1379.4520619717655
+  },
+  "post": {
+    "eval_loss": 3.4782803058624268,
+    "eval_perplexity": 32.40394925194681
+  },
+  "global_step": 182
+}
