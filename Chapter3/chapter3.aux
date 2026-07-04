@@ -1,61 +1,73 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Phương pháp xây dựng Vietnamese NeoBERT}{21}{chapter.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Phương pháp xây dựng Vietnamese NeoBERT}{24}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:method}{{3}{21}{Phương pháp xây dựng Vietnamese NeoBERT}{chapter.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Tổng quan phương pháp}{21}{section.3.1}\protected@file@percent }
-\newlabel{sec:method-overview}{{3.1}{21}{Tổng quan phương pháp}{section.3.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Đặt vấn đề}{21}{subsection.3.1.1}\protected@file@percent }
-\newlabel{subsec:problem}{{3.1.1}{21}{Đặt vấn đề}{subsection.3.1.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Mô hình nguồn và mô hình hiến tặng}{22}{subsection.3.1.2}\protected@file@percent }
-\newlabel{subsec:sources}{{3.1.2}{22}{Mô hình nguồn và mô hình hiến tặng}{subsection.3.1.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Quy trình ba giai đoạn}{22}{subsection.3.1.3}\protected@file@percent }
-\newlabel{subsec:pipeline}{{3.1.3}{22}{Quy trình ba giai đoạn}{subsection.3.1.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT.}}{23}{figure.3.1}\protected@file@percent }
-\newlabel{fig:pipeline}{{3.1}{23}{Quy trình ba giai đoạn xây dựng ViNeoBERT}{figure.3.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Cắt tỉa và đồng bộ từ vựng}{23}{section.3.2}\protected@file@percent }
-\newlabel{sec:vocab}{{3.2}{23}{Cắt tỉa và đồng bộ từ vựng}{section.3.2}{}}
-\newlabel{eq:prune}{{3.1}{24}{Cắt tỉa và đồng bộ từ vựng}{equation.3.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Trích xuất tập neo (anchor set)}{24}{section.3.3}\protected@file@percent }
-\newlabel{sec:anchor}{{3.3}{24}{Trích xuất tập neo (anchor set)}{section.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Vai trò của tập neo}{24}{subsection.3.3.1}\protected@file@percent }
-\newlabel{subsec:anchor-role}{{3.3.1}{24}{Vai trò của tập neo}{subsection.3.3.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Neo trùng lặp bề mặt và neo số}{25}{subsection.3.3.2}\protected@file@percent }
-\newlabel{subsec:anchor-surface}{{3.3.2}{25}{Neo trùng lặp bề mặt và neo số}{subsection.3.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Mở rộng tập neo bằng cặp dịch ba tầng}{26}{subsection.3.3.3}\protected@file@percent }
-\newlabel{subsec:anchor-mining}{{3.3.3}{26}{Mở rộng tập neo bằng cặp dịch ba tầng}{subsection.3.3.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Phép chiếu SALT cho lớp nhúng và lớp đầu ra}{27}{section.3.4}\protected@file@percent }
-\newlabel{sec:salt-proj}{{3.4}{27}{Phép chiếu SALT cho lớp nhúng và lớp đầu ra}{section.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Lựa chọn neo bằng Sparsemax}{27}{subsection.3.4.1}\protected@file@percent }
-\newlabel{subsec:anchor-select}{{3.4.1}{27}{Lựa chọn neo bằng Sparsemax}{subsection.3.4.1}{}}
-\newlabel{eq:sparsemax-sel}{{3.2}{27}{Lựa chọn neo bằng Sparsemax}{equation.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Ánh xạ tuyến tính cục bộ theo từng token}{28}{subsection.3.4.2}\protected@file@percent }
-\newlabel{subsec:local-map}{{3.4.2}{28}{Ánh xạ tuyến tính cục bộ theo từng token}{subsection.3.4.2}{}}
-\newlabel{eq:local-map}{{3.3}{28}{Ánh xạ tuyến tính cục bộ theo từng token}{equation.3.3}{}}
-\newlabel{eq:wavg}{{3.4}{28}{Ánh xạ tuyến tính cục bộ theo từng token}{equation.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}{29}{subsection.3.4.3}\protected@file@percent }
-\newlabel{subsec:both-matrices}{{3.4.3}{29}{Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}{subsection.3.4.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Hiệu chỉnh chuẩn của lớp nhúng}{29}{subsection.3.4.4}\protected@file@percent }
-\newlabel{subsec:norm-calib}{{3.4.4}{29}{Hiệu chỉnh chuẩn của lớp nhúng}{subsection.3.4.4}{}}
-\newlabel{eq:norm-calib}{{3.5}{30}{Hiệu chỉnh chuẩn của lớp nhúng}{equation.3.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.5}Khởi tạo độ chệch đầu ra theo tần suất}{30}{subsection.3.4.5}\protected@file@percent }
-\newlabel{subsec:freq-bias}{{3.4.5}{30}{Khởi tạo độ chệch đầu ra theo tần suất}{subsection.3.4.5}{}}
-\newlabel{eq:freq-bias}{{3.6}{30}{Khởi tạo độ chệch đầu ra theo tần suất}{equation.3.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.6}Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{31}{subsection.3.4.6}\protected@file@percent }
-\newlabel{subsec:dec-scale}{{3.4.6}{31}{Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{subsection.3.4.6}{}}
-\newlabel{eq:dec-scale}{{3.7}{31}{Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{equation.3.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}Giai đoạn căn chỉnh đóng băng}{32}{section.3.5}\protected@file@percent }
-\newlabel{sec:freeze}{{3.5}{32}{Giai đoạn căn chỉnh đóng băng}{section.3.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.6}Tiếp tục tiền huấn luyện thích nghi}{32}{section.3.6}\protected@file@percent }
-\newlabel{sec:cpt}{{3.6}{32}{Tiếp tục tiền huấn luyện thích nghi}{section.3.6}{}}
-\newlabel{eq:wsd}{{3.8}{33}{Tiếp tục tiền huấn luyện thích nghi}{equation.3.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref  {eq:wsd}.}}{33}{figure.3.2}\protected@file@percent }
-\newlabel{fig:wsd}{{3.2}{33}{Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref {eq:wsd}}{figure.3.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.7}Tổng kết phương pháp}{34}{section.3.7}\protected@file@percent }
-\newlabel{sec:method-summary}{{3.7}{34}{Tổng kết phương pháp}{section.3.7}{}}
+\newlabel{chap:method}{{3}{24}{Phương pháp xây dựng Vietnamese NeoBERT}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Tổng quan phương pháp}{24}{section.3.1}\protected@file@percent }
+\newlabel{sec:method-overview}{{3.1}{24}{Tổng quan phương pháp}{section.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Đặt vấn đề}{24}{subsection.3.1.1}\protected@file@percent }
+\newlabel{subsec:problem}{{3.1.1}{24}{Đặt vấn đề}{subsection.3.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Mô hình nguồn và mô hình hiến tặng}{25}{subsection.3.1.2}\protected@file@percent }
+\newlabel{subsec:sources}{{3.1.2}{25}{Mô hình nguồn và mô hình hiến tặng}{subsection.3.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Quy trình ba giai đoạn}{25}{subsection.3.1.3}\protected@file@percent }
+\newlabel{subsec:pipeline}{{3.1.3}{25}{Quy trình ba giai đoạn}{subsection.3.1.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT.}}{26}{figure.3.1}\protected@file@percent }
+\newlabel{fig:pipeline}{{3.1}{26}{Quy trình ba giai đoạn xây dựng ViNeoBERT}{figure.3.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Lựa chọn mô hình hiến tặng và bộ tách từ}{26}{section.3.2}\protected@file@percent }
+\newlabel{sec:donor-tokenizer}{{3.2}{26}{Lựa chọn mô hình hiến tặng và bộ tách từ}{section.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Vai trò của bộ tách từ trong mô hình ngôn ngữ}{26}{subsection.3.2.1}\protected@file@percent }
+\newlabel{subsec:tokenizer-intro}{{3.2.1}{26}{Vai trò của bộ tách từ trong mô hình ngôn ngữ}{subsection.3.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}So sánh PhoBERT và ViDeBERTa làm mô hình hiến tặng}{27}{subsection.3.2.2}\protected@file@percent }
+\newlabel{subsec:donor-compare}{{3.2.2}{27}{So sánh PhoBERT và ViDeBERTa làm mô hình hiến tặng}{subsection.3.2.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces So sánh bộ tách từ của PhoBERT và ViDeBERTa.}}{28}{table.3.1}\protected@file@percent }
+\newlabel{tab:tokenizer-compare}{{3.1}{28}{So sánh bộ tách từ của PhoBERT và ViDeBERTa}{table.3.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Cắt tỉa và đồng bộ từ vựng}{28}{section.3.3}\protected@file@percent }
+\newlabel{sec:vocab}{{3.3}{28}{Cắt tỉa và đồng bộ từ vựng}{section.3.3}{}}
+\newlabel{eq:prune}{{3.1}{29}{Cắt tỉa và đồng bộ từ vựng}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Trích xuất tập neo (anchor set)}{29}{section.3.4}\protected@file@percent }
+\newlabel{sec:anchor}{{3.4}{29}{Trích xuất tập neo (anchor set)}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Vai trò của tập neo}{29}{subsection.3.4.1}\protected@file@percent }
+\newlabel{subsec:anchor-role}{{3.4.1}{29}{Vai trò của tập neo}{subsection.3.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Neo trùng lặp bề mặt và neo số}{30}{subsection.3.4.2}\protected@file@percent }
+\newlabel{subsec:anchor-surface}{{3.4.2}{30}{Neo trùng lặp bề mặt và neo số}{subsection.3.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Mở rộng tập neo bằng cặp dịch ba tầng}{31}{subsection.3.4.3}\protected@file@percent }
+\newlabel{subsec:anchor-mining}{{3.4.3}{31}{Mở rộng tập neo bằng cặp dịch ba tầng}{subsection.3.4.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Phép chiếu SALT cho lớp nhúng và lớp đầu ra}{32}{section.3.5}\protected@file@percent }
+\newlabel{sec:salt-proj}{{3.5}{32}{Phép chiếu SALT cho lớp nhúng và lớp đầu ra}{section.3.5}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3.1}{\ignorespaces Trích xuất tập neo từ ba nguồn}}{33}{algorithm.3.1}\protected@file@percent }
+\newlabel{alg:anchor}{{3.1}{33}{Mở rộng tập neo bằng cặp dịch ba tầng}{algorithm.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Lựa chọn neo bằng Sparsemax}{33}{subsection.3.5.1}\protected@file@percent }
+\newlabel{subsec:anchor-select}{{3.5.1}{33}{Lựa chọn neo bằng Sparsemax}{subsection.3.5.1}{}}
+\newlabel{eq:sparsemax-sel}{{3.2}{33}{Lựa chọn neo bằng Sparsemax}{equation.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Ánh xạ tuyến tính cục bộ theo từng token}{34}{subsection.3.5.2}\protected@file@percent }
+\newlabel{subsec:local-map}{{3.5.2}{34}{Ánh xạ tuyến tính cục bộ theo từng token}{subsection.3.5.2}{}}
+\newlabel{eq:local-map}{{3.3}{34}{Ánh xạ tuyến tính cục bộ theo từng token}{equation.3.3}{}}
+\newlabel{eq:wavg}{{3.4}{34}{Ánh xạ tuyến tính cục bộ theo từng token}{equation.3.4}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3.2}{\ignorespaces Phép chiếu SALT theo từng token cho một ma trận đích}}{35}{algorithm.3.2}\protected@file@percent }
+\newlabel{alg:salt}{{3.2}{35}{Ánh xạ tuyến tính cục bộ theo từng token}{algorithm.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}{35}{subsection.3.5.3}\protected@file@percent }
+\newlabel{subsec:both-matrices}{{3.5.3}{35}{Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}{subsection.3.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}Hiệu chỉnh chuẩn của lớp nhúng}{36}{subsection.3.5.4}\protected@file@percent }
+\newlabel{subsec:norm-calib}{{3.5.4}{36}{Hiệu chỉnh chuẩn của lớp nhúng}{subsection.3.5.4}{}}
+\newlabel{eq:norm-calib}{{3.5}{36}{Hiệu chỉnh chuẩn của lớp nhúng}{equation.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.5}Khởi tạo độ chệch đầu ra theo tần suất}{36}{subsection.3.5.5}\protected@file@percent }
+\newlabel{subsec:freq-bias}{{3.5.5}{36}{Khởi tạo độ chệch đầu ra theo tần suất}{subsection.3.5.5}{}}
+\newlabel{eq:freq-bias}{{3.6}{37}{Khởi tạo độ chệch đầu ra theo tần suất}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.6}Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{37}{subsection.3.5.6}\protected@file@percent }
+\newlabel{subsec:dec-scale}{{3.5.6}{37}{Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{subsection.3.5.6}{}}
+\newlabel{eq:dec-scale}{{3.7}{37}{Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}{equation.3.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Giai đoạn căn chỉnh đóng băng}{38}{section.3.6}\protected@file@percent }
+\newlabel{sec:freeze}{{3.6}{38}{Giai đoạn căn chỉnh đóng băng}{section.3.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.7}Tiếp tục tiền huấn luyện thích nghi}{39}{section.3.7}\protected@file@percent }
+\newlabel{sec:cpt}{{3.7}{39}{Tiếp tục tiền huấn luyện thích nghi}{section.3.7}{}}
+\newlabel{eq:wsd}{{3.8}{39}{Tiếp tục tiền huấn luyện thích nghi}{equation.3.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref  {eq:wsd}.}}{40}{figure.3.2}\protected@file@percent }
+\newlabel{fig:wsd}{{3.2}{40}{Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref {eq:wsd}}{figure.3.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.8}Tổng kết phương pháp}{40}{section.3.8}\protected@file@percent }
+\newlabel{sec:method-summary}{{3.8}{40}{Tổng kết phương pháp}{section.3.8}{}}
 \@setckpt{Chapter3/chapter3}{
-\setcounter{page}{35}
+\setcounter{page}{42}
 \setcounter{equation}{8}
 \setcounter{enumi}{3}
 \setcounter{enumii}{0}
@@ -65,13 +77,13 @@
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{3}
-\setcounter{section}{7}
+\setcounter{section}{8}
 \setcounter{subsection}{0}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{2}
-\setcounter{table}{0}
+\setcounter{table}{1}
 \setcounter{tabx@nest}{0}
 \setcounter{listtotal}{0}
 \setcounter{listcount}{0}
@@ -81,7 +93,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{61}
+\setcounter{instcount}{70}
 \setcounter{maxnames}{3}
 \setcounter{minnames}{3}
 \setcounter{maxitems}{3}
@@ -187,19 +199,19 @@
 \setcounter{bbx:relatedcount}{0}
 \setcounter{bbx:relatedtotal}{0}
 \setcounter{cbx@tempcnta}{0}
-\setcounter{cbx@tempcntb}{30}
+\setcounter{cbx@tempcntb}{28}
 \setcounter{cbx@tempcntc}{0}
 \setcounter{cbx@tempcntd}{-1}
 \setcounter{section@level}{0}
 \setcounter{Item}{8}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{55}
+\setcounter{bookmark@seq@number}{58}
 \setcounter{AM@survey}{0}
 \setcounter{lstnumber}{1}
 \setcounter{parentequation}{0}
 \setcounter{float@type}{16}
-\setcounter{algorithm}{0}
-\setcounter{ALG@line}{0}
+\setcounter{algorithm}{2}
+\setcounter{ALG@line}{14}
 \setcounter{ALG@rem}{0}
 \setcounter{ALG@nested}{0}
 \setcounter{ALG@Lnr}{2}

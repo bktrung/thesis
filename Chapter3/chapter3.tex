@@ -3,9 +3,11 @@
 
 Chương này trình bày chi tiết phương pháp xây dựng mô hình Vietnamese NeoBERT
 (ViNeoBERT). Trước hết, chúng tôi mô tả tổng quan quy trình ba giai đoạn cùng các mô hình
-nguồn được sử dụng (Mục~\ref{sec:method-overview}). Tiếp theo, chúng tôi trình bày bước cắt
-tỉa và đồng bộ từ vựng (Mục~\ref{sec:vocab}), quá trình trích xuất tập neo -- được mở rộng
-bằng các cặp dịch, một cải tiến của đề tài so với SALT gốc (Mục~\ref{sec:anchor}), và phép chiếu SALT áp dụng
+nguồn được sử dụng (Mục~\ref{sec:method-overview}). Tiếp theo, chúng tôi giải thích lý do
+lựa chọn ViDeBERTa làm mô hình hiến tặng và so sánh bộ tách từ với PhoBERT
+(Mục~\ref{sec:donor-tokenizer}), rồi trình bày bước cắt tỉa và đồng bộ từ vựng
+(Mục~\ref{sec:vocab}), quá trình trích xuất tập neo -- được mở rộng bằng các cặp dịch, một
+cải tiến của đề tài so với SALT gốc (Mục~\ref{sec:anchor}), và phép chiếu SALT áp dụng
 cho cả lớp nhúng đầu vào lẫn lớp đầu ra tách rời của NeoBERT (Mục~\ref{sec:salt-proj}).
 Cuối cùng, chúng tôi mô tả giai đoạn căn chỉnh đóng băng (Mục~\ref{sec:freeze}) và giai
 đoạn tiếp tục tiền huấn luyện thích nghi (Mục~\ref{sec:cpt}). Các giá trị siêu tham số cụ
@@ -94,6 +96,78 @@ Hình~\ref{fig:pipeline}:
   \caption{Quy trình ba giai đoạn xây dựng ViNeoBERT.}
   \label{fig:pipeline}
 \end{figure}
+
+% ======================================================================
+\section{Lựa chọn mô hình hiến tặng và bộ tách từ}
+\label{sec:donor-tokenizer}
+
+\subsection{Vai trò của bộ tách từ trong mô hình ngôn ngữ}
+\label{subsec:tokenizer-intro}
+
+Bộ tách từ (tokenizer) là thành phần đầu vào không thể tách rời của mô hình ngôn ngữ:
+nó quyết định cách văn bản thô được phân đoạn thành các đơn vị (token) trước khi đưa vào
+mô hình. Chất lượng của bộ tách từ ảnh hưởng trực tiếp tới (1)~độ hiệu quả biểu diễn --
+một bộ tách từ tốt cho tiếng Việt sẽ tạo ra các token mang nghĩa rõ ràng, còn bộ tách
+từ kém có thể cắt nhầm ranh giới hình vị; (2)~độ bao phủ từ vựng -- từ vựng không đủ lớn
+buộc mô hình phải dùng nhiều token để biểu diễn một khái niệm đơn giản; và (3)~tính tương
+thích khi chuyển giao -- bộ tách từ của mô hình hiến tặng phải đủ phong phú để cung cấp
+neo ngữ nghĩa chất lượng cao.
+
+Trong lĩnh vực xử lý ngôn ngữ tự nhiên, hai thuật toán tách từ phổ biến nhất cho tiếng
+Việt là BPE (Byte-Pair Encoding) và Unigram SentencePiece. BPE được sử dụng bởi PhoBERT:
+bắt đầu từ ký tự đơn, lặp lại gộp hai ký hiệu liền kề phổ biến nhất cho đến khi đạt kích
+thước từ vựng mong muốn. Unigram SentencePiece (được ViDeBERTa sử dụng) tiếp cận ngược:
+bắt đầu với một từ vựng lớn, loại dần các đơn vị ít thông tin nhất theo tiêu chí xác suất
+Unigram; kết quả là một phân phối xác suất trên các cách phân đoạn, mỗi token được gán một
+điểm log-xác suất.
+
+\subsection{So sánh PhoBERT và ViDeBERTa làm mô hình hiến tặng}
+\label{subsec:donor-compare}
+
+ViDeBERTa được chọn làm mô hình hiến tặng thay vì PhoBERT vì ba lý do chính:
+
+\textbf{1. Bộ tách từ tự chứa, không ràng buộc công cụ tách từ ngoài.} PhoBERT dùng
+thuật toán BPE huấn luyện trên văn bản đã được \textit{tách từ sẵn} bằng
+VnCoreNLP~\cite{vu2018vncorenlp} (``học\_sinh đi học\_kỳ này''); do đó mọi văn bản đưa
+vào PhoBERT đều phải qua bước tách từ ngoài này, và một mô hình kế thừa từ vựng PhoBERT
+sẽ mang theo ràng buộc đó cùng nguy cơ lệch phân phối khi công cụ tách từ hoạt động sai.
+Ngược lại, ViDeBERTa dùng bộ tách từ SentencePiece Unigram thao tác ở cấp \textit{tiểu
+từ} (sub-word) trực tiếp trên chuỗi Unicode; ViNeoBERT kế thừa bộ tách từ này nên xử lý
+được văn bản thô của CulturaX -- kho dữ liệu dùng trong CPT của đề tài -- mà không phụ
+thuộc vào một công cụ tách từ riêng.
+
+\textbf{2. Từ vựng lớn hơn -- neo phong phú hơn.} ViDeBERTa có từ vựng $\approx$128.000
+token (so với 64.000 của PhoBERT), trong đó mỗi đơn vị kèm điểm log-xác suất Unigram.
+Từ vựng lớn hơn đồng nghĩa với nhiều ứng viên neo hơn trong bước SALT -- đặc biệt quan
+trọng cho việc bao phủ từ vựng thuần Việt và từ ghép. Bảng~\ref{tab:tokenizer-compare}
+tóm tắt sự khác biệt chính.
+
+\textbf{3. Không gian nhúng phong phú về ngữ nghĩa tiếng Việt.} ViDeBERTa được tiền huấn
+luyện theo kiến trúc DeBERTaV3~\cite{he2021deberta} trên kho ngữ liệu web CC100 tiếng Việt
+quy mô lớn (khoảng 138GB văn bản)~\cite{lai2023videberta} -- lớn hơn nhiều lần so với 20GB
+(Wikipedia + tin tức) của PhoBERT. Không gian nhúng học từ dữ liệu web quy mô lớn giúp phép
+chiếu SALT tạo ra các véc-tơ ban đầu tốt hơn, vì neo lấy từ ViDeBERTa sẽ mã hóa ngữ nghĩa
+tiếng Việt chính xác hơn.
+
+\begin{table}[ht]
+  \caption{So sánh bộ tách từ của PhoBERT và ViDeBERTa.}
+  \label{tab:tokenizer-compare}
+  \centering
+  \small
+  \begin{tabular}{lll}
+    \hline
+    \textbf{Đặc điểm}             & \textbf{PhoBERT}           & \textbf{ViDeBERTa} \\
+    \hline
+    Thuật toán tách từ            & BPE                        & SentencePiece Unigram \\
+    Kích thước từ vựng            & 64.000                     & $\approx$128.000 \\
+    Đầu vào yêu cầu               & Đã tách từ (VnCoreNLP)     & Văn bản thô \\
+    Điểm log-xác suất Unigram     & Không có                   & Có (dùng để cắt tỉa) \\
+    Dữ liệu tiền huấn luyện       & 20GB (Wikipedia + tin tức) & $\approx$138GB (CC100) \\
+    Tương thích CulturaX (raw)    & Không trực tiếp            & Có \\
+    Tiềm năng neo SALT            & Hạn chế                    & Phong phú \\
+    \hline
+  \end{tabular}
+\end{table}
 
 % ======================================================================
 \section{Cắt tỉa và đồng bộ từ vựng}
@@ -217,6 +291,48 @@ Mục~\ref{sec:salt-proj}. Thực nghiệm khởi tạo cho thấy việc mở r
 tăng đáng kể số lượng neo và độ phủ ngữ nghĩa, qua đó cải thiện chất lượng khởi tạo so với
 phương án chỉ dùng neo trùng lặp bề mặt như nghiên cứu gốc.
 
+Để minh họa cụ thể ba nguồn neo, xét bốn token tiếng Việt đại diện. Token \textit{internet}
+trùng dạng chuỗi ở cả hai từ vựng và dịch máy trả về đúng ``internet'', nên được giữ làm
+\textbf{neo bề mặt} và khởi tạo bằng chính hàng nhúng NeoBERT của ``internet''. Token số
+\textit{2024} xuất hiện ở cả hai từ vựng và được nhận trực tiếp làm \textbf{neo số} mà không
+cần qua dịch. Token thuần Việt \textit{nước} khác hẳn dạng chuỗi so với ``water'': ở Tầng~1,
+dịch máy cho ``water'', dịch ngược cho lại ``nước'', và ``water'' là một từ đơn thuộc từ
+vựng NeoBERT -- cả ba điều kiện thỏa mãn nên cặp $(\textit{nước},\ \textit{water})$ được thêm
+làm \textbf{cặp dịch}. Ngược lại, token đồng tự khác nghĩa ``song'' (tiếng Việt: \textit{song
+song}) dịch sang ``parallel'' chứ không phải ``song'', nên bị loại khỏi tập neo bề mặt.
+Thuật toán~\ref{alg:anchor} tóm tắt toàn bộ quy trình trích xuất tập neo từ ba nguồn.
+
+\begin{algorithm}[ht]
+  \caption{Trích xuất tập neo từ ba nguồn}
+  \label{alg:anchor}
+  \begin{algorithmic}[1]
+    \Require Từ vựng tiếng Việt $\mathcal{V}_t$, từ vựng NeoBERT $\mathcal{V}_{\mathrm{neo}}$;
+      dịch máy $\mathrm{MT}$; bộ lọc chính tả tiếng Việt $\mathrm{vi?}(\cdot)$
+    \Ensure Tập neo $\mathcal{A}$ dạng ánh xạ $t_{\mathrm{vi}} \mapsto t_{\mathrm{neo}}$
+    \State $\mathcal{A} \gets \emptyset$
+    \ForAll{từ đầy đủ $t \in \mathcal{V}_t \cap \mathcal{V}_{\mathrm{neo}}$}
+      \Comment{(A) neo bề mặt}
+      \If{$\mathrm{MT}(t) = t$}
+        \Comment{loại đồng tự khác nghĩa}
+        \State $\mathcal{A} \gets \mathcal{A} \cup \{(t, t)\}$
+      \EndIf
+    \EndFor
+    \ForAll{token số $t \in \mathcal{V}_t \cap \mathcal{V}_{\mathrm{neo}}$}
+      \Comment{(B) neo số}
+      \State $\mathcal{A} \gets \mathcal{A} \cup \{(t, t)\}$
+    \EndFor
+    \ForAll{từ Việt hợp lệ $t \in \mathcal{V}_t$ thỏa $\mathrm{vi?}(t)$}
+      \Comment{(C) cặp dịch}
+      \State $e \gets \mathrm{MT}(t)$
+      \If{$e$ là từ đơn \textbf{và} $e \in \mathcal{V}_{\mathrm{neo}}$ \textbf{và} $\mathrm{MT}^{-1}(e) = t$}
+        \State $\mathcal{A} \gets \mathcal{A} \cup \{(t, e)\}$
+        \Comment{dịch ngược trùng khớp}
+      \EndIf
+    \EndFor
+    \State \Return $\mathcal{A}$ sau khi khử các cặp trùng lặp
+  \end{algorithmic}
+\end{algorithm}
+
 % ======================================================================
 \section{Phép chiếu SALT cho lớp nhúng và lớp đầu ra}
 \label{sec:salt-proj}
@@ -244,11 +360,12 @@ Công thức~\eqref{eq:sparsemax-sel}:
 \end{equation}
 Trong đó $\mathrm{sparsemax}(\cdot)$~\cite{martins2016sparsemax} là phép chiếu lên đơn hình
 xác suất, cho kết quả \textit{thưa} -- chỉ một tập con nhỏ $\mathcal{S}_t$ các neo liên quan
-nhất nhận trọng số khác 0 (xem Mục~\ref{subsec:init-methods}). Việc dùng Sparsemax thay cho
-softmax đặc biệt phù hợp với cấu trúc \textit{bất đẳng hướng} của không gian biểu diễn
-(Mục~\ref{sec:geometry}): vì trong không gian bất đẳng hướng mọi cặp từ đều có độ tương đồng
-cosine khá cao, một phân phối dày đặc sẽ pha trộn nhiễu, trong khi hỗ trợ thưa giữ lại đúng
-các neo thực sự gần nghĩa.
+nhất nhận trọng số khác 0. Việc dùng Sparsemax thay cho softmax có lý do thực tế cụ thể:
+softmax luôn gán trọng số khác 0 cho \textit{tất cả} các neo, kể cả những neo ở rất xa token
+đích về mặt ngữ nghĩa -- khiến ánh xạ tuyến tính cục bộ bị nhiễu bởi các điểm không liên
+quan. Sparsemax tự động đặt trọng số bằng 0 cho các neo có độ tương đồng thấp; chỉ tập con
+$\mathcal{S}_t$ thực sự gần nghĩa mới tham gia phép chiếu, giúp ma trận $X_t$ phản ánh đúng
+quan hệ tuyến tính cục bộ quanh token $t$.
 
 \subsection{Ánh xạ tuyến tính cục bộ theo từng token}
 \label{subsec:local-map}
@@ -258,9 +375,9 @@ Như đã lập luận ở Mục~\ref{sec:geometry}, do hai không gian nhúng l
 \textit{ánh xạ tuyến tính riêng cho từng token} từ tập neo được chọn. Gọi $A_t^{\mathrm{src}}
 \in \mathbb{R}^{k\times h}$ là ma trận xếp chồng các nhúng \textit{hiến tặng} (ViDeBERTa) của
 $k = |\mathcal{S}_t|$ neo trong $\mathcal{S}_t$, và $A_t^{\mathrm{tgt}} \in \mathbb{R}^{k\times
-h}$ là ma trận các hàng \textit{đích} (NeoBERT) tương ứng. Khi số neo đủ lớn
-($k \ge k_0$), ánh xạ cục bộ $X_t$ và nhúng kết quả $\mathbf{e}_t$ được xác định như
-Công thức~\eqref{eq:local-map}:
+h}$ là ma trận các hàng \textit{đích} (NeoBERT) tương ứng. Khi số neo đủ lớn ($k \ge k_0$, chúng tôi chọn $k_0 = 8$ qua thực nghiệm -- giá trị nhỏ
+hơn khiến giả nghịch đảo kém ổn định và chất lượng chiếu giảm đáng kể), ánh xạ cục bộ
+$X_t$ và nhúng kết quả $\mathbf{e}_t$ được xác định như Công thức~\eqref{eq:local-map}:
 \begin{equation}
   \label{eq:local-map}
   X_t = \big(A_t^{\mathrm{src}}\big)^{+} A_t^{\mathrm{tgt}}, \qquad
@@ -282,6 +399,44 @@ Công thức~\eqref{eq:wavg}:
 Trường hợp token không có véc-tơ fastText hợp lệ, nhúng được khởi tạo ngẫu nhiên theo phân
 phối chuẩn khớp với thống kê của NeoBERT.
 
+Toàn bộ phép chiếu SALT cho \textit{một} ma trận đích -- áp dụng lần lượt cho ma trận nhúng
+đầu vào và ma trận đầu ra ở Mục~\ref{subsec:both-matrices} -- được tóm tắt trong
+Thuật toán~\ref{alg:salt}.
+
+\begin{algorithm}[ht]
+  \caption{Phép chiếu SALT theo từng token cho một ma trận đích}
+  \label{alg:salt}
+  \begin{algorithmic}[1]
+    \Require Từ vựng $\mathcal{V}_t$; tập neo $\mathcal{A}$; nhúng hiến tặng $\{\mathbf{d}_t\}$;
+      hàng đích NeoBERT $\{\mathbf{a}^{\mathrm{tgt}}\}$; véc-tơ fastText $\{\mathbf{f}_t\}$;
+      ngưỡng $k_0$; chuẩn trung bình $\mu_{\mathrm{neo}}$
+    \Ensure Ma trận khởi tạo $E \in \mathbb{R}^{|\mathcal{V}_t| \times h}$
+    \ForAll{token $t \in \mathcal{V}_t$}
+      \If{$t$ là neo hoặc token đặc biệt}
+        \State $E[t] \gets \mathbf{a}^{\mathrm{tgt}}_{t}$
+        \Comment{sao chép nguyên hàng NeoBERT}
+      \ElsIf{$t$ không có véc-tơ fastText}
+        \State $E[t] \gets$ mẫu ngẫu nhiên khớp thống kê NeoBERT
+      \Else
+        \State $s_{t,a} \gets \cos(\mathbf{f}_t, \mathbf{f}_a)$ cho mọi $a \in \mathcal{A}$
+        \State $\mathbf{w}_t \gets \mathrm{sparsemax}(\mathbf{s}_t)$;\quad
+               $\mathcal{S}_t \gets \{a : w_{t,a} > 0\}$
+        \If{$|\mathcal{S}_t| \ge k_0$}
+          \State $X_t \gets (A_t^{\mathrm{src}})^{+} A_t^{\mathrm{tgt}}$;\quad
+                 $E[t] \gets \mathbf{d}_t\, X_t$
+          \Comment{ánh xạ cục bộ}
+        \Else
+          \State $E[t] \gets \big(\textstyle\sum_a w_{t,a}\,\mathbf{a}^{\mathrm{tgt}}\big)\big/\sum_a w_{t,a}$
+          \Comment{trung bình có trọng số}
+        \EndIf
+        \State $E[t] \gets E[t] \cdot \mu_{\mathrm{neo}} / \lVert E[t] \rVert$
+        \Comment{hiệu chỉnh chuẩn (ma trận nhúng)}
+      \EndIf
+    \EndFor
+    \State \Return $E$
+  \end{algorithmic}
+\end{algorithm}
+
 \subsection{Áp dụng cho cả lớp nhúng đầu vào và lớp đầu ra}
 \label{subsec:both-matrices}
 
@@ -298,15 +453,6 @@ trình chiếu SALT theo từng token} cho cả hai ma trận, chỉ khác ở t
 \end{itemize}
 Nhờ vậy, mỗi ma trận được khởi tạo trong đúng không gian của nó, phản ánh trung thực quan hệ
 ngữ nghĩa mà các neo thiết lập trong từng không gian.
-
-Một lựa chọn thay thế là dựng ma trận đầu ra bằng \textit{một ánh xạ tuyến tính toàn cục}
-(global map) học chung cho mọi token thay vì ánh xạ cục bộ theo từng token. Chúng tôi chọn
-phương án chiếu theo từng token cho cả hai ma trận vì lý do hình học đã nêu ở
-Mục~\ref{sec:geometry}; hiệu quả của lựa chọn này so với ánh xạ toàn cục được đánh giá bằng
-thực nghiệm trong Chương~\ref{chap:experiment}.
-% TODO(hình so sánh): chèn hình so sánh các phương án khởi tạo đầu ra
-% (per-token SALT vs global map) và tác dụng của giai đoạn căn chỉnh đóng băng.
-% Người dùng sẽ cung cấp ảnh report; đặt vào Chương 4 (Kết quả) kèm phân tích.
 
 \subsection{Hiệu chỉnh chuẩn của lớp nhúng}
 \label{subsec:norm-calib}
@@ -403,9 +549,6 @@ Nissim~\cite{devries2021recycle}, vốn cho thấy việc tách giai đoạn h�
 đoạn tinh chỉnh toàn bộ giúp tái sử dụng mô hình hiệu quả hơn. Trong thực nghiệm
 (Chương~\ref{chap:experiment}), chúng tôi quan sát thấy giai đoạn này \textit{luôn} cải thiện
 chất lượng lớp nhúng khởi tạo, do đó được giữ lại trong quy trình.
-% TODO(hình so sánh): chèn hình/bảng so sánh có -- không có giai đoạn căn chỉnh đóng băng
-% (ví dụ đường cong MLM/độ đo hạ nguồn) vào Chương 4. Người dùng sẽ cung cấp ảnh report.
-
 % ======================================================================
 \section{Tiếp tục tiền huấn luyện thích nghi}
 \label{sec:cpt}

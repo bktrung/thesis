@@ -27,7 +27,7 @@ khoảng cách này. NeoBERT tái định nghĩa khả năng của các mô hìn
 tích hợp các cải tiến kiến trúc tiên tiến nhất từ thế giới LLM: hàm kích hoạt
 SwiGLU, cơ chế mã hóa vị trí tương đối Rotary Position Embeddings (RoPE), chuẩn hóa
 Pre-RMSNorm, và tỷ lệ chiều sâu trên chiều rộng tối ưu (28 lớp ẩn với kích thước
-ẩn 768). Với khoảng 250 triệu tham số và được huấn luyện trên 2,1 nghìn tỷ token,
+ẩn 768). Với khoảng 245 triệu tham số và được huấn luyện trên 2,1 nghìn tỷ token,
 NeoBERT vượt trội BERT\textsubscript{large} và RoBERTa\textsubscript{large} trên chuẩn
 đánh giá MTEB (Massive Text Embedding Benchmark), đồng thời hỗ trợ ngữ cảnh lên
 tới 4.096 token -- gấp 8 lần so với các mô hình tiền nhiệm.
@@ -84,9 +84,10 @@ bảo toàn được sức mạnh kiến trúc của NeoBERT.
     học Warmup--Stable--Decay.
 
     \item \textbf{Đánh giá hiệu quả của phương pháp}: Đánh giá ViNeoBERT trên một bộ
-    tác vụ hiểu ngôn ngữ tiếng Việt đa dạng -- trọng tâm là hỏi đáp đọc hiểu
-    (UIT-ViQuAD), cùng các nhóm suy luận, phân loại, gán nhãn chuỗi và tương đồng ngữ
-    nghĩa -- so sánh với các mô hình tiếng Việt và đa ngữ hiện có (PhoBERT, XLM-R);
+    tác vụ hiểu ngôn ngữ tiếng Việt đa dạng -- gồm hỏi đáp đọc hiểu (UIT-ViQuAD), suy
+    luận, phân loại văn bản, gán nhãn chuỗi, tương đồng ngữ nghĩa và biểu diễn câu
+    (Retrieval, Reranking) -- so sánh với các mô hình tiếng Việt và đa ngữ hiện có
+    (PhoBERT, XLM-R);
     đồng thời so sánh các phương án khởi tạo khác nhau ở cùng ngân sách huấn luyện để
     định lượng đóng góp của từng thành phần.
 
@@ -110,8 +111,9 @@ gian nhúng tiếng Việt cho bước chuyển giao.
 \textbf{Dữ liệu thực nghiệm} gồm phần tiếng Việt của kho ngữ liệu web đa ngữ
 CulturaX cho giai đoạn huấn luyện thích nghi, cùng một bộ tác vụ đánh giá tiếng Việt
 đa dạng cho bước tinh chỉnh hạ nguồn -- từ hỏi đáp đọc hiểu (UIT-ViQuAD), suy luận
-ngôn ngữ tự nhiên (XNLI, ViANLI), phân loại văn bản (UIT-VSFC, UIT-VSMEC,
-UIT-ViCTSD) tới gán nhãn từ loại và tương đồng ngữ nghĩa.
+ngôn ngữ tự nhiên (XNLI, ViANLI, QNLI), phân loại văn bản (UIT-VSFC, UIT-VSMEC,
+UIT-ViCTSD), tính chấp nhận về ngữ pháp (ViCoLA-syn), gán nhãn từ loại (UD-VTB),
+tương đồng ngữ nghĩa (STS, Paraphrase), tới biểu diễn câu (Retrieval, Reranking).
 
 \textbf{Các ràng buộc và giới hạn}: Nghiên cứu \textit{không} thực hiện huấn luyện
 NeoBERT từ đầu do hạn chế tài nguyên tính toán. Phạm vi bài toán chỉ bao gồm các

@@ -139,7 +139,7 @@ Encoder hiện đại để thích nghi sang tiếng Việt thay vì tiếp tụ
 Về bản chất, NeoBERT~\cite{lebreton2025neobert} vẫn là một mô hình thuộc dòng BERT: mã
 hóa hai chiều toàn chuỗi và được tiền huấn luyện bằng tác vụ MLM. Điều làm nó khác biệt
 là toàn bộ ``phần cứng'' bên trong đã được thay mới theo những gì thế hệ mô hình ngôn ngữ
-lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $250$ triệu tham số, giữ kích thước
+lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $245$ triệu tham số, giữ kích thước
 ẩn $768$ như BERT-base nhưng sâu $28$ lớp, dùng $12$ đầu chú ý (mỗi đầu $64$ chiều), hỗ
 trợ ngữ cảnh 4.096 token, và được tiền huấn luyện trên khoảng $2{,}1$ nghìn tỷ token văn
 bản web tiếng Anh (RefinedWeb) với tỷ lệ che $20\%$.
@@ -154,43 +154,74 @@ con thay vì LayerNorm đặt sau. Ngoài ra, đầu MLM của NeoBERT là một
 \textit{tách rời} khỏi ma trận nhúng đầu vào -- chi tiết tưởng nhỏ nhưng ảnh hưởng trực
 tiếp tới thiết kế phương pháp ở Chương~\ref{chap:method}.
 
-\begin{figure}[ht]
+\begin{figure}[!htbp]
   \centering
   \begin{tikzpicture}[
-    node distance=4.5mm,
-    box/.style={draw, rounded corners, minimum width=40mm, minimum height=7.5mm, align=center, font=\small},
-    add/.style={draw, circle, inner sep=1.5pt, font=\small},
-    lbl/.style={font=\scriptsize\itshape, text=gray!90},
-    >={Latex[length=2mm]}
+    node distance=4mm,
+    box/.style={draw, rounded corners=2pt, minimum width=40mm, minimum height=8mm, align=center, font=\small},
+    io/.style={draw, rounded corners=2pt, minimum width=28mm, minimum height=7mm, align=center, font=\footnotesize, fill=gray!8},
+    add/.style={draw, circle, inner sep=0pt, font=\small, minimum size=5mm, fill=white},
+    rope/.style={draw, rounded corners=2pt, minimum width=13mm, minimum height=7mm, align=center, font=\footnotesize, fill=green!20},
+    sb/.style={draw, rounded corners=1.5pt, minimum width=15mm, minimum height=5.5mm, align=center, font=\scriptsize},
+    arr/.style={->, semithick, >={Latex[length=2mm]}},
+    res/.style={->, semithick, gray!55, densely dashed, >={Latex[length=1.8mm]}},
   ]
-    \node (in) {\small Chuỗi token};
-    \node[box, fill=orange!12, above=of in]  (emb) {Nhúng token};
-    \node[box, fill=blue!8,   above=7mm of emb] (n1)  {RMSNorm};
-    \node[box, fill=orange!15, above=of n1]  (att) {Tự chú ý đa đầu + RoPE};
-    \node[add, above=of att]                 (a1)  {$+$};
-    \node[box, fill=blue!8,   above=of a1]   (n2)  {RMSNorm};
-    \node[box, fill=green!12, above=of n2]   (ffn) {FFN SwiGLU};
-    \node[add, above=of ffn]                 (a2)  {$+$};
-    \node[box, fill=blue!8,   above=7mm of a2] (fn) {RMSNorm};
-    \node[box, fill=gray!10,  above=of fn]   (head) {Đầu MLM (tách rời)};
-    \node[above=4mm of head] (out) {\small Phân phối trên từ vựng};
-    % luồng chính
-    \draw[->] (in)--(emb);   \draw[->] (emb)--(n1);
-    \draw[->] (n1)--(att);   \draw[->] (att)--(a1);
-    \draw[->] (a1)--(n2);    \draw[->] (n2)--(ffn); \draw[->] (ffn)--(a2);
-    \draw[->] (a2)--(fn);    \draw[->] (fn)--(head); \draw[->] (head)--(out);
-    % kết nối tắt
-    \draw[->] ($(n1.south)+(0,-2mm)$) -- ++(-2.9,0) |- (a1.west);
-    \draw[->] ($(a1.north)+(0,1.5mm)$) -- ++(-2.9,0) |- (a2.west);
-    % khung x28
-    \node[draw, rounded corners, dashed, inner sep=3mm, fit=(n1)(att)(a1)(n2)(ffn)(a2),
-          label={[font=\small]right:$\times\,28$}] {};
+    % ---- main column ----
+    \node[io] (in) {Input text};
+    \node[box, fill=gray!14, above=6mm of in] (emb) {Token embedding};
+    \node[box, fill=red!12, above=10mm of emb] (n1) {RMSNorm};
+    \node[box, fill=orange!24, above=4mm of n1] (attn) {Multi-Head Attention};
+    \node[add, above=5mm of attn] (a1) {$+$};
+    \node[box, fill=red!12, above=6mm of a1] (n2) {RMSNorm};
+    \node[box, fill=violet!18, above=4mm of n2] (ffn) {Feed-Forward (SwiGLU)};
+    \node[add, above=5mm of ffn] (a2) {$+$};
+    \node[box, fill=red!12, above=8mm of a2] (fn) {Final RMSNorm};
+    \node[box, fill=blue!10, above=5mm of fn] (head) {Decoupled MLM head};
+    \node[io, above=5mm of head] (out) {Token probabilities};
+
+    \foreach \a/\b in {in/emb, emb/n1, n1/attn, attn/a1, a1/n2, n2/ffn, ffn/a2, a2/fn, fn/head, head/out}
+      \draw[arr] (\a)--(\b);
+
+    % ---- RoPE into attention ----
+    \node[rope, right=8mm of attn] (rope) {RoPE};
+    \draw[arr] (rope)--(attn);
+
+    % ---- per-layer residual connections ----
+    \coordinate (r1) at ($(emb.north)!0.5!(n1.south)$);
+    \coordinate (r2) at ($(a1.north)!0.5!(n2.south)$);
+    \draw[res] (r1) -- ++(-2.9,0) |- (a1.west);
+    \draw[res] (r2) -- ++(-2.9,0) |- (a2.west);
+
+    % ---- x28 dashed block frame ----
+    \node[draw=black!55, densely dashed, rounded corners=4pt,
+          fit=(n1)(attn)(a1)(n2)(ffn)(a2)(rope), inner xsep=3mm, inner ysep=3mm] (blk) {};
+    \node[font=\small\bfseries] at ($(blk.south east)+(-4mm,4mm)$) {$\times\,28$};
+
+    % ---- SwiGLU zoom-out callout ----
+    \coordinate (cbase) at ($(ffn.east)+(30mm,-8mm)$);
+    \node[sb, fill=violet!18] (cg) at (cbase) {Linear $W_g$};
+    \node[sb, fill=yellow!35, above=4mm of cg] (csilu) {SiLU};
+    \node[add, above=4mm of csilu] (cx) {$\odot$};
+    \node[sb, fill=blue!14, right=7mm of cx] (cu) {Linear $W_u$};
+    \node[sb, fill=violet!18, above=4mm of cx] (cd) {Linear $W_d$};
+    \node[font=\scriptsize, below=3mm of cg] (cin) {$x$};
+    \draw[arr] (cin)--(cg);
+    \draw[arr] (cg)--(csilu);
+    \draw[arr] (csilu)--(cx);
+    \draw[arr] (cu)--(cx);
+    \draw[arr] (cx)--(cd);
+    \node[draw=violet!60, densely dashed, rounded corners=3pt,
+          fit=(cg)(csilu)(cx)(cu)(cd)(cin), inner sep=2.5mm] (cframe) {};
+    \node[font=\scriptsize\bfseries, violet!60] at ($(cframe.north)+(0,2.6mm)$) {SwiGLU FFN};
+    \draw[semithick, violet!55, densely dashed] (ffn.east) to[out=25,in=180] (cframe.west);
+
   \end{tikzpicture}
-  \caption{Kiến trúc NeoBERT.}
+  \caption{Kiến trúc NeoBERT~\cite{lebreton2025neobert}.}
   \label{fig:neobert-arch}
 \end{figure}
 
-Điểm cần chú ý khi đọc Hình~\ref{fig:neobert-arch}: khác với sơ đồ BERT quen thuộc,
+Điểm cần chú ý khi đọc Hình~\ref{fig:neobert-arch}: khác
+với sơ đồ BERT quen thuộc,
 \textit{không có} khối nhúng vị trí cộng vào sau nhúng token -- thông tin vị trí được đưa
 vào bên trong từng khối qua RoPE; chuẩn hóa nằm \textit{trước} tầng tự chú ý và tầng
 truyền thẳng, còn hai kết nối tắt cộng thẳng vào luồng chính; và sau khối cuối cùng có
@@ -259,6 +290,7 @@ Công thức~\eqref{eq:rope-rel}:
   \label{eq:rope-rel}
   \big\langle R_m\, q,\; R_n\, k \big\rangle = q^\top R_{n-m}\, k
 \end{equation}
+Hình~\ref{fig:rope} trực quan hóa cơ chế quay và tính chất tương đối này.
 Nhờ đó RoPE mang lại đồng thời: (1)~tính \textit{tương đối} của điểm chú ý; (2)~\textit{không
 thêm tham số} -- không còn bảng nhúng vị trí; (3)~khả năng \textit{mở rộng ngữ cảnh}: vì
 không có bảng vị trí cứng, NeoBERT nâng ngữ cảnh từ 1.024 lên 4.096 token chỉ bằng một
@@ -268,6 +300,16 @@ giao} nên bảo toàn độ lớn véc-tơ -- nhất quán với triết lý ch
 RMSNorm. Đối với đề tài, RoPE còn mang một thuận lợi quan trọng: thông tin vị trí
 \textit{không nằm trong ma trận nhúng}, nên việc thay thế toàn bộ lớp nhúng tiếng Việt
 không đụng chạm tới cơ chế vị trí của mô hình.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\textwidth]{images/rope_paper_fig.png}
+  \caption[Cơ chế mã hóa vị trí quay (RoPE)]{Minh họa cơ chế mã hóa vị trí quay
+    (RoPE): mỗi cặp chiều của truy vấn/khóa được quay một góc tỷ lệ với vị trí $m$,
+    khiến điểm chú ý chỉ phụ thuộc khoảng cách tương đối $n-m$ (Nguồn: Su và cộng
+    sự~\cite{su2023roformer}).}
+  \label{fig:rope}
+\end{figure}
 
 \subsection{Hàm kích hoạt SwiGLU}
 \label{subsec:swiglu}
@@ -300,6 +342,7 @@ Trong đó:
         không dùng bias;
   \item $\sigma$ là hàm sigmoid.
 \end{itemize}
+Hình~\ref{fig:swiglu} thể hiện luồng tính toán của FFN SwiGLU.
 Vì SwiGLU dùng \textit{ba} ma trận thay vì hai, chiều trung gian được thu lại theo quy
 tắc $d_{ff} = \tfrac{2}{3} \cdot 4d$ để giữ nguyên ngân sách tham số~\cite{shazeer2020glu}.
 Với NeoBERT: $d = 768$, chiều trung gian danh nghĩa $4d = 3.072$, sau điều chỉnh
@@ -307,6 +350,50 @@ $\tfrac{2}{3}$ còn $d_{ff} = 2.048$. Thực nghiệm của Shazeer cho thấy c
 cải thiện chất lượng tiền huấn luyện và tinh chỉnh so với GELU/ReLU ở cùng chi phí; cơ
 chế cổng đặc biệt hữu ích khi kết hợp với thiết kế sâu, nơi khả năng điều tiết luồng
 thông tin qua từng tầng trở nên quan trọng.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tikzpicture}[>=Latex, semithick,
+    box/.style={draw, rounded corners=2pt, minimum width=1.3cm, minimum height=0.72cm,
+                align=center, font=\small},
+    >={Latex[length=2mm]}
+  ]
+    % Input
+    \node[font=\small] (inp) at (0,0) {$x\!\in\!\mathbb{R}^d$};
+    \coordinate (fork) at (0.75, 0);
+    \draw[-] (inp.east) -- (fork);
+
+    % Gate branch (top): W_g -> SiLU
+    \node[box, fill=orange!18] (Wg)   at (2.5,  1.05) {$W_g$};
+    \node[box, fill=yellow!25] (silu) at (4.2,  1.05) {SiLU};
+    \draw[->] (fork) -| (Wg.west);
+    \draw[->] (Wg) -- (silu);
+    \node[font=\scriptsize, gray!65, above=2pt of Wg] {nhánh cổng};
+
+    % Value branch (bottom): W_u
+    \node[box, fill=blue!10] (Wu) at (2.5, -1.05) {$W_u$};
+    \draw[->] (fork) -| (Wu.west);
+    \node[font=\scriptsize, gray!65, below=2pt of Wu] {nhánh giá trị};
+
+    % Multiply
+    \node[draw, circle, minimum size=0.7cm, font=\normalsize] (odot) at (5.7, 0) {$\odot$};
+    \draw[->] (silu.east) -| (odot.north);
+    \draw[->] (Wu.east)   |- (odot.south);
+
+    % Projection back and output
+    \node[box, fill=green!10] (Wd)  at (7.1,  0) {$W_d$};
+    \node[font=\small]        (out) at (8.55, 0) {$y\!\in\!\mathbb{R}^d$};
+    \draw[->] (odot) -- (Wd);
+    \draw[->] (Wd) -- (out);
+
+    % Dimension annotation
+    \node[font=\scriptsize, gray!70, below=10mm of odot, align=center] {
+      $d_{ff}=\tfrac{2}{3}\cdot 4d = 2048$\quad($d=768$)
+    };
+  \end{tikzpicture}
+  \caption{Cấu trúc cổng SwiGLU~\cite{shazeer2020glu}.}
+  \label{fig:swiglu}
+\end{figure}
 
 \subsection{Chuẩn hóa Pre-RMSNorm}
 \label{subsec:rmsnorm}
@@ -353,15 +440,65 @@ hiệu chỉnh chuẩn cho lớp nhúng sau khi chiếu.
 \subsection{Dữ liệu và chiến lược tiền huấn luyện}
 \label{subsec:neobert-pretrain}
 
+Bảng~\ref{tab:neobert-params} tóm tắt toàn bộ cấu hình của NeoBERT. Đây là những chi tiết
+quan trọng vì ViNeoBERT kế thừa trực tiếp kiến trúc này, chỉ thay thế bộ từ vựng và lớp
+nhúng tiếng Anh bằng tiếng Việt.
+
+\begin{table}[ht]
+  \caption{Cấu hình kiến trúc và huấn luyện của NeoBERT~\cite{lebreton2025neobert}.}
+  \label{tab:neobert-params}
+  \centering
+  \small
+  \begin{tabular}{ll}
+    \hline
+    \textbf{Thông số} & \textbf{Giá trị} \\
+    \hline
+    Số lớp Transformer                 & 28 \\
+    Kích thước ẩn $d$                  & 768 \\
+    Số đầu chú ý                       & 12 (mỗi đầu $d_h = 64$) \\
+    Chiều FFN trung gian $d_{ff}$      & 2.048 (SwiGLU, sau điều chỉnh $2/3$) \\
+    Tổng tham số                       & $\approx$ 245 triệu (tính đủ embedding + thân + đầu giải mã) \\
+    Mã hóa vị trí                      & RoPE, $\theta_{\mathrm{base}} = 10.000$ \\
+    Hàm kích hoạt FFN                  & SwiGLU (không bias) \\
+    Chuẩn hóa                          & Pre-RMSNorm \\
+    Từ vựng tiếng Anh                  & 30.522 token (WordPiece, tương thích BERT) \\
+    Ngữ cảnh tối đa                    & 4.096 token \\
+    \hline
+    Dữ liệu tiền huấn luyện           & RefinedWeb ($\approx$2,1 nghìn tỷ token) \\
+    Mục tiêu huấn luyện               & MLM với tỷ lệ che 20\% \\
+    Bộ tối ưu                          & AdamW, $\beta = (0{,}9;\; 0{,}95)$ \\
+    Lịch tốc độ học                    & Cosine decay (peak $6{\times}10^{-4}$, khởi động 2.000 bước) \\
+    Batch size hiệu dụng               & $\sim$2 triệu token/bước \\
+    Số bước huấn luyện                 & $\approx$1 triệu bước (pha chính) \\
+    Tối ưu bộ nhớ                      & FlashAttention-2 \\
+    \hline
+    Pha mở rộng ngữ cảnh               & $\sim$100 tỷ token ở 4.096 token (50 nghìn bước) \\
+    \hline
+  \end{tabular}
+\end{table}
+
 NeoBERT được tiền huấn luyện trên RefinedWeb~\cite{penedo2023refinedweb} -- kho ngữ liệu web
-quy mô lớn được xây dựng từ CommonCrawl. Mô hình sử dụng mục tiêu MLM với tỷ lệ che $20\%$
-~\cite{wettig2023mask}, tối ưu bằng AdamW~\cite{loshchilov2019adamw} với lịch học cosine
-~\cite{loshchilov2017sgdr}, và dùng FlashAttention~\cite{dao2023flashattention2} để giảm
-chi phí khi huấn luyện trên chuỗi dài.
-Các chi tiết huấn luyện đầy đủ không phải trọng tâm của đề tài; điều cần lưu ý là NeoBERT
-đã học được một phần thân Encoder mạnh, nhưng phần thân này vẫn gắn với từ vựng và dữ liệu
-tiếng Anh. Đây là lý do đề tài tập trung vào khởi tạo lại không gian nhúng tiếng Việt thay
-vì huấn luyện lại toàn bộ mô hình từ đầu.
+quy mô lớn xây dựng từ CommonCrawl, tổng cộng $\approx$2,1 nghìn tỷ token. Mô hình sử dụng
+mục tiêu MLM với tỷ lệ che $20\%$~\cite{wettig2023mask} -- cao hơn 15\% của BERT gốc, được
+chứng minh tối ưu hơn cho các mô hình Encoder hiện đại -- và tối ưu bằng AdamW với lịch
+cosine (làm nguội về 10\% tốc độ học đỉnh trong 90\% số bước).
+FlashAttention-2~\cite{dao2023flashattention2} được dùng để giảm chi phí bộ nhớ khi huấn
+luyện trên chuỗi dài.
+
+Quá trình tiền huấn luyện được chia \textit{hai pha}: pha chính ($\approx$1 triệu bước, mỗi
+bước $\sim$2 triệu token) ở độ dài chuỗi 1.024 token, sau đó một pha ngắn ($\approx$100 tỷ
+token, 50 nghìn bước) ở 4.096 token để
+kích hoạt khả năng ngữ cảnh dài. Thiết kế hai pha này là hợp lý vì việc huấn luyện liên tục
+ở 4.096 token từ đầu sẽ tốn gấp 4 lần bộ nhớ và thời gian do ma trận chú ý $n\times n$ tăng
+16 lần. ViNeoBERT áp dụng chiến lược hoàn toàn tương tự (nhưng ở quy mô nhỏ hơn nhiều) khi
+mở rộng ngữ cảnh ở Giai đoạn 3
+(Chương~\ref{chap:method} và Mục~\ref{subsec:exp-ctx4096}).
+
+Điều cần lưu ý quan trọng nhất: NeoBERT đã học một phần thân Encoder \textit{rất mạnh} trên
+tiếng Anh -- sâu 28 lớp với RoPE, SwiGLU và Pre-RMSNorm -- nhưng toàn bộ lớp nhúng và đầu ra
+gắn với từ vựng tiếng Anh. Đây chính xác là lý do đề tài tập trung vào khởi tạo lại lớp nhúng
+tiếng Việt bằng SALT thay vì huấn luyện lại từ đầu -- phần thân đã huấn luyện trên 2,1 nghìn
+tỷ token tiếng Anh là tài sản quý không cần tái tạo.
 
 % ======================================================================
 \section{Chuyển giao không gian nhúng và thích nghi ngôn ngữ}
@@ -402,9 +539,10 @@ Rủi ro của CPT là mô hình có thể phải học lại từ tín hiệu �
 đều gợi ý rằng điểm khởi đầu của lớp nhúng ảnh hưởng lớn tới ổn định huấn luyện. Vì vậy,
 đề tài xem khởi tạo nhúng là bước quyết định trước khi CPT.
 
-Một khía cạnh thực hành quan trọng khác của CPT là \textit{lịch tốc độ học}. Lịch cosine
-truyền thống yêu cầu cam kết trước tổng số bước huấn luyện -- điều khó đáp ứng khi CPT diễn
-ra theo nhiều phiên nối tiếp trên hạ tầng tính toán giới hạn. Lịch
+Một khía cạnh thực hành quan trọng khác của CPT là \textit{lịch tốc độ học}. Lịch cosine truyền thống yêu cầu cam kết trước tổng số bước huấn luyện -- điều khó đáp ứng
+khi CPT diễn ra theo nhiều phiên nối tiếp trên hạ tầng tính toán giới hạn (chẳng hạn mỗi
+phiên Google Colab có thời lượng cố định, và tổng ngân sách huấn luyện không nhất thiết
+được biết trước). Lịch
 Warmup--Stable--Decay (WSD)~\cite{hu2024minicpm} tách quá trình thành pha khởi động, pha ổn
 định ở tốc độ học đỉnh và pha làm nguội ngắn, cho phép dừng và tiếp tục linh hoạt; Hägele
 và cộng sự~\cite{hagele2024scaling} cho thấy cách tiếp cận này đạt chất lượng tương đương

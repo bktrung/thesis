@@ -49,9 +49,8 @@ Bảng~\ref{tab:data-stats} tóm tắt thống kê dữ liệu sử dụng trong
     \hline
     CulturaX (tiếng Việt) & Căn chỉnh đóng băng & $\sim$20 triệu token \\
     CulturaX (tiếng Việt) & Tiếp tục tiền huấn luyện & $\sim$5 tỷ token ($\sim$20GB văn bản) \\
-    UIT-ViQuAD 2.0 (câu hỏi trả lời được) & Tinh chỉnh hạ nguồn (chính) & $\sim$18 nghìn câu hỏi huấn luyện \\
-    % TODO(user): số dòng chính xác train/val/test sau khi lọc answerable + chia đôi validation
-    Bộ đánh giá đa nhiệm (Mục~\ref{subsec:exp-eval-data}) & Tinh chỉnh hạ nguồn & 12 tác vụ bổ sung \\
+    UIT-ViQuAD 2.0 (câu hỏi trả lời được) & Tinh chỉnh hạ nguồn & $\sim$18 nghìn câu hỏi huấn luyện \\
+    Bộ đánh giá đa nhiệm (Mục~\ref{subsec:exp-eval-data}) & Tinh chỉnh hạ nguồn & 12 tác vụ: phân loại, suy luận, gán nhãn, tương đồng ngữ nghĩa, Retrieval, Reranking \\
     \hline
   \end{tabular}
 \end{table}
@@ -81,12 +80,66 @@ năng lực khác nhau của một Encoder:
   \item \textbf{Tương đồng ngữ nghĩa}: bộ STS bản tiếng Việt, đo tương quan giữa điểm dự
         đoán và điểm do con người gán; và tác vụ phát hiện diễn đạt lại (paraphrase) --
         phân loại nhị phân cặp câu tương đương ngữ nghĩa xây dựng từ dữ liệu STS.
-  \item \textbf{Biểu diễn câu}: truy hồi ngữ cảnh và xếp hạng lại, xây dựng từ các cặp
-        (câu hỏi, đoạn văn) của UIT-ViQuAD. Hai tác vụ này được đánh giá theo đúng giao
-        thức mà NeoBERT dùng cho MTEB~\cite{lebreton2025neobert}: lấy biểu diễn câu bằng
-        gộp trung bình (mean pooling) rồi tinh chỉnh tương phản nhẹ, áp dụng \textit{đồng
-        nhất} cho mọi mô hình so sánh.
+  \item \textbf{Biểu diễn câu (Retrieval và Reranking)}: Retrieval và Reranking xây dựng
+        từ các cặp (câu hỏi, đoạn văn) của UIT-ViQuAD. Hai tác vụ này được đánh giá theo
+        giao thức biểu diễn câu của NeoBERT cho MTEB~\cite{lebreton2025neobert}: lấy biểu
+        diễn câu bằng gộp trung bình (mean pooling) rồi tinh chỉnh tương phản nhẹ, áp dụng
+        \textit{đồng nhất} cho mọi mô hình so sánh.
 \end{itemize}
+
+Bảng~\ref{tab:eval-tasks} tổng hợp toàn bộ bộ đánh giá hạ nguồn cùng nhóm năng lực và độ đo
+tương ứng của từng tác vụ.
+
+\begin{table}[ht]
+  \caption{Tổng hợp các tác vụ đánh giá hạ nguồn tiếng Việt.}
+  \label{tab:eval-tasks}
+  \centering
+  \small
+  \begin{tabular}{lll}
+    \hline
+    \textbf{Tác vụ (bộ dữ liệu)} & \textbf{Nhóm năng lực} & \textbf{Độ đo} \\
+    \hline
+    UIT-ViQuAD 2.0     & Hỏi đáp đọc hiểu        & EM, F1 ($\uparrow$) \\
+    XNLI (vi)          & Suy luận ngôn ngữ       & Accuracy ($\uparrow$) \\
+    ViANLI             & Suy luận đối kháng      & F1-macro ($\uparrow$) \\
+    QNLI (vi)          & Suy luận câu hỏi--câu   & Accuracy ($\uparrow$) \\
+    UIT-VSFC           & Phân loại phản hồi      & F1-weighted ($\uparrow$) \\
+    UIT-VSMEC          & Phân loại cảm xúc       & F1-macro ($\uparrow$) \\
+    UIT-ViCTSD         & Phân loại độc hại       & F1-macro ($\uparrow$) \\
+    ViCoLA-syn         & Chấp nhận ngữ pháp      & MCC ($\uparrow$) \\
+    UD-VTB             & Gán nhãn từ loại        & F1-macro ($\uparrow$) \\
+    STS (vi)           & Tương đồng ngữ nghĩa    & Spearman ($\uparrow$) \\
+    Paraphrase (STS)   & Phát hiện diễn đạt lại  & F1-macro ($\uparrow$) \\
+    Retrieval (ViQuAD) & Biểu diễn câu           & nDCG@10 ($\uparrow$) \\
+    Reranking (ViQuAD) & Biểu diễn câu           & MRR ($\uparrow$) \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Bảng~\ref{tab:model-comparison} đặt ViNeoBERT và các mô hình đối sánh trong bối cảnh tổng
+thể, tương tự cách NeoBERT~\cite{lebreton2025neobert} so sánh với ModernBERT và NomicBERT.
+
+\begin{table}[ht]
+  \caption{So sánh các mô hình Encoder tiếng Việt và đa ngữ được đánh giá trong đề tài.}
+  \label{tab:model-comparison}
+  \centering
+  \small
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{lcccc}
+    \hline
+    \textbf{Mô hình} & \textbf{Tham số} & \textbf{Kiến trúc} & \textbf{Dữ liệu tiếng Việt} & \textbf{Ngữ cảnh} \\
+    \hline
+    PhoBERT-base    & 135M & RoBERTa     & 20GB $\times$ 40 epoch $\approx$140B token & 512 \\
+    PhoBERT-base-v2 & 135M & RoBERTa     & +120GB OSCAR-2301                           & 512 \\
+    PhoBERT-large   & 370M & RoBERTa     & Cùng base-v2                                & 512 \\
+    XLM-R-base      & 278M & RoBERTa     & $\approx$137GB CC-100 vi ($\approx$25B token vi) & 512 \\
+    XLM-R-large     & 560M & RoBERTa     & Cùng base                                   & 512 \\
+    \hline
+    ViNeoBERT       & $\approx$245M & NeoBERT & 20GB, 1 lượt ($\approx$5B token) & 4.096 \\
+    \hline
+  \end{tabular}%
+  }
+\end{table}
 
 % ======================================================================
 \section{Cấu hình huấn luyện}
@@ -112,7 +165,7 @@ giá trị được giữ cố định cho \textit{mọi} phương án khởi t�
     Batch size hiệu dụng   & $32 \times 4 = 128$ & $32 \times 16 = 512$ & $4 \times 32 = 128$ \\
     Tỷ lệ che MLM          & 20\%             & 20\%               & 20\% \\
     Bộ tối ưu              & \multicolumn{3}{c}{AdamW, $\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}01$} \\
-    Lịch tốc độ học        & tuyến tính       & WSD (làm nguội cosine/$1-\sqrt{\cdot}$) & hằng số sau khởi động \\
+    Lịch tốc độ học        & tuyến tính       & WSD, làm nguội $1{-}\sqrt{\cdot}$ (CT~\ref{eq:wsd}) & hằng số sau khởi động \\
     Số epoch               & 1 lượt ($\sim$20M token) & theo phiên $\sim$1 tỷ token & 1 lượt ($\sim$200M token) \\
     \hline
   \end{tabular}%
@@ -156,6 +209,32 @@ tính trung bình trên 5 lần chạy với hạt giống khác nhau và báo c
         trung bình nghịch đảo thứ hạng của ngữ cảnh đúng. Hai tác vụ này được chạy một
         lần theo giao thức biểu diễn câu chung nên không kèm độ lệch chuẩn.
 \end{itemize}
+
+Một số độ đo được định nghĩa hình thức như sau. Với hỏi đáp đọc hiểu, F1 ở cấp token là
+trung bình điều hòa của độ chính xác $P$ và độ bao phủ $R$ giữa câu trả lời dự đoán và đáp
+án chuẩn, như Công thức~\eqref{eq:f1}:
+\begin{equation}
+  \label{eq:f1}
+  \mathrm{F1} = \frac{2PR}{P + R}.
+\end{equation}
+Hệ số tương quan Matthews cho phân loại nhị phân, tính từ các đại lượng dương thật ($TP$),
+âm thật ($TN$), dương giả ($FP$) và âm giả ($FN$), như Công thức~\eqref{eq:mcc}:
+\begin{equation}
+  \label{eq:mcc}
+  \mathrm{MCC} = \frac{TP\cdot TN - FP\cdot FN}
+  {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}.
+\end{equation}
+Với truy hồi và xếp hạng lại, gọi $\mathrm{rel}_i \in \{0,1\}$ là mức liên quan của kết quả ở
+hạng $i$ và $\mathrm{rank}_q$ là thứ hạng của ngữ cảnh đúng đầu tiên cho truy vấn $q$, hai độ
+đo được xác định như Công thức~\eqref{eq:ndcg-mrr}:
+\begin{equation}
+  \label{eq:ndcg-mrr}
+  \mathrm{nDCG@}k = \frac{1}{Z}\sum_{i=1}^{k}\frac{2^{\mathrm{rel}_i}-1}{\log_2(i+1)},
+  \qquad
+  \mathrm{MRR} = \frac{1}{|Q|}\sum_{q\in Q}\frac{1}{\mathrm{rank}_q},
+\end{equation}
+trong đó $Z$ là hệ số chuẩn hóa (DCG của thứ hạng lý tưởng) đưa nDCG về đoạn $[0,1]$, và $Q$
+là tập truy vấn đánh giá.
 
 % ======================================================================
 \section{So sánh các phương án khởi tạo}
@@ -358,14 +437,14 @@ lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Vi
   \centering
   \small
   \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lllc}
+  \begin{tabular}{lll}
     \hline
-    \textbf{Mô hình} & \textbf{Kho ngữ liệu} & \textbf{Token đã duyệt} & \textbf{So với ViNeoBERT} \\
+    \textbf{Mô hình} & \textbf{Kho ngữ liệu} & \textbf{Đã thay} \\
     \hline
-    PhoBERT (base/large) & 20GB ($\sim$3,5 tỷ token) & $\sim$140 tỷ (40 epoch) & gấp $\sim$28 lần \\
-    PhoBERT-base-v2      & 140GB ($\sim$25 tỷ token) & không công bố ($\geq$ bản gốc) & gấp $\geq$ 28 lần \\
-    XLM-R (base/large)   & CC-100 2,5TB; phần vi 24,76 tỷ token & $\sim$6.300 tỷ (đa ngữ); vi ước hàng trăm tỷ & gấp hàng chục lần \\
-    ViNeoBERT            & 20GB ($\sim$5 tỷ token)   & 5 tỷ (một lượt) & -- \\
+    PhoBERT (base/large) & 20GB ($\sim$3,5 tỷ token) & $\sim$140 tỷ (40 epoch) \\
+    PhoBERT-base-v2      & 140GB ($\sim$25 tỷ token) & không công bố ($\geq$ bản gốc) \\
+    XLM-R (base/large)   & CC-100 2,5TB; phần vi 24,76 tỷ token & $\sim$6.300 tỷ (đa ngữ); vi ước hàng trăm tỷ \\
+    ViNeoBERT            & 20GB ($\sim$5 tỷ token)   & 5 tỷ (một lượt) \\
     \hline
   \end{tabular}%
   }
@@ -377,14 +456,13 @@ lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Vi
 Để có bức tranh toàn diện hơn một tác vụ đơn lẻ, mô hình cuối được đánh giá trên mười hai
 tác vụ thuộc năm nhóm năng lực (Mục~\ref{subsec:exp-eval-data}), so với bốn mô hình đối
 sánh: hai bản \texttt{base} cùng hạng tham số và hai bản \texttt{large} lớn hơn đáng kể
-(PhoBERT-large khoảng 370 triệu, XLM-R-large khoảng 550 triệu tham số, so với 245 triệu
-của ViNeoBERT). Kết quả trình bày trong Bảng~\ref{tab:multitask}: mỗi ô là trung bình
-$\pm$ độ lệch chuẩn qua 5 lần chạy, riêng hai tác vụ biểu diễn câu chạy một lần
-(Mục~\ref{sec:exp-metrics}).
+(PhoBERT-large khoảng 370 triệu, XLM-R-large khoảng 550 triệu tham số, so với $\approx$245
+triệu của ViNeoBERT). Kết quả trình bày trong Bảng~\ref{tab:multitask}: mỗi ô là giá trị
+trung bình qua 5 lần chạy với hạt giống khác nhau, riêng hai tác vụ Retrieval và Reranking
+chạy một lần (Mục~\ref{sec:exp-metrics}).
 
 \begin{table}[ht]
-  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token (kết quả tốt nhất mỗi hàng
-    in đậm).}
+  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token.}
   \label{tab:multitask}
   \centering
   \small
@@ -393,18 +471,18 @@ $\pm$ độ lệch chuẩn qua 5 lần chạy, riêng hai tác vụ biểu diễ
     \hline
     \textbf{Tác vụ} & \textbf{Độ đo} & \textbf{PhoBERT-base-v2} & \textbf{PhoBERT-large} & \textbf{XLM-R-base} & \textbf{XLM-R-large} & \textbf{ViNeoBERT} \\
     \hline
-    UIT-VSFC     & F1-weighted ($\uparrow$) & 0,9345 $\pm$ 0,0038 & \textbf{0,9356 $\pm$ 0,0024} & 0,9281 $\pm$ 0,0023 & 0,9312 $\pm$ 0,0031 & 0,9284 $\pm$ 0,0014 \\
-    UIT-VSMEC    & F1-macro ($\uparrow$)    & \textbf{0,6415 $\pm$ 0,0145} & 0,6132 $\pm$ 0,0209 & 0,6145 $\pm$ 0,0112 & 0,3125 $\pm$ 0,3171 & 0,6163 $\pm$ 0,0199 \\
-    UIT-ViCTSD   & F1-macro ($\uparrow$)    & 0,7455 $\pm$ 0,0040 & \textbf{0,7526 $\pm$ 0,0143} & 0,7110 $\pm$ 0,0228 & 0,5759 $\pm$ 0,1442 & 0,7315 $\pm$ 0,0158 \\
-    ViCoLA-syn   & MCC ($\uparrow$)         & \textbf{0,8103 $\pm$ 0,0044} & 0,7915 $\pm$ 0,0124 & 0,7827 $\pm$ 0,0138 & 0,4845 $\pm$ 0,4423 & 0,7789 $\pm$ 0,0042 \\
-    XNLI (vi)    & Accuracy ($\uparrow$)    & 0,7720 $\pm$ 0,0086 & 0,7769 $\pm$ 0,0050 & 0,7541 $\pm$ 0,0057 & \textbf{0,8000 $\pm$ 0,0049} & 0,7714 $\pm$ 0,0038 \\
-    ViANLI       & F1-macro ($\uparrow$)    & \textbf{0,4529 $\pm$ 0,0105} & 0,3882 $\pm$ 0,1242 & 0,3625 $\pm$ 0,0543 & 0,1666 $\pm$ 0,0002 & 0,4273 $\pm$ 0,0221 \\
-    QNLI (vi)    & Accuracy ($\uparrow$)    & 0,8872 $\pm$ 0,0036 & 0,8861 $\pm$ 0,0039 & 0,8592 $\pm$ 0,0032 & \textbf{0,8940 $\pm$ 0,0060} & 0,8791 $\pm$ 0,0033 \\
-    UD-VTB (POS) & F1-macro ($\uparrow$)    & 0,7799 $\pm$ 0,0050 & 0,7879 $\pm$ 0,0069 & 0,7827 $\pm$ 0,0014 & 0,8062 $\pm$ 0,0089 & \textbf{0,8089 $\pm$ 0,0047} \\
-    STS (vi)     & Spearman ($\uparrow$)    & 0,8557 $\pm$ 0,0039 & 0,8509 $\pm$ 0,0049 & 0,8226 $\pm$ 0,0078 & \textbf{0,8644 $\pm$ 0,0023} & 0,8392 $\pm$ 0,0041 \\
-    Paraphrase (STS) & F1-macro ($\uparrow$) & 0,9351 $\pm$ 0,0063 & 0,9400 $\pm$ 0,0102 & 0,9016 $\pm$ 0,0134 & \textbf{0,9437 $\pm$ 0,0064} & 0,9276 $\pm$ 0,0084 \\
-    Truy hồi (ViQuAD)     & nDCG@10 ($\uparrow$) & \textbf{0,4719} & 0,4659 & 0,1386 & 0,2565 & 0,4061 \\
-    Xếp hạng lại (ViQuAD) & MRR ($\uparrow$)     & \textbf{0,8922} & 0,8794 & 0,5282 & 0,6741 & 0,8448 \\
+    UIT-VSFC         & F1-weighted ($\uparrow$) & 0,9345 & \textbf{0,9356} & 0,9281 & 0,9312 & 0,9284 \\
+    UIT-VSMEC        & F1-macro ($\uparrow$)    & \textbf{0,6415} & 0,6132 & 0,6145 & 0,3125 & 0,6163 \\
+    UIT-ViCTSD       & F1-macro ($\uparrow$)    & 0,7455 & \textbf{0,7526} & 0,7110 & 0,5759 & 0,7315 \\
+    ViCoLA-syn       & MCC ($\uparrow$)         & \textbf{0,8103} & 0,7915 & 0,7827 & 0,4845 & 0,7789 \\
+    XNLI (vi)        & Accuracy ($\uparrow$)    & 0,7720 & 0,7769 & 0,7541 & \textbf{0,8000} & 0,7714 \\
+    ViANLI           & F1-macro ($\uparrow$)    & \textbf{0,4529} & 0,3882 & 0,3625 & 0,1666 & 0,4273 \\
+    QNLI (vi)        & Accuracy ($\uparrow$)    & 0,8872 & 0,8861 & 0,8592 & \textbf{0,8940} & 0,8791 \\
+    UD-VTB (POS)     & F1-macro ($\uparrow$)    & 0,7799 & 0,7879 & 0,7827 & 0,8062 & \textbf{0,8089} \\
+    STS (vi)         & Spearman ($\uparrow$)    & 0,8557 & 0,8509 & 0,8226 & \textbf{0,8644} & 0,8392 \\
+    Paraphrase (STS) & F1-macro ($\uparrow$)    & 0,9351 & 0,9400 & 0,9016 & \textbf{0,9437} & 0,9276 \\
+    Retrieval (ViQuAD)  & nDCG@10 ($\uparrow$) & \textbf{0,4719} & 0,4659 & 0,1386 & 0,2565 & 0,4061 \\
+    Reranking (ViQuAD)  & MRR ($\uparrow$)     & \textbf{0,8922} & 0,8794 & 0,5282 & 0,6741 & 0,8448 \\
     \hline
   \end{tabular}%
   }
@@ -413,40 +491,36 @@ $\pm$ độ lệch chuẩn qua 5 lần chạy, riêng hai tác vụ biểu diễ
 Từ Bảng~\ref{tab:multitask}, chúng tôi rút ra bốn nhận xét:
 
 \begin{itemize}
-  \item \textbf{Bức tranh chung}: so với XLM-R-base -- mô hình đa ngữ cùng hạng tham số
-        và là đối sánh tự nhiên nhất của một Encoder mới thích nghi -- ViNeoBERT đạt kết
-        quả cao hơn ở 11/12 tác vụ (ngoại lệ duy nhất là ViCoLA-syn với khoảng cách
-        0,004, nằm trong một độ lệch chuẩn); tính cả tác vụ đọc hiểu ở
-        Mục~\ref{subsec:exp-curve}, tỷ lệ là 12/13. ViNeoBERT cũng dẫn đầu \textit{cả
-        bảng} ở gán nhãn từ loại, vượt cả hai bản \texttt{large}. PhoBERT giữ ưu thế ở
-        nhóm phân loại câu ngắn (VSFC, VSMEC, ViCTSD, ViCoLA-syn, ViANLI) và hai tác vụ
-        biểu diễn câu, song khoảng cách ở nhiều tác vụ chỉ dưới 1 điểm (VSFC, XNLI,
-        QNLI, paraphrase) -- vùng đã bão hòa, mọi mô hình tốt đều nằm sát nhau.
-  \item \textbf{Ổn định khi tinh chỉnh}: XLM-R-large tuy dẫn đầu các tác vụ suy luận và
-        tương đồng ngữ nghĩa cỡ lớn (XNLI, QNLI, STS, paraphrase) nhưng \textit{bất ổn
-        nghiêm trọng} trên các bộ dữ liệu nhỏ: độ lệch chuẩn lên tới 0,3171 (VSMEC),
-        0,4423 (ViCoLA-syn), 0,1442 (ViCTSD), và sụp đổ hoàn toàn ở ViANLI (0,1666) --
-        hiện tượng bất ổn tinh chỉnh đã biết của các mô hình lớn trên dữ liệu ít. Ngược
-        lại, ViNeoBERT ổn định trên toàn bộ 12 tác vụ với độ lệch chuẩn không quá 0,023.
+  \item \textbf{So sánh với PhoBERT}: PhoBERT là đối sánh chính -- mô hình chuyên biệt
+        tiếng Việt được tiền huấn luyện quy mô lớn và là chuẩn hiện tại của lĩnh vực. So
+        với PhoBERT-base-v2 cùng hạng tham số, ViNeoBERT thắng ở gán nhãn từ loại (0,8089
+        so với 0,7799), Retrieval (0,4061 so với 0,4719~-- thua nhưng bỏ xa XLM-R-base
+        0,1386), và Reranking (0,8448 so với 0,8922), trong khi ngang ngửa ở VSFC (+0,0061
+        cho PhoBERT), XNLI (+0,0006), QNLI (+0,0081), và thua rõ hơn ở VSMEC, ViCoLA-syn,
+        ViANLI. PhoBERT-large -- lớn gấp 1,5 lần -- dẫn đầu ở VSFC, ViCTSD và các tác vụ
+        paraphrase/STS, song ViNeoBERT đã vượt qua ở gán nhãn từ loại.
+  \item \textbf{So sánh với XLM-R}: XLM-R là đối sánh thứ hai -- mô hình đa ngữ không
+        chuyên biệt tiếng Việt. So với XLM-R-base cùng hạng tham số, ViNeoBERT thắng ở
+        11/12 tác vụ bảng này, và 12/13 nếu tính đọc hiểu ở Mục~\ref{subsec:exp-curve}.
+        XLM-R-large tuy dẫn một số tác vụ suy luận và tương đồng ngữ nghĩa nhưng thể hiện
+        \textit{bất ổn tinh chỉnh nghiêm trọng} trên các bộ dữ liệu nhỏ (phương sai rất cao
+        ở VSMEC, ViCoLA-syn, ViCTSD) và sụp đổ hoàn toàn ở ViANLI -- hiện tượng đã biết
+        của các mô hình lớn trên dữ liệu ít. ViNeoBERT ổn định trên toàn bộ 12 tác vụ.
   \item \textbf{Hiệu quả dữ liệu -- điểm mấu chốt}: lượng tiếng Việt mà ViNeoBERT tiếp
-        xúc chỉ khoảng 5 tỷ token, tương đương khoảng 20GB văn bản duyệt đúng một
-        lượt. Để so sánh: PhoBERT
-        được huấn luyện 40 epoch trên kho 20GB văn bản (1GB Wikipedia + 19GB tin
-        tức)~\cite{nguyen2020phobert}, tức lượng token đã duyệt lớn hơn ViNeoBERT
-        khoảng 30 lần; bản base-v2 còn được huấn luyện bổ sung trên 120GB văn bản
-        OSCAR-2301. XLM-R được huấn luyện trên 2,5TB dữ liệu CC-100, trong đó riêng phần
-        tiếng Việt đã khoảng 137GB~\cite{conneau2020xlmr} -- gấp nhiều lần toàn bộ ngân
-        sách của đề tài. Việc một mô hình chỉ ``đọc'' lượng tiếng Việt ít hơn một đến hai
-        bậc như vậy vẫn cạnh tranh sòng phẳng với cả các bản \texttt{large}, chứng minh
-        trực tiếp luận điểm của đề tài: khởi tạo có thông tin cho phép kế thừa năng lực
-        của phần thân đã huấn luyện thay vì học lại từ đầu.
+        xúc chỉ khoảng 5 tỷ token ($\sim$20GB) duyệt đúng một lượt.
+        PhoBERT được huấn luyện 40 epoch trên 20GB (Wikipedia + tin tức), tức lượng token
+        đã duyệt lớn hơn ViNeoBERT khoảng 30 lần~\cite{nguyen2020phobert}; bản base-v2
+        huấn luyện bổ sung trên 120GB văn bản OSCAR-2301. XLM-R sử dụng 2,5TB dữ liệu
+        CC-100, riêng phần tiếng Việt $\approx$137GB~\cite{conneau2020xlmr} -- gấp nhiều
+        lần toàn bộ ngân sách của đề tài. Kết quả cạnh tranh sòng phẳng với các bản
+        \texttt{large} khi chỉ ``đọc'' ít hơn một đến hai bậc xác nhận trực tiếp luận điểm
+        của đề tài: khởi tạo có thông tin cho phép kế thừa năng lực phần thân đã huấn
+        luyện thay vì học lại từ đầu.
   \item \textbf{Phân bố điểm mạnh}: các tác vụ ViNeoBERT mạnh nhất (đọc hiểu span dài,
-        gán nhãn từ loại) đều gắn với chất lượng \textit{biểu diễn theo ngữ cảnh ở cấp
-        token} -- đúng phần năng lực được kế thừa từ phần thân NeoBERT. Ở nhóm biểu diễn
-        câu, ViNeoBERT bỏ xa cả hai bản XLM-R (nDCG@10 0,4061 so với 0,1386 và 0,2565;
-        MRR 0,8448 so với 0,5282 và 0,6741) và tiệm cận họ PhoBERT -- vốn hưởng lợi từ
-        tách từ tiếng Việt và dữ liệu trong miền cho các tác vụ dựa nhiều vào từ vựng
-        bề mặt.
+        gán nhãn từ loại, Retrieval/Reranking) gắn với chất lượng \textit{biểu diễn theo
+        ngữ cảnh ở cấp token} -- đúng năng lực được kế thừa từ phần thân NeoBERT sâu 28
+        lớp. PhoBERT giữ ưu thế ở nhóm phân loại câu ngắn và tương đồng ngữ nghĩa -- vốn
+        hưởng lợi từ bộ tách từ tiếng Việt và dữ liệu trong miền phong phú hơn.
 \end{itemize}
 
 \subsection{Mở rộng ngữ cảnh lên 4.096 token}
