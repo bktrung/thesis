@@ -3,7 +3,7 @@
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Luồng xử lý của một mô hình Encoder-only kiểu BERT.}}{9}{figure.2.1}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Kiến trúc NeoBERT~\blx@tocontentsinit {0}\cite {lebreton2025neobert}.}}{12}{figure.2.2}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Cơ chế mã hóa vị trí quay (RoPE)}}{16}{figure.2.3}%
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Cấu trúc cổng SwiGLU~\blx@tocontentsinit {0}\cite {shazeer2020glu}.}}{19}{figure.2.4}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Cấu trúc cổng SwiGLU}}{19}{figure.2.4}%
 \contentsline {figure}{\numberline {2.5}{\ignorespaces Sơ đồ tổng quan SALT}}{25}{figure.2.5}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT.}}{29}{figure.3.1}%
@@ -12,7 +12,8 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Phân bố nhúng của từ vựng tiếng Việt so với không gian NeoBERT trước (trái) và sau (phải) phép chiếu SALT.}}{52}{figure.4.1}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Mất mát MLM trên tập đánh giá của ba giá trị hệ số co $\gamma $.}}{54}{figure.4.2}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces So sánh ba chiến lược khởi tạo tại cùng mốc $\sim $100 triệu token CPT.}}{55}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo lượng token tiếp tục tiền huấn luyện.}}{57}{figure.4.4}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Pseudo-perplexity theo độ dài chuỗi trước (trái) và sau (phải) pha mở rộng ngữ cảnh 4.096 token.}}{61}{figure.4.5}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Đường học của giai đoạn tiếp tục tiền huấn luyện WSD.}}{57}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo lượng token tiếp tục tiền huấn luyện.}}{58}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Pseudo-perplexity theo độ dài chuỗi trước (trái) và sau (phải) pha mở rộng ngữ cảnh 4.096 token.}}{62}{figure.4.6}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

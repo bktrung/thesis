@@ -75,13 +75,13 @@ Encoder-only kiểu BERT.
   ]
     \node[wide, fill=blue!7] (tokens) {\texttt{[CLS]} \quad $x_1$ \quad $x_2$ \quad $\cdots$ \quad $x_n$ \quad \texttt{[SEP]}};
     \node[wide, fill=orange!12, above=of tokens] (embed) {Token embedding + positional/segment embedding};
-    \node[wide, fill=green!10, above=of embed] (layers) {$L$ khối Transformer Encoder hai chiều};
-    \node[smallbox, fill=purple!9, above left=9mm and 1mm of layers] (cls) {Biểu diễn\\\texttt{[CLS]}};
-    \node[smallbox, fill=purple!9, above=9mm of layers] (tok) {Biểu diễn\\theo token};
-    \node[smallbox, fill=purple!9, above right=9mm and 1mm of layers] (mlm) {Đầu ra\\MLM};
-    \node[box, fill=gray!8, above=of cls] (sent) {Phân loại /\\truy hồi};
-    \node[box, fill=gray!8, above=of tok] (ner) {Gán nhãn /\\hỏi đáp};
-    \node[box, fill=gray!8, above=of mlm] (pre) {Tiền huấn\\luyện};
+    \node[wide, fill=green!10, above=of embed] (layers) {$L$ bidirectional Transformer Encoder blocks};
+    \node[smallbox, fill=purple!9, above left=9mm and 1mm of layers] (cls) {\texttt{[CLS]}\\representation};
+    \node[smallbox, fill=purple!9, above=9mm of layers] (tok) {Per-token\\representation};
+    \node[smallbox, fill=purple!9, above right=9mm and 1mm of layers] (mlm) {MLM\\output};
+    \node[box, fill=gray!8, above=of cls] (sent) {Classification /\\retrieval};
+    \node[box, fill=gray!8, above=of tok] (ner) {Tagging /\\QA};
+    \node[box, fill=gray!8, above=of mlm] (pre) {Pre-training};
     \draw[->] (tokens)--(embed);
     \draw[->] (embed)--(layers);
     \draw[->] (layers.north)--(cls.south);
@@ -165,6 +165,7 @@ tiếp tới thiết kế phương pháp ở Chương~\ref{chap:method}.
 
 \begin{figure}[!htbp]
   \centering
+  \resizebox{\textwidth}{!}{%
   \begin{tikzpicture}[
     node distance=4mm,
     box/.style={draw, rounded corners=2pt, minimum width=40mm, minimum height=8mm, align=center, font=\small},
@@ -196,12 +197,12 @@ tiếp tới thiết kế phương pháp ở Chương~\ref{chap:method}.
     % ---- per-layer residual connections ----
     \coordinate (r1) at ($(emb.north)!0.5!(n1.south)$);
     \coordinate (r2) at ($(a1.north)!0.5!(n2.south)$);
-    \draw[res] (r1) -- ++(-2.6,0) |- (a1.west);
-    \draw[res] (r2) -- ++(-2.6,0) |- (a2.west);
+    \draw[res] (r1) -- ++(-2.2,0) |- (a1.west);
+    \draw[res] (r2) -- ++(-2.2,0) |- (a2.west);
 
-    % ---- x28 dashed block frame ----
+    % ---- x28 dashed block frame (encloses the residual highways) ----
     \node[draw=black!55, densely dashed, rounded corners=4pt,
-          fit=(n1)(attn)(a1)(n2)(ffn)(a2), inner xsep=3mm, inner ysep=3mm] (blk) {};
+          fit=(n1)(attn)(a1)(n2)(ffn)(a2), inner xsep=6mm, inner ysep=3mm] (blk) {};
     \node[font=\small\bfseries] at ($(blk.south east)+(-5mm,4mm)$) {$\times\,28$};
 
     % ============================================================
@@ -236,57 +237,48 @@ tiếp tới thiết kế phương pháp ở Chương~\ref{chap:method}.
     %   K -> RoPE -> K_r  >-> Scaled Dot-Product -> W_o -> out
     %   V ----------/
 
-    \node[font=\scriptsize] (ain) at ($(attn.west)+(-38mm,-16mm)$) {$x$};
+    % three parallel projection columns (Q | K | V) fan up from W_qkv
+    \node[font=\scriptsize] (ain) at ($(blk.west)+(-49mm,-15mm)$) {$x$};
+    \node[sb, fill=orange!20, above=4mm of ain] (wqkv) {$W_{qkv}$ (fused)};
 
-    \node[sb, fill=orange!20, above=4mm of ain]    (wqkv)  {$W_{qkv}$ (fused)};
+    \node[sb, fill=cyan!15, minimum width=12mm, above=7mm of wqkv, xshift=-16mm] (q) {$Q$};
+    \node[sb, fill=cyan!15, minimum width=12mm, above=7mm of wqkv]               (k) {$K$};
+    \node[sb, fill=cyan!15, minimum width=12mm, above=7mm of wqkv, xshift=16mm]  (v) {$V$};
 
-    % Q branch
-    \node[sb, fill=cyan!15,  above left=6mm and 10mm of wqkv]  (q)     {$Q$};
-    \node[sb, fill=green!25, above=4mm of q]                    (ropeq) {RoPE};
-    \node[font=\scriptsize,  above=3mm of ropeq]                (qr)    {$Q_r$};
+    % RoPE rotates Q and K only (V is passed through unchanged)
+    \node[sb, fill=green!25, minimum width=12mm, above=4mm of q] (ropeq) {RoPE};
+    \node[sb, fill=green!25, minimum width=12mm, above=4mm of k] (ropek) {RoPE};
 
-    % K branch
-    \node[sb, fill=cyan!15,  above=6mm of wqkv]                (k)     {$K$};
-    \node[sb, fill=green!25, above=4mm of k]                    (ropek) {RoPE};
-    \node[font=\scriptsize,  above=3mm of ropek]                (kr)    {$K_r$};
-
-    % V branch
-    \node[sb, fill=cyan!15,  above right=6mm and 10mm of wqkv] (v)     {$V$};
-    \node[font=\scriptsize,  above=10mm of v]                   (vp)    {$V$};
-
-    % Attention op
-    \node[sb, fill=orange!30, above=14mm of k] (sdp) {Attn$(Q_r,K_r,V)$};
-
-    % W_o
-    \node[sb, fill=orange!20, above=4mm of sdp] (wo) {$W_o$};
+    % scaled dot-product attention: spans the three columns, fed from below
+    \node[sb, fill=orange!30, minimum width=42mm, above=9mm of ropek] (sdp) {Attention (12 heads)};
+    \node[sb, fill=orange!20, above=5mm of sdp] (wo)   {$W_o$};
     \node[font=\scriptsize,   above=3mm of wo]  (aout) {out};
 
     % arrows inside MHA callout
     \draw[arr] (ain)--(wqkv);
-    \draw[arr] (wqkv) -- (q.south);
-    \draw[arr] (wqkv) -- (k.south);
-    \draw[arr] (wqkv) -- (v.south);
+    \draw[arr] (wqkv) -- (q);
+    \draw[arr] (wqkv) -- (k);
+    \draw[arr] (wqkv) -- (v);
     \draw[arr] (q)--(ropeq);
-    \draw[arr] (ropeq)--(qr);
     \draw[arr] (k)--(ropek);
-    \draw[arr] (ropek)--(kr);
-    \draw[arr] (v)--(vp);
-    \draw[arr] (qr) |- (sdp.west);
-    \draw[arr] (kr) |- (sdp.west);
-    \draw[arr] (vp) |- (sdp.east);
+    \draw[arr] (ropeq) -- (ropeq |- sdp.south);
+    \draw[arr] (ropek) -- (ropek |- sdp.south);
+    \draw[arr] (v)     -- (v     |- sdp.south);
     \draw[arr] (sdp)--(wo);
     \draw[arr] (wo)--(aout);
 
     % callout frame
     \node[draw=orange!70, densely dashed, rounded corners=3pt,
-          fit=(ain)(wqkv)(q)(ropeq)(qr)(k)(ropek)(kr)(v)(vp)(sdp)(wo)(aout),
+          fit=(ain)(wqkv)(q)(k)(v)(ropeq)(ropek)(sdp)(wo)(aout),
           inner sep=2.5mm] (aframe) {};
     \node[font=\scriptsize\bfseries, orange!80]
           at ($(aframe.north)+(0,3mm)$) {Multi-Head Attention};
+    % single clean leader in the empty gap, at the height of the MHA block
     \draw[semithick, orange!65, densely dashed]
-          (attn.west) to[out=180,in=0] (aframe.east);
+          (aframe.east|-attn) -- (blk.west|-attn);
 
-  \end{tikzpicture}
+  \end{tikzpicture}%
+  }
   \caption{Kiến trúc NeoBERT~\cite{lebreton2025neobert}.}
   \label{fig:neobert-arch}
 \end{figure}
@@ -422,7 +414,7 @@ nhân ma trận:
   R_{\Theta,m}\,x =
   \begin{pmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ \vdots \\ x_{d_h-1} \\ x_{d_h}
   \end{pmatrix}
-  \otimes
+  \odot
   \begin{pmatrix} \cos m\theta_1 \\ \cos m\theta_1 \\ \cos m\theta_2 \\ \cos m\theta_2
     \\ \vdots \\ \cos m\theta_{d_h/2} \\ \cos m\theta_{d_h/2}
   \end{pmatrix}
@@ -430,7 +422,7 @@ nhân ma trận:
   \begin{pmatrix} -x_2 \\ \phantom{-}x_1 \\ -x_4 \\ \phantom{-}x_3
     \\ \vdots \\ -x_{d_h} \\ \phantom{-}x_{d_h-1}
   \end{pmatrix}
-  \otimes
+  \odot
   \begin{pmatrix} \sin m\theta_1 \\ \sin m\theta_1 \\ \sin m\theta_2 \\ \sin m\theta_2
     \\ \vdots \\ \sin m\theta_{d_h/2} \\ \sin m\theta_{d_h/2}
   \end{pmatrix}.
@@ -511,45 +503,51 @@ thông tin qua từng tầng trở nên quan trọng.
 
 \begin{figure}[!htbp]
   \centering
-  \begin{tikzpicture}[>=Latex, semithick,
-    box/.style={draw, rounded corners=2pt, minimum width=1.3cm, minimum height=0.72cm,
-                align=center, font=\small},
-    >={Latex[length=2mm]}
+  \begin{tikzpicture}[>=Latex, semithick, font=\small,
+    proj/.style={draw, rounded corners=2pt, minimum width=1.35cm, minimum height=0.85cm,
+                 align=center},
+    dimlbl/.style={font=\scriptsize, text=gray!60},
+    >={Latex[length=2.2mm]}
   ]
-    % Input
-    \node[font=\small] (inp) at (0,0) {$x\!\in\!\mathbb{R}^d$};
-    \coordinate (fork) at (0.75, 0);
-    \draw[-] (inp.east) -- (fork);
+    % --- shaded branch regions (drawn first, sit behind the nodes) ---
+    \fill[orange!7, rounded corners=4pt] (1.65,0.45)  rectangle (6.15,2.05);
+    \fill[cyan!8,   rounded corners=4pt] (1.65,-2.05) rectangle (4.05,-0.45);
+    \node[font=\scriptsize\itshape, text=orange!55!black] at (3.9,1.8)  {gate branch};
+    \node[font=\scriptsize\itshape, text=cyan!45!black]   at (2.85,-1.8) {value branch};
 
-    % Gate branch (top): W_g -> SiLU
-    \node[box, fill=orange!18] (Wg)   at (2.5,  1.05) {$W_g$};
-    \node[box, fill=yellow!25] (silu) at (4.2,  1.05) {SiLU};
-    \draw[->] (fork) -| (Wg.west);
-    \draw[->] (Wg) -- (silu);
-    \node[font=\scriptsize, gray!65, above=2pt of Wg] {nhánh cổng};
+    % --- nodes ---
+    \node (x) at (0,0) {$x\!\in\!\mathbb{R}^{d}$};
+    \node[proj, fill=orange!22] (Wg)   at (2.9, 1.2)  {$W_g$};
+    \node[proj, fill=yellow!35] (silu) at (5.0, 1.2)  {SiLU};
+    \node[proj, fill=cyan!22]   (Wu)   at (2.9,-1.2)  {$W_u$};
+    \node[draw, circle, minimum size=0.9cm, fill=gray!10, font=\large] (mul) at (7.0,0) {$\odot$};
+    \node[proj, fill=green!22]  (Wd)   at (9.0,0)     {$W_d$};
+    \node (y) at (11.0,0) {$y\!\in\!\mathbb{R}^{d}$};
 
-    % Value branch (bottom): W_u
-    \node[box, fill=blue!10] (Wu) at (2.5, -1.05) {$W_u$};
-    \draw[->] (fork) -| (Wu.west);
-    \node[font=\scriptsize, gray!65, below=2pt of Wu] {nhánh giá trị};
+    % --- edges ---
+    \coordinate (fork) at (1.2,0);
+    \draw (x) -- (fork);
+    \draw[->] (fork) |- (Wg);
+    \draw[->] (fork) |- (Wu);
+    \draw[->] (Wg)   -- (silu);
+    \draw[->] (silu) -| (mul);
+    \draw[->] (Wu)   -| (mul);
+    \draw[->] (mul)  -- (Wd);
+    \draw[->] (Wd)   -- (y);
 
-    % Multiply
-    \node[draw, circle, minimum size=0.7cm, font=\normalsize] (odot) at (5.7, 0) {$\odot$};
-    \draw[->] (silu.east) -| (odot.north);
-    \draw[->] (Wu.east)   |- (odot.south);
+    % --- dimension annotations on the data path ---
+    \node[dimlbl] at (1.9,0.28)  {$d$};
+    \node[dimlbl] at (6.05,1.42) {$d_{ff}$};
+    \node[dimlbl] at (8.0,0.28)  {$d_{ff}$};
+    \node[dimlbl] at (10.1,0.28) {$d$};
 
-    % Projection back and output
-    \node[box, fill=green!10] (Wd)  at (7.1,  0) {$W_d$};
-    \node[font=\small]        (out) at (8.55, 0) {$y\!\in\!\mathbb{R}^d$};
-    \draw[->] (odot) -- (Wd);
-    \draw[->] (Wd) -- (out);
-
-    % Dimension annotation
-    \node[font=\scriptsize, gray!70, below=10mm of odot, align=center] {
-      $d_{ff}=\tfrac{2}{3}\cdot 4d = 2048$\quad($d=768$)
-    };
+    % --- caption note on intermediate width ---
+    \node[font=\scriptsize, text=gray!75, align=center] at (5.6,-2.75)
+      {$d_{ff}=\tfrac{2}{3}\cdot 4d = 2048$ \ (with $d=768$)};
   \end{tikzpicture}
-  \caption{Cấu trúc cổng SwiGLU~\cite{shazeer2020glu}.}
+  \caption[Cấu trúc cổng SwiGLU]{Cấu trúc cổng SwiGLU~\cite{shazeer2020glu}. Nhánh cổng
+    (qua phi tuyến SiLU) điều tiết theo từng phần tử luồng thông tin của nhánh giá trị
+    trước khi chiếu về chiều gốc.}
   \label{fig:swiglu}
 \end{figure}
 
@@ -629,7 +627,7 @@ nhúng tiếng Anh bằng tiếng Việt.
     Kích thước ẩn $d$                  & 768 \\
     Số đầu chú ý                       & 12 (mỗi đầu $d_h = 64$) \\
     Chiều FFN trung gian $d_{ff}$      & 2.048 (SwiGLU, sau điều chỉnh $2/3$) \\
-    Tổng tham số                       & $\approx$ 245 triệu (tính đủ embedding + thân + đầu giải mã) \\
+    Tổng tham số                       & $\approx$ 245 triệu (tính đủ lớp nhúng + thân + đầu giải mã) \\
     Mã hóa vị trí                      & RoPE, $\theta_{\mathrm{base}} = 10.000$ \\
     Hàm kích hoạt FFN                  & SwiGLU (không bias) \\
     Chuẩn hóa                          & Pre-RMSNorm \\
@@ -652,7 +650,8 @@ nhúng tiếng Anh bằng tiếng Việt.
 \end{table}
 
 NeoBERT được tiền huấn luyện trên RefinedWeb~\cite{penedo2023refinedweb} -- kho ngữ liệu web
-quy mô lớn xây dựng từ CommonCrawl, tổng cộng $\approx$2,1 nghìn tỷ token. Về mục tiêu
+quy mô lớn xây dựng từ CommonCrawl (khoảng 600 tỷ token); qua nhiều lượt lặp, mô hình duyệt
+tổng cộng $\approx$2,1 nghìn tỷ token trong tiền huấn luyện. Về mục tiêu
 huấn luyện, NeoBERT chỉ dùng MLM (bỏ NSP theo RoBERTa~\cite{liu2019roberta}), tăng tỷ lệ
 che lên $20\%$~\cite{wettig2023mask} -- cao hơn 15\% của BERT, được chứng minh tối ưu hơn
 cho các Encoder hiện đại -- và đơn giản hóa lược đồ che bằng cách \textit{luôn} thay token

@@ -17,7 +17,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 
-vn_num = FuncFormatter(lambda v, _: f"{v:g}".replace(".", ","))
+vn_num = FuncFormatter(lambda v, _: f"{v:g}")
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT.parent / "images" / "init_strategy_100k.png"
@@ -41,9 +41,9 @@ with (ROOT / "hardtask_summary_bakeoff100k.csv").open() as f:
 MRC_FREEZE_100K = (72.15, 0.12)
 
 ARMS = [
-    ("Buộc\ntrọng số", loss_tied, mrc["trung_salt_dectied"], "#999999"),
-    ("SALT\nhai ma trận", loss_salt, mrc["trung_salt_decpertoken"], "#6baed6"),
-    ("SALT + căn chỉnh\nđóng băng", loss_freeze, MRC_FREEZE_100K, "tab:blue"),
+    ("Weight\ntying", loss_tied, mrc["trung_salt_dectied"], "#999999"),
+    ("SALT\n(two matrices)", loss_salt, mrc["trung_salt_decpertoken"], "#6baed6"),
+    ("SALT +\nfrozen align", loss_freeze, MRC_FREEZE_100K, "tab:blue"),
 ]
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.6, 3.9))
@@ -51,13 +51,13 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.6, 3.9))
 # ---- (a) mat mat ----
 for i, (label, l, _, color) in enumerate(ARMS):
     ax1.bar(i, l, width=0.55, color=color)
-    ax1.annotate(f"{l:.2f}".replace(".", ",")
-                 + f"\n(PPL {math.exp(l):.1f})".replace(".", ","),
+    ax1.annotate(f"{l:.2f}"
+                 + f"\n(PPL {math.exp(l):.1f})",
                  (i, l), textcoords="offset points", xytext=(0, 4),
                  fontsize=9, ha="center")
 ax1.set_xticks(range(len(ARMS)), [a[0] for a in ARMS])
 ax1.set_ylim(0, 7.6)
-ax1.set_ylabel("Mất mát MLM trên tập đánh giá")
+ax1.set_ylabel("Held-out MLM loss")
 ax1.set_xlabel("(a)")
 ax1.yaxis.set_major_formatter(vn_num)
 ax1.grid(axis="y", alpha=0.25)
@@ -66,12 +66,12 @@ ax1.spines[["top", "right"]].set_visible(False)
 # ---- (b) MRC F1 ----
 for i, (label, _, (m, s), color) in enumerate(ARMS):
     ax2.errorbar(i, m, yerr=s, fmt="o", ms=7, color=color, capsize=4, lw=1.6)
-    ax2.annotate(f"{m:.2f}".replace(".", ","), (i, m),
+    ax2.annotate(f"{m:.2f}", (i, m),
                  textcoords="offset points", xytext=(10, 2), fontsize=9, color=color)
 ax2.set_xticks(range(len(ARMS)), [a[0] for a in ARMS])
 ax2.set_xlim(-0.5, 2.6)
 ax2.set_ylim(48, 76)
-ax2.set_ylabel("F1 trên UIT-ViQuAD")
+ax2.set_ylabel("F1 on UIT-ViQuAD")
 ax2.set_xlabel("(b)")
 ax2.yaxis.set_major_locator(MultipleLocator(5))
 ax2.yaxis.set_major_formatter(vn_num)

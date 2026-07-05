@@ -165,8 +165,8 @@ giá trị được giữ cố định cho \textit{mọi} phương án khởi t�
     Batch size hiệu dụng   & $32 \times 4 = 128$ & $32 \times 16 = 512$ & $4 \times 32 = 128$ \\
     Tỷ lệ che MLM          & 20\%             & 20\%               & 20\% \\
     Bộ tối ưu              & \multicolumn{3}{c}{AdamW, $\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}01$} \\
-    Lịch tốc độ học        & tuyến tính       & WSD, làm nguội $1{-}\sqrt{\cdot}$ (CT~\ref{eq:wsd}) & hằng số sau khởi động \\
-    Số epoch               & 1 lượt ($\sim$20M token) & theo phiên $\sim$1 tỷ token & 1 lượt ($\sim$200M token) \\
+    Lịch tốc độ học        & tuyến tính       & WSD, làm nguội theo CT~\ref{eq:wsd} & hằng số sau khởi động \\
+    Số epoch               & 1 lượt ($\sim$20M token) & nhiều phiên (tổng $\sim$5 tỷ token) & 1 lượt ($\sim$200M token) \\
     \hline
   \end{tabular}%
   }
@@ -330,7 +330,7 @@ $\gamma=0{,}1$ khởi đầu ngay tại vùng entropy từ đơn (7,21) -- tiên
 bảo toàn làm điểm xuất phát -- rồi hội tụ về 3,14, bỏ xa hai phương án còn lại trong
 suốt quá trình. Do đó, $\gamma=0{,}1$ được chọn cho mọi thí nghiệm về sau.
 
-\subsection{Vì sao chọn SALT kết hợp căn chỉnh đóng băng}
+\subsection{Lựa chọn chiến lược khởi tạo hai ma trận từ vựng}
 \label{subsec:exp-init-strategy}
 
 Thí nghiệm thứ hai so sánh ba chiến lược khởi tạo hai ma trận từ vựng, tương ứng ba mức
@@ -392,6 +392,27 @@ và XLM-R~\cite{conneau2020xlmr}, đa ngữ -- ở cả hai cỡ \texttt{base} v
 \subsection{Diễn tiến theo ngân sách huấn luyện}
 \label{subsec:exp-curve}
 
+Trước khi xét chất lượng hạ nguồn, Hình~\ref{fig:cpt-loss} cho thấy diễn tiến của chính
+quá trình tiếp tục tiền huấn luyện: hình (a) vẽ mất mát huấn luyện theo số token đã duyệt,
+kèm hai mức tham chiếu $\log|V|$ (dự đoán ngẫu nhiên) và entropy tự đơn tiếng Việt; hình (b)
+vẽ mất mát và perplexity đánh giá tại các mốc. Nhờ khởi tạo SALT, mất mát MLM
+\textit{khởi đầu} chỉ khoảng $6{,}5$ -- đã nằm sâu dưới mức dự đoán ngẫu nhiên đều
+$\log|V| \approx 10{,}3$ và gần với entropy tự đơn tiếng Việt ($\approx 7{,}3$) -- thay vì
+bắt đầu từ trạng thái nhiễu loạn như khởi tạo ngẫu nhiên. Phần lớn mức giảm diễn ra rất
+sớm: chỉ trong khoảng $0{,}2$ tỷ token đầu, mất mát đã rơi xuống dưới $2{,}0$, sau đó hạ
+chậm dần về $\approx 1{,}1$ ở cuối pha làm nguội (khoảng $4{,}8$ tỷ token). Mất mát đánh giá
+trên tập giữ lại biến thiên đồng pha: perplexity giảm từ $17{,}2$ ở khoảng $0{,}1$ tỷ token
+xuống $3{,}3$ ở khoảng $3{,}9$ tỷ token và $3{,}2$ ở điểm kiểm tra cuối. Diễn tiến này xác
+nhận ở cấp độ tiền huấn luyện điều mà đường cong hạ nguồn dưới đây thể hiện ở cấp độ tác
+vụ: phần thân kế thừa hội tụ nhanh trên tiếng Việt thay vì phải học lại từ đầu.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{images/cpt_loss_curve.png}
+  \caption{Đường học của giai đoạn tiếp tục tiền huấn luyện WSD.}
+  \label{fig:cpt-loss}
+\end{figure}
+
 Tại mỗi mốc ngân sách, điểm kiểm tra được làm nguội rồi tinh chỉnh trên UIT-ViQuAD;
 Hình~\ref{fig:mrc-curve} thể hiện điểm F1 theo lượng token đã tiếp tục tiền huấn luyện
 (thang log). Đối sánh chính là họ PhoBERT (hai đường đứt nét đậm) -- cùng là mô hình
@@ -399,9 +420,9 @@ Hình~\ref{fig:mrc-curve} thể hiện điểm F1 theo lượng token đã tiế
 xám của XLM-R chỉ mang tính tham khảo, vì đây là mô hình đa ngữ với tiếng Việt chỉ là
 một trong một trăm ngôn ngữ.
 
-\begin{figure}[ht]
+\begin{figure}[tbp]
   \centering
-  \includegraphics[width=\textwidth]{images/mrc_curve_tokens.png}
+  \includegraphics[width=0.92\textwidth]{images/mrc_curve_tokens.png}
   \caption{Điểm F1 trên UIT-ViQuAD theo lượng token tiếp tục tiền huấn luyện.}
   \label{fig:mrc-curve}
 \end{figure}
@@ -439,7 +460,7 @@ lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Vi
   \resizebox{\textwidth}{!}{%
   \begin{tabular}{lll}
     \hline
-    \textbf{Mô hình} & \textbf{Kho ngữ liệu} & \textbf{Đã thay} \\
+    \textbf{Mô hình} & \textbf{Kho ngữ liệu} & \textbf{Token đã duyệt} \\
     \hline
     PhoBERT (base/large) & 20GB ($\sim$3,5 tỷ token) & $\sim$140 tỷ (40 epoch) \\
     PhoBERT-base-v2      & 140GB ($\sim$25 tỷ token) & không công bố ($\geq$ bản gốc) \\
@@ -462,7 +483,7 @@ trung bình qua 5 lần chạy với hạt giống khác nhau, riêng hai tác v
 chạy một lần (Mục~\ref{sec:exp-metrics}).
 
 \begin{table}[ht]
-  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token.}
+  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token (kết quả tốt nhất mỗi hàng in đậm).}
   \label{tab:multitask}
   \centering
   \small
@@ -580,10 +601,7 @@ token; ở mốc 5 tỷ token, mô hình cao hơn XLM-R-base ở 11/12 tác vụ
 đầu cả bảng ở gán nhãn từ loại và giữ độ ổn định tinh chỉnh tốt hơn hẳn các bản
 \texttt{large}, dù lượng tiếng Việt tiếp xúc ít hơn các mô hình đối sánh một đến hai bậc.
 
-Chúng tôi cũng lưu ý hai giới hạn của thực nghiệm. Thứ nhất, một số tác vụ phân loại
-(như UIT-VSFC) đã bão hòa nên ít phân hóa giữa các mô hình tốt, và hai tác vụ biểu diễn
-câu mới được chạy một lần nên chưa ước lượng được phương sai. Thứ hai, ngân sách 5 tỷ
-token ($\sim$20GB văn bản) vẫn nhỏ so với dữ liệu tiền huấn luyện của các mô hình đối
-sánh; xu hướng của
-đường cong học cho thấy khoảng cách còn lại nhiều khả năng tiếp tục thu hẹp khi tăng
-ngân sách. Các giới hạn này được thảo luận tiếp ở Chương~\ref{chap:conclusion}.
+Thực nghiệm cũng bộc lộ một số giới hạn -- ngân sách 5 tỷ token còn nhỏ so với các mô
+hình đối sánh, một vài tác vụ phân loại đã bão hòa, và hai tác vụ biểu diễn câu mới chạy
+một lần nên chưa ước lượng được phương sai -- được thảo luận đầy đủ cùng các hướng khắc
+phục ở Chương~\ref{chap:conclusion}.

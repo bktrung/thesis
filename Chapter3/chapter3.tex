@@ -78,19 +78,19 @@ Hình~\ref{fig:pipeline}:
     src/.style={draw, rounded corners, minimum width=30mm, minimum height=9mm, align=center, font=\footnotesize, fill=gray!10},
     >={Latex[length=2mm]}
   ]
-    \node[src] (neo)  {NeoBERT\\(kiến trúc + không gian đích)};
-    \node[src, below=of neo] (vide) {ViDeBERTa\\(mô hình hiến tặng)};
+    \node[src] (neo)  {NeoBERT\\(architecture + target space)};
+    \node[src, below=of neo] (vide) {ViDeBERTa\\(donor model)};
     \coordinate (srcmid) at ($(neo.east)!0.5!(vide.east)$);
-    \node[stage, anchor=west] (s1) at ($(srcmid)+(12mm,0)$) {Giai đoạn 1\\Khởi tạo SALT};
-    \node[stage, right=of s1] (s2) {Giai đoạn 2\\Căn chỉnh đóng băng};
-    \node[stage, right=of s2] (s3) {Giai đoạn 3\\CPT (WSD)};
+    \node[stage, anchor=west] (s1) at ($(srcmid)+(12mm,0)$) {Stage 1\\SALT initialization};
+    \node[stage, right=of s1] (s2) {Stage 2\\Frozen alignment};
+    \node[stage, right=of s2] (s3) {Stage 3\\CPT (WSD)};
     \node[src, right=of s3] (out) {ViNeoBERT};
     \draw[->] (neo.east)  -- (s1.west);
     \draw[->] (vide.east) -- (s1.west);
     \draw[->] (s1) -- (s2); \draw[->] (s2) -- (s3); \draw[->] (s3) -- (out);
-    \node[font=\scriptsize, below=1mm of s1] {thân đóng băng};
-    \node[font=\scriptsize, below=1mm of s2] {thân đóng băng};
-    \node[font=\scriptsize, below=1mm of s3] {toàn bộ tham số};
+    \node[font=\scriptsize, below=1mm of s1] {frozen body};
+    \node[font=\scriptsize, below=1mm of s2] {frozen body};
+    \node[font=\scriptsize, below=1mm of s3] {all parameters};
   \end{tikzpicture}%
   }
   \caption{Quy trình ba giai đoạn xây dựng ViNeoBERT.}
@@ -607,10 +607,10 @@ huấn luyện -- điều mà lịch cosine (phải cam kết trước tổng s�
     \node[below, font=\small] at (8.2,0) {$S_c$};
     \node[below, font=\small] at (10.7,0) {$S_c + S_d$};
     % phase labels
-    \node[font=\small, blue!70] at (0.55,1.6) {khởi động};
-    \node[font=\small, blue!70] at (4.9,2.72) {ổn định};
-    \node[font=\small, red!75] at (10.3,1.5) {làm nguội};
-    \node[font=\small, red!60] at (6.5,1.5) {nhánh giữa chừng};
+    \node[font=\small, blue!70] at (0.6,1.6) {warmup};
+    \node[font=\small, blue!70] at (4.9,2.72) {stable};
+    \node[font=\small, red!75] at (10.3,1.5) {decay};
+    \node[font=\small, red!60] at (6.5,1.5) {mid-run branch};
   \end{tikzpicture}
   \caption{Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref{eq:wsd}.}
   \label{fig:wsd}

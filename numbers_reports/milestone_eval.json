@@ -1,0 +1,38 @@
+[
+  {
+    "milestone_docs": 100000,
+    "kind": "milestone_100000_stable",
+    "eval_loss": 2.846367359161377,
+    "perplexity": 17.225095465721548
+  },
+  {
+    "milestone_docs": 500000,
+    "kind": "milestone_500000_stable",
+    "eval_loss": 1.6351244449615479,
+    "perplexity": 5.13009637195081
+  },
+  {
+    "milestone_docs": 1000000,
+    "kind": "milestone_1000000_cooled",
+    "eval_loss": 1.416876196861267,
+    "perplexity": 4.12421705474565
+  },
+  {
+    "milestone_docs": 2000000,
+    "kind": "milestone_2000000_cooled",
+    "eval_loss": 1.2842652797698975,
+    "perplexity": 3.6120131629291365
+  },
+  {
+    "milestone_docs": 3000000,
+    "kind": "milestone_3000000_cooled",
+    "eval_loss": 1.2221548557281494,
+    "perplexity": 3.3944945042023096
+  },
+  {
+    "milestone_docs": 4000000,
+    "kind": "milestone_4000000_cooled",
+    "eval_loss": 1.185410737991333,
+    "perplexity": 3.272030492730808
+  }
+]

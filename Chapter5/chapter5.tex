@@ -81,13 +81,25 @@ sau:
 \section{Hướng phát triển}
 \label{sec:future-work}
 
-Từ các kết quả và hạn chế trên, chúng tôi đề xuất bốn hướng phát triển:
+Từ các kết quả và hạn chế trên, chúng tôi đề xuất năm hướng phát triển:
 
 \begin{enumerate}
   \item \textbf{Mở rộng ngân sách tiếp tục tiền huấn luyện}: tăng lượng token CulturaX
         vượt mốc 5 tỷ và khai thác thêm các pha làm nguội trên dữ liệu mới -- vốn
         đã cho thấy hiệu quả bật điểm ở mốc cuối -- nhằm vượt các mô hình họ PhoBERT
         trên các tác vụ hạ nguồn.
+  \item \textbf{Trộn lại một phần dữ liệu tiếng Anh khi tiếp tục tiền huấn luyện}: giữ
+        lại một tỷ lệ nhỏ (khoảng $5$--$10\%$) dữ liệu tiếng Anh -- ngôn ngữ nguồn của
+        NeoBERT -- trong hỗn hợp huấn luyện ở Giai đoạn 3 như một cơ chế \textit{phát
+        lại} (replay), nhằm bảo toàn biểu diễn ở các tầng trong và giảm quên lãng thảm
+        họa. Ibrahim và cộng sự~\cite{ibrahim2024continual} cho thấy chỉ cần phát lại
+        một phần nhỏ dữ liệu cũ là đủ để chống suy sụp khi phân phối dữ liệu dịch chuyển;
+        đáng chú ý hơn, Elhady và cộng sự~\cite{elhady2025emergent} chỉ ra rằng trong
+        thích nghi ngôn ngữ, việc giữ lại dữ liệu tiếng Anh tuy \textit{không} cải thiện
+        perplexity nhưng lại quyết định sự xuất hiện của năng lực hạ nguồn -- một tín hiệu
+        mà mất mát MLM đơn thuần không phản ánh. Đề tài dùng khởi tạo SALT và giai đoạn
+        căn chỉnh đóng băng làm lớp bảo vệ chống quên lãng, còn phát lại tiếng Anh là một
+        cơ chế bổ trợ tự nhiên đáng để khảo sát tiếp.
   \item \textbf{Khai thác ngữ cảnh dài ở hạ nguồn}: xây dựng và đánh giá trên các tác
         vụ đòi hỏi ngữ cảnh dài (hỏi đáp đa đoạn, truy hồi tài liệu) để bổ sung cho
         kiểm chứng nội tại bằng pseudo-perplexity ở Mục~\ref{subsec:exp-ctx4096}; khi

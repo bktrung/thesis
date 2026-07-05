@@ -14,9 +14,9 @@ ROOT = Path(__file__).resolve().parent
 OUT = ROOT.parent / "images" / "gamma_scale_loss.png"
 
 ARMS = [
-    ("salt-pertoken-0.1", r"$\gamma = 0{,}1$ (đề xuất)", "tab:blue", (8, -3)),
-    ("salt-pertoken-0.5", r"$\gamma = 0{,}5$", "tab:orange", (8, -12)),
-    ("salt-pertoken-1.0", r"$\gamma = 1{,}0$ (không co)", "tab:red", (8, 3)),
+    ("salt-pertoken-0.1", r"$\gamma = 0.1$ (proposed)", "tab:blue", (8, -3)),
+    ("salt-pertoken-0.5", r"$\gamma = 0.5$", "tab:orange", (8, -12)),
+    ("salt-pertoken-1.0", r"$\gamma = 1.0$ (no scaling)", "tab:red", (8, 3)),
 ]
 
 VOCAB = 30522
@@ -39,21 +39,21 @@ fig, ax = plt.subplots(figsize=(7.5, 4.2))
 for folder, label, color, offset in ARMS:
     s, l = eval_series(ROOT / folder)
     ax.plot(s, l, marker="o", ms=3.5, lw=1.8, color=color, label=label)
-    ax.annotate(f"{l[-1]:.2f}".replace(".", ","), (s[-1], l[-1]),
+    ax.annotate(f"{l[-1]:.2f}", (s[-1], l[-1]),
                 textcoords="offset points", xytext=offset,
                 fontsize=9, color=color)
 
 ax.axhline(LOGV, ls="--", lw=1, color="gray")
-ax.annotate(r"$\log|\mathcal{V}|\approx 10{,}3$ (đoán ngẫu nhiên)",
+ax.annotate(r"$\log|\mathcal{V}|\approx 10.3$ (random)",
             (182, LOGV), textcoords="offset points", xytext=(-4, 5),
             fontsize=9, color="gray", ha="right")
 ax.axhline(H_UNIGRAM, ls=":", lw=1.2, color="gray")
-ax.annotate(r"entropy từ đơn tiếng Việt $\approx 7{,}3$",
+ax.annotate(r"Vietnamese unigram entropy $\approx 7.3$",
             (182, H_UNIGRAM), textcoords="offset points", xytext=(-4, 5),
             fontsize=9, color="gray", ha="right")
 
-ax.set_xlabel("Bước huấn luyện")
-ax.set_ylabel("Mất mát MLM trên tập đánh giá")
+ax.set_xlabel("Training steps")
+ax.set_ylabel("Held-out MLM loss")
 ax.set_xlim(-3, 215)
 ax.set_ylim(2.5, 11.2)
 ax.grid(alpha=0.25)

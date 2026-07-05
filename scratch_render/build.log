@@ -1,0 +1,2545 @@
+Rc files read:
+  /etc/LatexMk
+Latexmk: This is Latexmk, John Collins, 31 Jan. 2024. Version 4.83.
+Latexmk: applying rule 'biber main'...
+Rule 'biber main':  Reasons for rerun
+Changed files or newly in use/created:
+  References/references.bib
+Category 'changed_user':
+  References/references.bib
+
+------------
+Run number 1 of rule 'biber main'
+------------
+------------
+Running 'biber  "main.bcf"'
+------------
+INFO - This is Biber 2.19
+INFO - Logfile is 'main.blg'
+INFO - Reading 'main.bcf'
+ERROR - Error: Found biblatex control file version 3.11, expected version 3.10.
+This means that your biber (2.19) and biblatex (3.21) versions are incompatible.
+See compat matrix in biblatex or biber PDF documentation.
+INFO - ERRORS: 1
+Biber error: [97] Utils.pm:399> ERROR - Error: Found biblatex control file version 3.11, expected version 3.10.
+Latexmk: Found biber source file(s) [main.bcf]
+Latexmk: Error return from 'biber main'
+I will add to its source list, anything cached from analysis of bcf file.
+Latexmk: Some rule(s) failed, but user file(s) changed so keep trying
+ Reasons for rerun
+Category 'changed_user':
+  Appendix/DeCuong.pdf
+  Appendix/abbreviations.tex
+  Appendix/advisor.tex
+  Appendix/appendix1.tex
+  Appendix/commitment.tex
+  Appendix/edit.tex
+  Appendix/proposal.tex
+  Appendix/reviewer.tex
+  Appendix/summary.tex
+  Appendix/thanks.tex
+  Chapter1/chapter1.tex
+  Chapter2/chapter2.tex
+  Chapter3/chapter3.tex
+  Chapter4/chapter4.tex
+  Chapter5/chapter5.tex
+  Title/title.tex
+  images/beforeandaftersalt.png
+  images/ctx4096_pppl.png
+  images/gamma_scale_loss.png
+  images/init_strategy_100k.png
+  images/mrc_curve_tokens.png
+  images/salt-summary.png
+  main.tex
+Category 'rules_to_apply':
+  pdflatex
+
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'pdflatex' forced or previously required:
+    Reason or flag: 'Changed user file'
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/extreport.cls
+Document Class: extreport 1996/10/08 v1.0 Non Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/size14.clo)
+(/usr/share/texlive/texmf-dist/tex/latex/base/exscale.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.def
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.dfu))
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmr.fd))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def))
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
+.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfit.code.tex) (./main.aux (./Appendix/commitment.aux)
+(./Appendix/edit.aux) (./Appendix/advisor.aux) (./Appendix/reviewer.aux)
+(./Appendix/thanks.aux) (./Appendix/summary.aux) (./Chapter1/chapter1.aux)
+(./Chapter2/chapter2.aux) (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux)
+(./Chapter5/chapter5.aux) (./Appendix/appendix1.aux))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (./main.bbl)
+(./main.out) (./main.out)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty)))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(./Title/title.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+[1]) (./Appendix/commitment.tex
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)) [1]
+(./Appendix/edit.tex) [2] (./Appendix/advisor.tex) [3] (./Appendix/reviewer.tex
+) [4] (./Appendix/thanks.tex [5]) [6] (./Appendix/proposal.tex [7 <./Appendix/D
+eCuong.pdf>] [8 <./Appendix/DeCuong.pdf>] [9 <./Appendix/DeCuong.pdf>] [10 <./A
+ppendix/DeCuong.pdf>] [11 <./Appendix/DeCuong.pdf>] [12 <./Appendix/DeCuong.pdf
+>] [13 <./Appendix/DeCuong.pdf>] [14 <./Appendix/DeCuong.pdf>] [15 <./Appendix/
+DeCuong.pdf>] [16 <./Appendix/DeCuong.pdf>]) (./Appendix/abbreviations.tex)
+[17] (./main.toc [18] [19] [20]) [21] (./main.lof
+Overfull \hbox (2.69533pt too wide) in paragraph at lines 16--16
+ [][] [][]\T5/cmr/m/n/14.4 Pseudo-perplexity theo ^^_Î d†i chuÈi tr˜Óc (tr°i) v
+† sau (ph£i) 
+) [22] (./main.lot
+Overfull \hbox (60.90596pt too wide) in paragraph at lines 3--3
+ [][] [][]\T5/cmr/m/n/14.4 Cßu hºnh ki∏n trÛc v† hußn luyªn cıa NeoBERT [].[] [
+][]  
+) [23] (./Appendix/summary.tex [24]) [25] (./Chapter1/chapter1.tex
+Ch∆∞∆°ng 1.
+
+LaTeX Warning: Citation 'devlin2019bert' on page 1 undefined on input line 9.
+
+
+LaTeX Warning: Citation 'liu2019roberta' on page 1 undefined on input line 10.
+
+
+LaTeX Warning: Citation 'dubey2024llama' on page 1 undefined on input line 18.
+
+
+LaTeX Warning: Citation 'deepseek2025' on page 1 undefined on input line 19.
+
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 1 undefined on input line
+ 25.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.34 
+      [1]
+
+LaTeX Warning: Citation 'nguyen2020phobert' on page 2 undefined on input line 3
+9.
+
+
+LaTeX Warning: Citation 'lai2023videberta' on page 2 undefined on input line 40
+.
+
+
+LaTeX Warning: Citation 'lee2025salt' on page 2 undefined on input line 54.
+
+[2] [3] [4] [5{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}])
+[6] (./Chapter2/chapter2.tex
+Ch∆∞∆°ng 2.
+
+Overfull \hbox (8.71312pt too wide) in paragraph at lines 1--1
+|\T5/cmr/bx/n/29.86 CÏ s l˛ thuy∏t v† c°c cÊng trºnh
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 7 undefined on input lin
+e 22.
+
+[7] [8]
+
+LaTeX Warning: Citation 'devlin2019bert' on page 9 undefined on input line 57.
+
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmtt.fd) [9
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.105 \begin{equation}
+                      ]
+
+LaTeX Warning: Citation 'liu2019roberta' on page 10 undefined on input line 113
+.
+
+
+LaTeX Warning: Citation 'liu2019roberta' on page 10 undefined on input line 116
+.
+
+
+LaTeX Warning: Citation 'nguyen2020phobert' on page 10 undefined on input line 
+118.
+
+
+LaTeX Warning: Citation 'lai2023videberta' on page 10 undefined on input line 1
+19.
+
+
+LaTeX Warning: Citation 'nussbaum2024nomic' on page 10 undefined on input line 
+134.
+
+
+LaTeX Warning: Citation 'warner2024modernbert' on page 10 undefined on input li
+ne 134.
+
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 10 undefined on input lin
+e 135.
+
+
+Overfull \hbox (32.44603pt too wide) in paragraph at lines 132--138
+\T5/cmr/m/n/14.4 NomicBERT [], Mod-ern-BERT []
+[10]
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 11 undefined on input lin
+e 146.
+
+[11]
+Overfull \hbox (73.46822pt too wide) in paragraph at lines 289--290
+ [][] 
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 12 undefined on input lin
+e 290.
+
+[12
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.304 
+      ]
+
+LaTeX Warning: Citation 'levine2020limits' on page 13 undefined on input line 3
+10.
+
+[13]
+
+LaTeX Warning: Citation 'su2023roformer' on page 14 undefined on input line 346
+.
+
+[14]
+
+LaTeX Warning: Citation 'su2023roformer' on page 15 undefined on input line 399
+.
+
+
+LaTeX Warning: Citation 'su2023roformer' on page 15 undefined on input line 399
+.
+
+
+Underfull \hbox (badness 7981) in paragraph at lines 399--399
+[]\T5/cmr/m/n/14.4 Hºnh 2.3: []Minh hÂa cÏ ch∏ RoPE (NguÁn: Su v† cÎng
+
+LaTeX Warning: Citation 'su2023roformer' on page 15 undefined on input line 417
+.
+
+[15] [16
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.449 \end{equation}
+                     <./images/roformer_RoPE_v2.pdf>]
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 17 undefined on input lin
+e 460.
+
+
+LaTeX Warning: Citation 'peng2023yarn' on page 17 undefined on input line 461.
+
+
+Overfull \hbox (96.59041pt too wide) in paragraph at lines 458--464
+\T5/cmr/m/n/14.4 c£nh t¯ 1.024 l∂n 4.096 to-ken chø b¨ng mÎt pha hußn luyªn bÍ 
+sung [].
+
+LaTeX Warning: Citation 'hendrycks2016gelu' on page 17 undefined on input line 
+476.
+
+[17]
+
+LaTeX Warning: Citation 'shazeer2020glu' on page 18 undefined on input line 486
+.
+
+
+LaTeX Warning: Citation 'shazeer2020glu' on page 18 undefined on input line 505
+.
+
+
+LaTeX Warning: Citation 'shazeer2020glu' on page 18 undefined on input line 552
+.
+
+[18]
+
+LaTeX Warning: Citation 'zhang2019rmsnorm' on page 19 undefined on input line 5
+75.
+
+[19
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.589 
+      ]
+
+LaTeX Warning: Citation 'xiong2020layer' on page 20 undefined on input line 600
+.
+
+
+Overfull \hbox (41.14287pt too wide) in paragraph at lines 598--605
+\T5/cmr/m/n/14.4 Trong ^^_‚ $\OML/cmm/m/it/14.4 F[]$ \T5/cmr/m/n/14.4 l† t¶ng c
+on th˘ $\OML/cmm/m/it/14.4 l$ \T5/cmr/m/n/14.4 (chÛ ˛ ho∞c FFN). Xiong v† cÎng 
+s¸ []
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 20 undefined on input lin
+e 620.
+
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 20 undefined on input lin
+e 620.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 620--620
+[]\T5/cmr/m/n/14.4 B£ng 2.1: []Cßu hºnh ki∏n trÛc v† hußn luyªn cıa
+
+LaTeX Warning: Citation 'penedo2023refinedweb' on page 20 undefined on input li
+ne 654.
+
+
+LaTeX Warning: Citation 'liu2019roberta' on page 20 undefined on input line 656
+.
+
+
+LaTeX Warning: Citation 'wettig2023mask' on page 20 undefined on input line 657
+.
+
+
+LaTeX Warning: Citation 'dao2023flashattention2' on page 20 undefined on input 
+line 662.
+
+
+Overfull \hbox (25.0132pt too wide) in paragraph at lines 654--664
+[]\T5/cmr/m/n/14.4 NeoBERT ^^_˜Òc ti∑n hußn luyªn tr∂n Re-fined-Web []
+
+Overfull \hbox (0.74329pt too wide) in paragraph at lines 654--664
+\T5/cmr/m/n/14.4 theo RoBERTa []), t´ng t^^[ lª che l∂n $\OT1/cmr/m/n/14.4 20%$
+ []
+[20] [21
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.673 
+      ]
+
+LaTeX Warning: Citation 'ethayarajh2019contextual' on page 22 undefined on inpu
+t line 695.
+
+
+LaTeX Warning: Citation 'ormazabal2019limitations' on page 22 undefined on inpu
+t line 696.
+
+
+LaTeX Warning: Citation 'gao2019degeneration' on page 22 undefined on input lin
+e 698.
+
+
+Overfull \hbox (57.58pt too wide) in paragraph at lines 693--699
+\T5/cmr/m/n/14.4 t†i l†: bi∫u diπn theo ng˙ c£nh c‚ tΩnh bßt ^^_Øng h˜Óng [];
+[22]
+
+LaTeX Warning: Citation 'gururangan2020dapt' on page 23 undefined on input line
+ 711.
+
+
+LaTeX Warning: Citation 'devries2021recycle' on page 23 undefined on input line
+ 715.
+
+
+LaTeX Warning: Citation 'elhady2025emergent' on page 23 undefined on input line
+ 715.
+
+
+LaTeX Warning: Citation 'ibrahim2024continual' on page 23 undefined on input li
+ne 715.
+
+
+LaTeX Warning: Citation 'hu2024minicpm' on page 23 undefined on input line 723.
+
+
+
+LaTeX Warning: Citation 'hagele2024scaling' on page 23 undefined on input line 
+725.
+
+
+LaTeX Warning: Citation 'ibrahim2024continual' on page 23 undefined on input li
+ne 728.
+
+[23]
+
+LaTeX Warning: Citation 'minixhofer2022wechsel' on page 24 undefined on input l
+ine 734.
+
+
+LaTeX Warning: Citation 'dobler2023focus' on page 24 undefined on input line 73
+4.
+
+
+LaTeX Warning: Citation 'liu2024ofa' on page 24 undefined on input line 735.
+
+
+LaTeX Warning: Citation 'martins2016sparsemax' on page 24 undefined on input li
+ne 738.
+
+
+Overfull \hbox (108.63237pt too wide) in paragraph at lines 734--739
+[]\T5/cmr/m/n/14.4 C°c ph˜Ïng ph°p nh˜ WECH-SEL [], FO-CUS []
+
+Overfull \hbox (31.13664pt too wide) in paragraph at lines 734--739
+\T5/cmr/m/n/14.4 CUS t™n dˆng ph¶n t¯ v¸ng chÁng lßp v† Sparse-max  [],
+
+LaTeX Warning: Citation 'lee2025salt' on page 24 undefined on input line 747.
+
+
+LaTeX Warning: Citation 'lee2025salt' on page 24 undefined on input line 760.
+
+[24]) [25
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.179 \include{Chapter2/chapter2}
+                                  <./images/salt-summary.png (PNG copy)>]
+(./Chapter3/chapter3.tex
+Ch∆∞∆°ng 3.
+[26]
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 27 undefined on input lin
+e 37.
+
+
+Overfull \hbox (8.13719pt too wide) in paragraph at lines 37--46
+\T5/cmr/m/n/14.4 bÎ ph¶n th•n Trans-former (28 lÓp vÓi RoPE, SwiGLU, Pre-RMSNor
+m)
+
+LaTeX Warning: Citation 'lai2023videberta' on page 27 undefined on input line 4
+6.
+
+[27] [28
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.115 
+      ]
+
+LaTeX Warning: Citation 'vu2018vncorenlp' on page 29 undefined on input line 13
+1.
+
+[29]
+
+LaTeX Warning: Citation 'he2021deberta' on page 30 undefined on input line 146.
+
+
+
+LaTeX Warning: Citation 'lai2023videberta' on page 30 undefined on input line 1
+47.
+
+[30
+pdfTeX warning (ext4): destination with the same identifier (name{table.3.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.182 
+      ] [31]
+
+LaTeX Warning: Citation 'lee2025salt' on page 32 undefined on input line 218.
+
+
+LaTeX Warning: Citation 'dobler2023focus' on page 32 undefined on input line 21
+8.
+
+
+Overfull \hbox (44.98302pt too wide) in paragraph at lines 218--225
+[]\T5/cmr/m/n/14.4 Trong nghi∂n c˘u gËc, SALT [] cÙng nh˜ FO-CUS []
+
+LaTeX Warning: Citation 'junczys2018marian' on page 32 undefined on input line 
+242.
+
+[32] [33] [34]
+
+LaTeX Warning: Citation 'bojanowski2017fasttext' on page 35 undefined on input 
+line 349.
+
+
+LaTeX Warning: Citation 'grave2018fasttext' on page 35 undefined on input line 
+349.
+
+
+Overfull \hbox (92.87968pt too wide) in paragraph at lines 348--353
+\T5/cmr/m/n/14.4 t˜Ïng ^^_Áng ng˙ nghæa trong khÊng gian nhÛng t¯ tænh fast-Tex
+t [],
+[35]
+
+LaTeX Warning: Citation 'martins2016sparsemax' on page 36 undefined on input li
+ne 361.
+
+[36] [37] [38]
+
+LaTeX Warning: Citation 'lin2017focal' on page 39 undefined on input line 493.
+
+[39] [40]
+
+LaTeX Warning: Citation 'devries2021recycle' on page 41 undefined on input line
+ 548.
+
+
+LaTeX Warning: Citation 'gururangan2020dapt' on page 41 undefined on input line
+ 557.
+
+[41]
+
+LaTeX Warning: Citation 'hu2024minicpm' on page 42 undefined on input line 562.
+
+
+
+LaTeX Warning: Citation 'hagele2024scaling' on page 42 undefined on input line 
+576.
+
+
+LaTeX Warning: Citation 'ibrahim2024continual' on page 42 undefined on input li
+ne 623.
+
+[42
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.627 
+      ]) [43] (./Chapter4/chapter4.tex
+Ch∆∞∆°ng 4.
+[44]
+
+LaTeX Warning: Citation 'nguyen2023culturax' on page 45 undefined on input line
+ 35.
+
+
+Underfull \hbox (badness 6188) in paragraph at lines 51--51
+[]|\T5/cmr/m/n/12 Ti∏p tˆc ti∑n hußn
+
+Underfull \hbox (badness 3364) in paragraph at lines 52--53
+[]|$\OMS/cmsy/m/n/12 ^^X$\T5/cmr/m/n/12 18 nghºn c•u h‰i
+
+Underfull \hbox (badness 2376) in paragraph at lines 53--53
+[]|\T5/cmr/m/n/12 BÎ ^^_°nh gi° ^^_a nhiªm
+[45
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.71   \item \textbf
+                    {Suy lu·∫≠n ng√¥n ng·ªØ t·ª± nhi√™n}: XNLI (ph·∫ßn ti·∫ø...
+]
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 46 undefined on input lin
+e 85.
+
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 46 undefined on input lin
+e 120.
+
+[46] [47
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      ] [48
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.4}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.205   \item \textbf
+                     {H·ªá s·ªë t∆∞∆°ng quan Spearman ($\uparrow$)} cho t√°c...
+]
+Overfull \hbox (5.55943pt too wide) in paragraph at lines 207--211
+[]\T5/cmr/bx/n/14.4 nDCG@10 ($\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) v† MRR (
+$\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) \T5/cmr/m/n/14.4 cho truy hÁi v† x∏p 
+h§ng l§i: nDCG@10
+[49] [50] [51
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.302 
+       <./images/beforeandaftersalt.png>] [52] [53
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.359 \end{figure}
+                   <./images/gamma_scale_loss.png>] [54
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.381 \section{K·∫øt qu·∫£ c·ªßa m√¥ h√¨nh cu·ªëi}
+                                                   <./images/init_strategy_100k
+.png>]
+
+LaTeX Warning: Citation 'nguyen2020phobert' on page 55 undefined on input line 
+389.
+
+
+LaTeX Warning: Citation 'conneau2020xlmr' on page 55 undefined on input line 39
+0.
+
+[55]
+
+LaTeX Warning: Citation 'nguyen2020phobert' on page 56 undefined on input line 
+424.
+
+
+LaTeX Warning: Citation 'conneau2020xlmr' on page 56 undefined on input line 42
+9.
+
+[56
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.433 
+       <./images/mrc_curve_tokens.png>] [57
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.5}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.6}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+]
+
+LaTeX Warning: Citation 'nguyen2020phobert' on page 58 undefined on input line 
+512.
+
+
+LaTeX Warning: Citation 'conneau2020xlmr' on page 58 undefined on input line 51
+4.
+
+[58]
+
+LaTeX Warning: Citation 'lebreton2025neobert' on page 59 undefined on input lin
+e 531.
+
+
+LaTeX Warning: Citation 'salazar2020mlmscoring' on page 59 undefined on input l
+ine 540.
+
+[59] [60
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.582 
+       <./images/ctx4096_pppl.png>]) [61] (./Chapter5/chapter5.tex
+Ch∆∞∆°ng 5.
+[62] [63] [64]
+
+LaTeX Warning: Citation 'peng2023yarn' on page 65 undefined on input line 95.
+
+) [65]
+
+Package biblatex Warning: Keyword 'Viet' not found on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 203.
+
+
+LaTeX Warning: Empty bibliography on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 208.
+
+
+LaTeX Warning: Empty bibliography on input line 208.
+
+[66] (./Appendix/appendix1.tex
+Ph·ª• l·ª•c A.
+[67]) [68] (./main.aux (./Appendix/commitment.aux) (./Appendix/edit.aux)
+(./Appendix/advisor.aux) (./Appendix/reviewer.aux) (./Appendix/thanks.aux)
+(./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
+(./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
+(./Appendix/appendix1.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                main
+(biblatex)                and rerun LaTeX afterwards.
+
+ )
+(see the transcript file for additional information)</usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/
+cm-super/sfrm1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx8.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vnr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vntt12.pfb>
+Output written on main.pdf (95 pages, 1405468 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Bibliography file(s) from .bcf file:
+  References/references.bib
+Latexmk: applying rule 'biber main'...
+Rule 'biber main':  Reasons for rerun
+Changed files or newly in use/created:
+  main.bcf
+
+------------
+Run number 2 of rule 'biber main'
+------------
+------------
+Running 'biber  "main.bcf"'
+------------
+INFO - This is Biber 2.19
+INFO - Logfile is 'main.blg'
+INFO - Reading 'main.bcf'
+INFO - Using all citekeys in bib section 0
+INFO - Processing section 0
+INFO - Looking for bibtex file 'References/references.bib' for section 0
+INFO - LaTeX decoding ...
+INFO - Found BibTeX data source 'References/references.bib'
+INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+INFO - No sort tailoring available for locale 'en-US'
+INFO - Writing 'main.bbl' with encoding 'UTF-8'
+INFO - Output to main.bbl
+Latexmk: Found biber source file(s) [References/references.bib, main.bcf]
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  Appendix/advisor.aux
+  Appendix/appendix1.aux
+  Appendix/commitment.aux
+  Appendix/edit.aux
+  Appendix/reviewer.aux
+  Appendix/summary.aux
+  Appendix/thanks.aux
+  Chapter1/chapter1.aux
+  Chapter2/chapter2.aux
+  Chapter3/chapter3.aux
+  Chapter4/chapter4.aux
+  Chapter5/chapter5.aux
+  main.aux
+  main.bbl
+  main.lof
+  main.lot
+  main.run.xml
+  main.toc
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/extreport.cls
+Document Class: extreport 1996/10/08 v1.0 Non Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/size14.clo)
+(/usr/share/texlive/texmf-dist/tex/latex/base/exscale.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.def
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.dfu))
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmr.fd))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def))
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
+.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfit.code.tex) (./main.aux (./Appendix/commitment.aux)
+(./Appendix/edit.aux) (./Appendix/advisor.aux) (./Appendix/reviewer.aux)
+(./Appendix/thanks.aux) (./Appendix/summary.aux) (./Chapter1/chapter1.aux)
+(./Chapter2/chapter2.aux) (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux)
+(./Chapter5/chapter5.aux) (./Appendix/appendix1.aux))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (./main.bbl)
+(./main.out) (./main.out)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty)))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(./Title/title.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+[1]) (./Appendix/commitment.tex
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)) [1]
+(./Appendix/edit.tex) [2] (./Appendix/advisor.tex) [3] (./Appendix/reviewer.tex
+) [4] (./Appendix/thanks.tex [5]) [6] (./Appendix/proposal.tex [7 <./Appendix/D
+eCuong.pdf>] [8 <./Appendix/DeCuong.pdf>] [9 <./Appendix/DeCuong.pdf>] [10 <./A
+ppendix/DeCuong.pdf>] [11 <./Appendix/DeCuong.pdf>] [12 <./Appendix/DeCuong.pdf
+>] [13 <./Appendix/DeCuong.pdf>] [14 <./Appendix/DeCuong.pdf>] [15 <./Appendix/
+DeCuong.pdf>] [16 <./Appendix/DeCuong.pdf>]) (./Appendix/abbreviations.tex)
+[17] (./main.toc [18] [19] [20]) [21] (./main.lof
+Overfull \hbox (2.69533pt too wide) in paragraph at lines 16--16
+ [][] [][]\T5/cmr/m/n/14.4 Pseudo-perplexity theo ^^_Î d†i chuÈi tr˜Óc (tr°i) v
+† sau (ph£i) 
+) [22] (./main.lot) [23] (./Appendix/summary.tex [24]) [25]
+(./Chapter1/chapter1.tex
+Ch∆∞∆°ng 1.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.34 
+      [1] [2] [3] [4] [5{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1
+.enc}]) [6] (./Chapter2/chapter2.tex
+Ch∆∞∆°ng 2.
+
+Overfull \hbox (8.71312pt too wide) in paragraph at lines 1--1
+|\T5/cmr/bx/n/29.86 CÏ s l˛ thuy∏t v† c°c cÊng trºnh
+[7] [8] (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmtt.fd) [9
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.105 \begin{equation}
+                      ] [10]
+Overfull \hbox (73.46822pt too wide) in paragraph at lines 289--290
+ [][] 
+[11] [12
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.304 
+      ] [13] [14] [15] [16
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.440 
+       <./images/roformer_RoPE_v2.pdf>] [17] [18] [19
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.583 \end{equation}
+                    ] [20] [21
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.665 Q
+       u√° tr√¨nh ti·ªÅn hu·∫•n luy·ªán ƒë∆∞·ª£c chia \textit{hai pha}: pha ...
+] [22] [23] [24]) [25
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.179 \include{Chapter2/chapter2}
+                                  <./images/salt-summary.png (PNG copy)>]
+(./Chapter3/chapter3.tex
+Ch∆∞∆°ng 3.
+[26] [27] [28
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.115 
+      ] [29] [30
+pdfTeX warning (ext4): destination with the same identifier (name{table.3.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.190 \end{equation}
+                    ] [31] [32] [33] [34] [35] [36] [37] [38] [39] [40]
+[41]) [42
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.181 \include{Chapter3/chapter3}
+                                 ] [43] (./Chapter4/chapter4.tex
+Ch∆∞∆°ng 4.
+[44]
+Underfull \hbox (badness 6188) in paragraph at lines 51--51
+[]|\T5/cmr/m/n/12 Ti∏p tˆc ti∑n hußn
+
+Underfull \hbox (badness 3364) in paragraph at lines 52--53
+[]|$\OMS/cmsy/m/n/12 ^^X$\T5/cmr/m/n/12 18 nghºn c•u h‰i
+
+Underfull \hbox (badness 2376) in paragraph at lines 53--53
+[]|\T5/cmr/m/n/12 BÎ ^^_°nh gi° ^^_a nhiªm
+[45
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.71   \item \textbf
+                    {Suy lu·∫≠n ng√¥n ng·ªØ t·ª± nhi√™n}: XNLI (ph·∫ßn ti·∫ø...
+] [46] [47
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      ] [48
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.4}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.205   \item \textbf
+                     {H·ªá s·ªë t∆∞∆°ng quan Spearman ($\uparrow$)} cho t√°c...
+]
+Overfull \hbox (5.55943pt too wide) in paragraph at lines 207--211
+[]\T5/cmr/bx/n/14.4 nDCG@10 ($\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) v† MRR (
+$\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) \T5/cmr/m/n/14.4 cho truy hÁi v† x∏p 
+h§ng l§i: nDCG@10
+[49] [50] [51
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.302 
+       <./images/beforeandaftersalt.png>] [52] [53
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.359 \end{figure}
+                   <./images/gamma_scale_loss.png>] [54
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.381 \section{K·∫øt qu·∫£ c·ªßa m√¥ h√¨nh cu·ªëi}
+                                                   <./images/init_strategy_100k
+.png>] [55] [56
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.451 \end{table}
+                  <./images/mrc_curve_tokens.png>] [57
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.5}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.6}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+] [58] [59] [60
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.582 
+       <./images/ctx4096_pppl.png>]) [61] (./Chapter5/chapter5.tex
+Ch∆∞∆°ng 5.
+[62] [63] [64]) [65]
+
+Package biblatex Warning: Keyword 'Viet' not found on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 203.
+
+
+LaTeX Warning: Empty bibliography on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 208.
+
+
+Package biblatex Warning: Name format 'last-first' deprecated.
+(biblatex)                Please use 'family-given' instead.
+(biblatex)                Using 'family-given' now.
+
+
+Overfull \hbox (0.5832pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 BERT pre-train-ing ap-proach,'' \T5/cmr/m/it/14.4 arXiv prepri
+nt arXiv:1907.11692\T5/cmr/m/n/14.4 , 2019. 
+
+Overfull \hbox (68.11682pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 DeepSeek-AI, ``DeepSeek-V3 tech-ni-cal re-port,'' \T5/cmr/m/
+it/14.4 arXiv preprint arXiv:2412.19437\T5/cmr/m/n/14.4 ,
+[66]
+Overfull \hbox (22.7248pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 need,'' in \T5/cmr/m/it/14.4 Ad-vances in Neu-ral In-for-ma-ti
+on Pro-cess-ing Sys-tems (NeurIPS)\T5/cmr/m/n/14.4 ,
+
+Overfull \hbox (19.18575pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 long con-text fine-tun-ing and in-fer-ence,'' \T5/cmr/m/it/14.
+4 arXiv preprint arXiv:2412.13663\T5/cmr/m/n/14.4 ,
+
+Overfull \hbox (3.23256pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 Former: En-hanced trans-former with ro-tary po-si-tion em-bed-
+ding,'' \T5/cmr/m/it/14.4 Neu-
+
+Overfull \hbox (5.33499pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 Hendrycks, D. and Gim-pel, K., ``Gaus-sian er-ror lin-ear un
+its (GELUs),''
+[67]
+Overfull \hbox (5.11415pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 Penedo, G., Malar-tic, Q., Hess-low, D., \T5/cmr/m/it/14.4 e
+t al.\T5/cmr/m/n/14.4 , ``The Re-fined-Web dataset
+[68]
+Overfull \hbox (8.5162pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/it/14.4 tions on Ma-chine Learn-ing Re-search (TMLR)\T5/cmr/m/n/14.4 
+, 2024, arXiv:2403.08763. 
+[69] [70]
+Overfull \hbox (14.79668pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 tion,'' in \T5/cmr/m/it/14.4 In-ter-na-tional Con-fer-ence on 
+Learn-ing Rep-re-sen-ta-tions (ICLR)\T5/cmr/m/n/14.4 ,
+[71] (./Appendix/appendix1.tex
+Ph·ª• l·ª•c A.
+[72]) [73] (./main.aux (./Appendix/commitment.aux) (./Appendix/edit.aux)
+(./Appendix/advisor.aux) (./Appendix/reviewer.aux) (./Appendix/thanks.aux)
+(./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
+(./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
+(./Appendix/appendix1.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please rerun LaTeX.
+
+ )
+(see the transcript file for additional information)</usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/
+cm-super/sfrm1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx8.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vnr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vntt12.pfb>
+Output written on main.pdf (100 pages, 1419727 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Bibliography file(s) from .bcf file:
+  References/references.bib
+Latexmk: applying rule 'biber main'...
+Rule 'biber main':  Reasons for rerun
+Changed files or newly in use/created:
+  main.bcf
+
+------------
+Run number 3 of rule 'biber main'
+------------
+------------
+Running 'biber  "main.bcf"'
+------------
+INFO - This is Biber 2.19
+INFO - Logfile is 'main.blg'
+INFO - Reading 'main.bcf'
+INFO - Using all citekeys in bib section 0
+INFO - Processing section 0
+INFO - Looking for bibtex file 'References/references.bib' for section 0
+INFO - LaTeX decoding ...
+INFO - Found BibTeX data source 'References/references.bib'
+INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+INFO - No sort tailoring available for locale 'en-US'
+INFO - Writing 'main.bbl' with encoding 'UTF-8'
+INFO - Output to main.bbl
+Latexmk: Found biber source file(s) [References/references.bib, main.bcf]
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  Appendix/advisor.aux
+  Appendix/appendix1.aux
+  Appendix/commitment.aux
+  Appendix/edit.aux
+  Appendix/reviewer.aux
+  Appendix/summary.aux
+  Appendix/thanks.aux
+  Chapter1/chapter1.aux
+  Chapter2/chapter2.aux
+  Chapter3/chapter3.aux
+  Chapter4/chapter4.aux
+  Chapter5/chapter5.aux
+  main.aux
+  main.bbl
+  main.run.xml
+  main.toc
+
+------------
+Run number 3 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/extreport.cls
+Document Class: extreport 1996/10/08 v1.0 Non Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/size14.clo)
+(/usr/share/texlive/texmf-dist/tex/latex/base/exscale.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.def
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.dfu))
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmr.fd))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def))
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
+.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfit.code.tex) (./main.aux (./Appendix/commitment.aux)
+(./Appendix/edit.aux) (./Appendix/advisor.aux) (./Appendix/reviewer.aux)
+(./Appendix/thanks.aux) (./Appendix/summary.aux) (./Chapter1/chapter1.aux)
+(./Chapter2/chapter2.aux) (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux)
+(./Chapter5/chapter5.aux) (./Appendix/appendix1.aux))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (./main.bbl)
+(./main.out) (./main.out)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty)))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(./Title/title.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+[1]) (./Appendix/commitment.tex
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)) [1]
+(./Appendix/edit.tex) [2] (./Appendix/advisor.tex) [3] (./Appendix/reviewer.tex
+) [4] (./Appendix/thanks.tex [5]) [6] (./Appendix/proposal.tex [7 <./Appendix/D
+eCuong.pdf>] [8 <./Appendix/DeCuong.pdf>] [9 <./Appendix/DeCuong.pdf>] [10 <./A
+ppendix/DeCuong.pdf>] [11 <./Appendix/DeCuong.pdf>] [12 <./Appendix/DeCuong.pdf
+>] [13 <./Appendix/DeCuong.pdf>] [14 <./Appendix/DeCuong.pdf>] [15 <./Appendix/
+DeCuong.pdf>] [16 <./Appendix/DeCuong.pdf>]) (./Appendix/abbreviations.tex)
+[17] (./main.toc [18] [19] [20]) [21] (./main.lof
+Overfull \hbox (2.69533pt too wide) in paragraph at lines 16--16
+ [][] [][]\T5/cmr/m/n/14.4 Pseudo-perplexity theo ^^_Î d†i chuÈi tr˜Óc (tr°i) v
+† sau (ph£i) 
+) [22] (./main.lot) [23] (./Appendix/summary.tex [24]) [25]
+(./Chapter1/chapter1.tex
+Ch∆∞∆°ng 1.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.34 
+      [1] [2] [3] [4] [5{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1
+.enc}]) [6] (./Chapter2/chapter2.tex
+Ch∆∞∆°ng 2.
+
+Overfull \hbox (8.71312pt too wide) in paragraph at lines 1--1
+|\T5/cmr/bx/n/29.86 CÏ s l˛ thuy∏t v† c°c cÊng trºnh
+[7] [8] (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmtt.fd) [9
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.105 \begin{equation}
+                      ] [10]
+Overfull \hbox (73.46822pt too wide) in paragraph at lines 289--290
+ [][] 
+[11] [12
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.304 
+      ] [13] [14] [15] [16
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.440 
+       <./images/roformer_RoPE_v2.pdf>] [17] [18] [19
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.583 \end{equation}
+                    ] [20] [21
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.665 Q
+       u√° tr√¨nh ti·ªÅn hu·∫•n luy·ªán ƒë∆∞·ª£c chia \textit{hai pha}: pha ...
+] [22] [23] [24]) [25
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.179 \include{Chapter2/chapter2}
+                                  <./images/salt-summary.png (PNG copy)>]
+(./Chapter3/chapter3.tex
+Ch∆∞∆°ng 3.
+[26] [27] [28
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.115 
+      ] [29] [30
+pdfTeX warning (ext4): destination with the same identifier (name{table.3.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.190 \end{equation}
+                    ] [31] [32] [33] [34] [35] [36] [37] [38] [39] [40]
+[41]) [42
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.181 \include{Chapter3/chapter3}
+                                 ] [43] (./Chapter4/chapter4.tex
+Ch∆∞∆°ng 4.
+[44]
+Underfull \hbox (badness 6188) in paragraph at lines 51--51
+[]|\T5/cmr/m/n/12 Ti∏p tˆc ti∑n hußn
+
+Underfull \hbox (badness 3364) in paragraph at lines 52--53
+[]|$\OMS/cmsy/m/n/12 ^^X$\T5/cmr/m/n/12 18 nghºn c•u h‰i
+
+Underfull \hbox (badness 2376) in paragraph at lines 53--53
+[]|\T5/cmr/m/n/12 BÎ ^^_°nh gi° ^^_a nhiªm
+[45
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.71   \item \textbf
+                    {Suy lu·∫≠n ng√¥n ng·ªØ t·ª± nhi√™n}: XNLI (ph·∫ßn ti·∫ø...
+] [46] [47
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      ] [48
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.4}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.205   \item \textbf
+                     {H·ªá s·ªë t∆∞∆°ng quan Spearman ($\uparrow$)} cho t√°c...
+]
+Overfull \hbox (5.55943pt too wide) in paragraph at lines 207--211
+[]\T5/cmr/bx/n/14.4 nDCG@10 ($\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) v† MRR (
+$\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) \T5/cmr/m/n/14.4 cho truy hÁi v† x∏p 
+h§ng l§i: nDCG@10
+[49] [50] [51
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.302 
+       <./images/beforeandaftersalt.png>] [52] [53
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.359 \end{figure}
+                   <./images/gamma_scale_loss.png>] [54
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.381 \section{K·∫øt qu·∫£ c·ªßa m√¥ h√¨nh cu·ªëi}
+                                                   <./images/init_strategy_100k
+.png>] [55] [56
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.451 \end{table}
+                  <./images/mrc_curve_tokens.png>] [57
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.5}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.6}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+] [58] [59] [60
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.582 
+       <./images/ctx4096_pppl.png>]) [61] (./Chapter5/chapter5.tex
+Ch∆∞∆°ng 5.
+[62] [63] [64]) [65]
+
+Package biblatex Warning: Keyword 'Viet' not found on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 203.
+
+
+LaTeX Warning: Empty bibliography on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 208.
+
+
+Package biblatex Warning: Name format 'last-first' deprecated.
+(biblatex)                Please use 'family-given' instead.
+(biblatex)                Using 'family-given' now.
+
+
+Overfull \hbox (0.5832pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 BERT pre-train-ing ap-proach,'' \T5/cmr/m/it/14.4 arXiv prepri
+nt arXiv:1907.11692\T5/cmr/m/n/14.4 , 2019. 
+
+Overfull \hbox (68.11682pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 DeepSeek-AI, ``DeepSeek-V3 tech-ni-cal re-port,'' \T5/cmr/m/
+it/14.4 arXiv preprint arXiv:2412.19437\T5/cmr/m/n/14.4 ,
+[66]
+Overfull \hbox (22.7248pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 need,'' in \T5/cmr/m/it/14.4 Ad-vances in Neu-ral In-for-ma-ti
+on Pro-cess-ing Sys-tems (NeurIPS)\T5/cmr/m/n/14.4 ,
+
+Overfull \hbox (19.18575pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 long con-text fine-tun-ing and in-fer-ence,'' \T5/cmr/m/it/14.
+4 arXiv preprint arXiv:2412.13663\T5/cmr/m/n/14.4 ,
+
+Overfull \hbox (3.23256pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 Former: En-hanced trans-former with ro-tary po-si-tion em-bed-
+ding,'' \T5/cmr/m/it/14.4 Neu-
+
+Overfull \hbox (5.33499pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 Hendrycks, D. and Gim-pel, K., ``Gaus-sian er-ror lin-ear un
+its (GELUs),''
+[67]
+Overfull \hbox (5.11415pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 Penedo, G., Malar-tic, Q., Hess-low, D., \T5/cmr/m/it/14.4 e
+t al.\T5/cmr/m/n/14.4 , ``The Re-fined-Web dataset
+[68]
+Overfull \hbox (8.5162pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/it/14.4 tions on Ma-chine Learn-ing Re-search (TMLR)\T5/cmr/m/n/14.4 
+, 2024, arXiv:2403.08763. 
+[69] [70]
+Overfull \hbox (14.79668pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 tion,'' in \T5/cmr/m/it/14.4 In-ter-na-tional Con-fer-ence on 
+Learn-ing Rep-re-sen-ta-tions (ICLR)\T5/cmr/m/n/14.4 ,
+[71] (./Appendix/appendix1.tex
+Ph·ª• l·ª•c A.
+[72]) [73] (./main.aux (./Appendix/commitment.aux) (./Appendix/edit.aux)
+(./Appendix/advisor.aux) (./Appendix/reviewer.aux) (./Appendix/thanks.aux)
+(./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
+(./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
+(./Appendix/appendix1.aux)) )
+(see the transcript file for additional information)</usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/
+cm-super/sfrm1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx8.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vnr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vntt12.pfb>
+Output written on main.pdf (100 pages, 1419739 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Bibliography file(s) from .bcf file:
+  References/references.bib
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.aux
+  main.run.xml
+
+------------
+Run number 4 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/extreport.cls
+Document Class: extreport 1996/10/08 v1.0 Non Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/extsizes/size14.clo)
+(/usr/share/texlive/texmf-dist/tex/latex/base/exscale.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.def
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.dfu))
+(/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmr.fd))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
+(/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def))
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)))
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
+.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfit.code.tex) (./main.aux (./Appendix/commitment.aux)
+(./Appendix/edit.aux) (./Appendix/advisor.aux) (./Appendix/reviewer.aux)
+(./Appendix/thanks.aux) (./Appendix/summary.aux) (./Chapter1/chapter1.aux)
+(./Chapter2/chapter2.aux) (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux)
+(./Chapter5/chapter5.aux) (./Appendix/appendix1.aux))
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (./main.bbl)
+(./main.out) (./main.out)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty)))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(./Title/title.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+[1]) (./Appendix/commitment.tex
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)) [1]
+(./Appendix/edit.tex) [2] (./Appendix/advisor.tex) [3] (./Appendix/reviewer.tex
+) [4] (./Appendix/thanks.tex [5]) [6] (./Appendix/proposal.tex [7 <./Appendix/D
+eCuong.pdf>] [8 <./Appendix/DeCuong.pdf>] [9 <./Appendix/DeCuong.pdf>] [10 <./A
+ppendix/DeCuong.pdf>] [11 <./Appendix/DeCuong.pdf>] [12 <./Appendix/DeCuong.pdf
+>] [13 <./Appendix/DeCuong.pdf>] [14 <./Appendix/DeCuong.pdf>] [15 <./Appendix/
+DeCuong.pdf>] [16 <./Appendix/DeCuong.pdf>]) (./Appendix/abbreviations.tex)
+[17] (./main.toc [18] [19] [20]) [21] (./main.lof
+Overfull \hbox (2.69533pt too wide) in paragraph at lines 16--16
+ [][] [][]\T5/cmr/m/n/14.4 Pseudo-perplexity theo ^^_Î d†i chuÈi tr˜Óc (tr°i) v
+† sau (ph£i) 
+) [22] (./main.lot) [23] (./Appendix/summary.tex [24]) [25]
+(./Chapter1/chapter1.tex
+Ch∆∞∆°ng 1.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.34 
+      [1] [2] [3] [4] [5{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1
+.enc}]) [6] (./Chapter2/chapter2.tex
+Ch∆∞∆°ng 2.
+
+Overfull \hbox (8.71312pt too wide) in paragraph at lines 1--1
+|\T5/cmr/bx/n/29.86 CÏ s l˛ thuy∏t v† c°c cÊng trºnh
+[7] [8] (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmtt.fd) [9
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.105 \begin{equation}
+                      ] [10]
+Overfull \hbox (73.46822pt too wide) in paragraph at lines 289--290
+ [][] 
+[11] [12
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.304 
+      ] [13] [14] [15] [16
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.440 
+       <./images/roformer_RoPE_v2.pdf>] [17] [18] [19
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.583 \end{equation}
+                    ] [20] [21
+pdfTeX warning (ext4): destination with the same identifier (name{table.2.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.665 Q
+       u√° tr√¨nh ti·ªÅn hu·∫•n luy·ªán ƒë∆∞·ª£c chia \textit{hai pha}: pha ...
+] [22] [23] [24]) [25
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.179 \include{Chapter2/chapter2}
+                                  <./images/salt-summary.png (PNG copy)>]
+(./Chapter3/chapter3.tex
+Ch∆∞∆°ng 3.
+[26] [27] [28
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.115 
+      ] [29] [30
+pdfTeX warning (ext4): destination with the same identifier (name{table.3.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.190 \end{equation}
+                    ] [31] [32] [33] [34] [35] [36] [37] [38] [39] [40]
+[41]) [42
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.181 \include{Chapter3/chapter3}
+                                 ] [43] (./Chapter4/chapter4.tex
+Ch∆∞∆°ng 4.
+[44]
+Underfull \hbox (badness 6188) in paragraph at lines 51--51
+[]|\T5/cmr/m/n/12 Ti∏p tˆc ti∑n hußn
+
+Underfull \hbox (badness 3364) in paragraph at lines 52--53
+[]|$\OMS/cmsy/m/n/12 ^^X$\T5/cmr/m/n/12 18 nghºn c•u h‰i
+
+Underfull \hbox (badness 2376) in paragraph at lines 53--53
+[]|\T5/cmr/m/n/12 BÎ ^^_°nh gi° ^^_a nhiªm
+[45
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.71   \item \textbf
+                    {Suy lu·∫≠n ng√¥n ng·ªØ t·ª± nhi√™n}: XNLI (ph·∫ßn ti·∫ø...
+] [46] [47
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.3}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.183 
+      ] [48
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.4}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.205   \item \textbf
+                     {H·ªá s·ªë t∆∞∆°ng quan Spearman ($\uparrow$)} cho t√°c...
+]
+Overfull \hbox (5.55943pt too wide) in paragraph at lines 207--211
+[]\T5/cmr/bx/n/14.4 nDCG@10 ($\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) v† MRR (
+$\OMS/cmsy/m/n/14.4 "$\T5/cmr/bx/n/14.4 ) \T5/cmr/m/n/14.4 cho truy hÁi v† x∏p 
+h§ng l§i: nDCG@10
+[49] [50] [51
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.302 
+       <./images/beforeandaftersalt.png>] [52] [53
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.359 \end{figure}
+                   <./images/gamma_scale_loss.png>] [54
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.381 \section{K·∫øt qu·∫£ c·ªßa m√¥ h√¨nh cu·ªëi}
+                                                   <./images/init_strategy_100k
+.png>] [55] [56
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.451 \end{table}
+                  <./images/mrc_curve_tokens.png>] [57
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.5}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+
+pdfTeX warning (ext4): destination with the same identifier (name{table.4.6}) h
+as been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.502   \item \textbf
+                     {So s√°nh v·ªõi XLM-R}: XLM-R l√† ƒë·ªëi s√°nh th·ª© ha...
+] [58] [59] [60
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4.5}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.582 
+       <./images/ctx4096_pppl.png>]) [61] (./Chapter5/chapter5.tex
+Ch∆∞∆°ng 5.
+[62] [63] [64]) [65]
+
+Package biblatex Warning: Keyword 'Viet' not found on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 203.
+
+
+LaTeX Warning: Empty bibliography on input line 203.
+
+
+Package biblatex Warning: Option 'resetnumbers' requires 'defernumbers=true'.
+(biblatex)                Ignoring 'resetnumbers=true' on input line 208.
+
+
+Package biblatex Warning: Name format 'last-first' deprecated.
+(biblatex)                Please use 'family-given' instead.
+(biblatex)                Using 'family-given' now.
+
+
+Overfull \hbox (0.5832pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 BERT pre-train-ing ap-proach,'' \T5/cmr/m/it/14.4 arXiv prepri
+nt arXiv:1907.11692\T5/cmr/m/n/14.4 , 2019. 
+
+Overfull \hbox (68.11682pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 DeepSeek-AI, ``DeepSeek-V3 tech-ni-cal re-port,'' \T5/cmr/m/
+it/14.4 arXiv preprint arXiv:2412.19437\T5/cmr/m/n/14.4 ,
+[66]
+Overfull \hbox (22.7248pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 need,'' in \T5/cmr/m/it/14.4 Ad-vances in Neu-ral In-for-ma-ti
+on Pro-cess-ing Sys-tems (NeurIPS)\T5/cmr/m/n/14.4 ,
+
+Overfull \hbox (19.18575pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 long con-text fine-tun-ing and in-fer-ence,'' \T5/cmr/m/it/14.
+4 arXiv preprint arXiv:2412.13663\T5/cmr/m/n/14.4 ,
+
+Overfull \hbox (3.23256pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 Former: En-hanced trans-former with ro-tary po-si-tion em-bed-
+ding,'' \T5/cmr/m/it/14.4 Neu-
+
+Overfull \hbox (5.33499pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 Hendrycks, D. and Gim-pel, K., ``Gaus-sian er-ror lin-ear un
+its (GELUs),''
+[67]
+Overfull \hbox (5.11415pt too wide) in paragraph at lines 208--208
+[]\T5/cmr/m/n/14.4 Penedo, G., Malar-tic, Q., Hess-low, D., \T5/cmr/m/it/14.4 e
+t al.\T5/cmr/m/n/14.4 , ``The Re-fined-Web dataset
+[68]
+Overfull \hbox (8.5162pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/it/14.4 tions on Ma-chine Learn-ing Re-search (TMLR)\T5/cmr/m/n/14.4 
+, 2024, arXiv:2403.08763. 
+[69] [70]
+Overfull \hbox (14.79668pt too wide) in paragraph at lines 208--208
+\T5/cmr/m/n/14.4 tion,'' in \T5/cmr/m/it/14.4 In-ter-na-tional Con-fer-ence on 
+Learn-ing Rep-re-sen-ta-tions (ICLR)\T5/cmr/m/n/14.4 ,
+[71] (./Appendix/appendix1.tex
+Ph·ª• l·ª•c A.
+[72]) [73] (./main.aux (./Appendix/commitment.aux) (./Appendix/edit.aux)
+(./Appendix/advisor.aux) (./Appendix/reviewer.aux) (./Appendix/thanks.aux)
+(./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
+(./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
+(./Appendix/appendix1.aux)) )
+(see the transcript file for additional information)</usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/
+cm-super/sfrm1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx8.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vnr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/
+vntt12.pfb>
+Output written on main.pdf (100 pages, 1419739 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Bibliography file(s) from .bcf file:
+  References/references.bib
+Latexmk: All targets (main.pdf) are up-to-date
+

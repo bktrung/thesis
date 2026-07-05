@@ -27,12 +27,12 @@
 \contentsline {subsection}{\numberline {2.2.4}Hàm kích hoạt SwiGLU}{18}{subsection.2.2.4}%
 \contentsline {subsection}{\numberline {2.2.5}Chuẩn hóa Pre-RMSNorm}{19}{subsection.2.2.5}%
 \contentsline {subsection}{\numberline {2.2.6}Dữ liệu và chiến lược tiền huấn luyện}{21}{subsection.2.2.6}%
-\contentsline {section}{\numberline {2.3}Chuyển giao không gian nhúng và thích nghi ngôn ngữ}{23}{section.2.3}%
+\contentsline {section}{\numberline {2.3}Chuyển giao không gian nhúng và thích nghi ngôn ngữ}{22}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Hình học của không gian biểu diễn}{23}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Thích nghi ngôn ngữ và rủi ro quên lãng}{23}{subsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.3.3}Khởi tạo nhúng có thông tin}{24}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}Semantic Aware Linear Transfer (SALT)}{25}{subsection.2.3.4}%
-\contentsline {section}{\numberline {2.4}Nhận xét định hướng}{26}{section.2.4}%
+\contentsline {subsection}{\numberline {2.3.4}Semantic Aware Linear Transfer (SALT)}{24}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Nhận xét định hướng}{25}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Phương pháp xây dựng Vietnamese NeoBERT}{27}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Tổng quan phương pháp}{27}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Đặt vấn đề}{27}{subsection.3.1.1}%
@@ -66,16 +66,16 @@
 \contentsline {section}{\numberline {4.4}So sánh các phương án khởi tạo}{51}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Kiểm chứng hình học của phép chiếu SALT}{51}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Lựa chọn hệ số co trọng số đầu ra}{53}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Vì sao chọn SALT kết hợp căn chỉnh đóng băng}{54}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.3}Lựa chọn chiến lược khởi tạo hai ma trận từ vựng}{54}{subsection.4.4.3}%
 \contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{56}{section.4.5}%
 \contentsline {subsection}{\numberline {4.5.1}Diễn tiến theo ngân sách huấn luyện}{56}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa nhiệm tại mốc 5 tỷ token}{58}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}Mở rộng ngữ cảnh lên 4.096 token}{60}{subsection.4.5.3}%
-\contentsline {section}{\numberline {4.6}Thảo luận}{61}{section.4.6}%
-\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{63}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Kết luận}{63}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{65}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Hướng phát triển}{65}{section.5.3}%
-\contentsline {chapter}{Tài liệu tham khảo}{67}{Item.12}%
-\contentsline {chapter}{Phụ lục}{72}{chapter*.13}%
-\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{73}{appendix.A}%
+\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa nhiệm tại mốc 5 tỷ token}{59}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Mở rộng ngữ cảnh lên 4.096 token}{61}{subsection.4.5.3}%
+\contentsline {section}{\numberline {4.6}Thảo luận}{62}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{64}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kết luận}{64}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{66}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Hướng phát triển}{66}{section.5.3}%
+\contentsline {chapter}{Tài liệu tham khảo}{68}{Item.13}%
+\contentsline {chapter}{Phụ lục}{73}{chapter*.13}%
+\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{74}{appendix.A}%
