@@ -1,4 +1,33 @@
-\chapter{Ngữ pháp tiếng Nôm}
-\label{Appendix2}
+\chapter{Định nghĩa hình thức các độ đo đánh giá}
+\label{app:metrics}
 
-Đây là phụ lục 2.
+Phụ lục này trình bày định nghĩa hình thức của các độ đo được dùng ở
+Mục~\ref{sec:exp-metrics}. Các định nghĩa dạng văn xuôi đã được nêu trong phần thân;
+phần dưới đây bổ sung công thức tường minh để tiện tra cứu.
+
+Với hỏi đáp đọc hiểu, F1 ở cấp token là trung bình điều hòa của độ chính xác $P$ và độ
+bao phủ $R$ giữa câu trả lời dự đoán và đáp án chuẩn, như Công thức~\eqref{eq:f1}:
+\begin{equation}
+  \label{eq:f1}
+  \mathrm{F1} = \frac{2PR}{P + R}.
+\end{equation}
+
+Hệ số tương quan Matthews cho phân loại nhị phân, tính từ các đại lượng dương thật ($TP$),
+âm thật ($TN$), dương giả ($FP$) và âm giả ($FN$), như Công thức~\eqref{eq:mcc}:
+\begin{equation}
+  \label{eq:mcc}
+  \mathrm{MCC} = \frac{TP\cdot TN - FP\cdot FN}
+  {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}.
+\end{equation}
+
+Với truy hồi và xếp hạng lại, gọi $\mathrm{rel}_i \in \{0,1\}$ là mức liên quan của kết quả ở
+hạng $i$ và $\mathrm{rank}_q$ là thứ hạng của ngữ cảnh đúng đầu tiên cho truy vấn $q$, hai độ
+đo được xác định như Công thức~\eqref{eq:ndcg-mrr}:
+\begin{equation}
+  \label{eq:ndcg-mrr}
+  \mathrm{nDCG@}k = \frac{1}{Z}\sum_{i=1}^{k}\frac{2^{\mathrm{rel}_i}-1}{\log_2(i+1)},
+  \qquad
+  \mathrm{MRR} = \frac{1}{|Q|}\sum_{q\in Q}\frac{1}{\mathrm{rank}_q},
+\end{equation}
+trong đó $Z$ là hệ số chuẩn hóa (DCG của thứ hạng lý tưởng) đưa nDCG về đoạn $[0,1]$, và $Q$
+là tập truy vấn đánh giá.

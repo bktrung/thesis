@@ -1,3 +1,4 @@
+% !TEX root = ../main.tex
 \chapter{Cơ sở lý thuyết và các công trình liên quan}
 \label{chap:related}
 
@@ -91,7 +92,7 @@ Encoder-only kiểu BERT.
     \draw[->] (tok)--(ner);
     \draw[->] (mlm)--(pre);
   \end{tikzpicture}
-  \caption{Luồng xử lý của một mô hình Encoder-only kiểu BERT.}
+  \caption{Luồng xử lý của mô hình Encoder-only.}
   \label{fig:encoder-only-pipeline}
 \end{figure}
 
@@ -436,12 +437,12 @@ cách $|n - m|$ tăng. Viết tích vô hướng dưới dạng tổng số ph�
 \begin{equation}
   \label{eq:rope-complex}
   q_m^\top k_n = \mathrm{Re}\!\left[
-    \sum_{i=0}^{d_h/2-1} q_{[2i:2i+1]}\,k_{[2i:2i+1]}^*\;e^{i(m-n)\theta_i}
+    \sum_{i=1}^{d_h/2} q_{[2i-1:\,2i]}\,k_{[2i-1:\,2i]}^*\;e^{i(m-n)\theta_i}
   \right],
 \end{equation}
-trong đó $q_{[2i:2i+1]}$ là cặp chiều thứ $i$ của $q$ biểu diễn như số phức. Áp dụng biến
-đổi Abel (tổng từng phần), cận trên tuyệt đối của biểu thức này tỉ lệ với
-$\frac{1}{d_h/2}\sum_{j}|S_j|$, với $S_j = \sum_{i=0}^{j-1}e^{i(m-n)\theta_i}$. Khi
+trong đó $q_{[2i-1:\,2i]}$ là cặp chiều thứ $i$ của $q$ biểu diễn như số phức. Áp dụng biến
+đổi Abel (tổng từng phần), biểu thức này bị chặn trên bởi một đại lượng tỉ lệ với
+$\frac{1}{d_h/2}\sum_{j}|S_j|$, với $S_j = \sum_{i=1}^{j}e^{i(m-n)\theta_i}$. Khi
 $|n-m|$ lớn, các số hạng $e^{i(m-n)\theta_i}$ trải đều trên vòng tròn đơn vị và triệt
 tiêu lẫn nhau, khiến $|S_j|$ -- và theo đó điểm chú ý -- giảm dần theo khoảng cách. Tính
 chất này hoàn toàn tự nhiên từ bản chất quay và phù hợp với trực giác ngôn ngữ học rằng
@@ -545,9 +546,7 @@ thông tin qua từng tầng trở nên quan trọng.
     \node[font=\scriptsize, text=gray!75, align=center] at (5.6,-2.75)
       {$d_{ff}=\tfrac{2}{3}\cdot 4d = 2048$ \ (with $d=768$)};
   \end{tikzpicture}
-  \caption[Cấu trúc cổng SwiGLU]{Cấu trúc cổng SwiGLU~\cite{shazeer2020glu}. Nhánh cổng
-    (qua phi tuyến SiLU) điều tiết theo từng phần tử luồng thông tin của nhánh giá trị
-    trước khi chiếu về chiều gốc.}
+  \caption{Cấu trúc cổng SwiGLU~\cite{shazeer2020glu}.}
   \label{fig:swiglu}
 \end{figure}
 
@@ -615,7 +614,7 @@ quan trọng vì ViNeoBERT kế thừa trực tiếp kiến trúc này, chỉ th
 nhúng tiếng Anh bằng tiếng Việt.
 
 \begin{table}[ht]
-  \caption{Cấu hình kiến trúc và huấn luyện của NeoBERT~\cite{lebreton2025neobert}.}
+  \caption{Cấu hình NeoBERT~\cite{lebreton2025neobert}.}
   \label{tab:neobert-params}
   \centering
   \small
@@ -634,7 +633,7 @@ nhúng tiếng Anh bằng tiếng Việt.
     Từ vựng tiếng Anh                  & 30.522 token (WordPiece, tương thích BERT) \\
     Ngữ cảnh tối đa                    & 4.096 token \\
     \hline
-    Dữ liệu tiền huấn luyện           & RefinedWeb ($\approx$2,1 nghìn tỷ token) \\
+    Dữ liệu tiền huấn luyện           & RefinedWeb (600 tỷ token; duyệt $\approx$2,1 nghìn tỷ) \\
     Mục tiêu huấn luyện               & MLM, không có NSP; tỷ lệ che 20\%; luôn dùng \texttt{[MASK]} \\
     Bộ tối ưu                          & AdamW, $\beta = (0{,}9;\; 0{,}95)$, weight decay $0{,}1$ \\
     Gradient clipping                  & norm tối đa $1{,}0$ \\
@@ -655,18 +654,20 @@ tổng cộng $\approx$2,1 nghìn tỷ token trong tiền huấn luyện. Về m
 huấn luyện, NeoBERT chỉ dùng MLM (bỏ NSP theo RoBERTa~\cite{liu2019roberta}), tăng tỷ lệ
 che lên $20\%$~\cite{wettig2023mask} -- cao hơn 15\% của BERT, được chứng minh tối ưu hơn
 cho các Encoder hiện đại -- và đơn giản hóa lược đồ che bằng cách \textit{luôn} thay token
-được chọn bằng \texttt{[MASK]} (bỏ quy tắc 80/10/10 của BERT). Tối ưu bằng AdamW với
+được chọn bằng \texttt{[MASK]} (bỏ quy tắc 80/10/10 của BERT). Tối ưu bằng
+AdamW~\cite{loshchilov2019adamw} với
 $\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}1$, gradient clipping norm tối đa $1{,}0$ và
-lịch cosine (làm nguội về 10\% tốc độ học đỉnh trong 90\% số bước).
+lịch cosine~\cite{loshchilov2017sgdr} (làm nguội về 10\% tốc độ học đỉnh trong 90\% số bước).
 FlashAttention-2~\cite{dao2023flashattention2} được dùng để giảm chi phí bộ nhớ khi huấn
 luyện trên chuỗi dài.
 
 Quá trình tiền huấn luyện được chia \textit{hai pha}: pha chính ($\approx$1 triệu bước, mỗi
 bước $\sim$2 triệu token) ở độ dài chuỗi 1.024 token, sau đó một pha ngắn ($\approx$100 tỷ
 token, 50 nghìn bước) ở 4.096 token để
-kích hoạt khả năng ngữ cảnh dài. Thiết kế hai pha này là hợp lý vì việc huấn luyện liên tục
-ở 4.096 token từ đầu sẽ tốn gấp 4 lần bộ nhớ và thời gian do ma trận chú ý $n\times n$ tăng
-16 lần. ViNeoBERT áp dụng chiến lược hoàn toàn tương tự (nhưng ở quy mô nhỏ hơn nhiều) khi
+kích hoạt khả năng ngữ cảnh dài. Thiết kế hai pha này là hợp lý vì huấn luyện toàn bộ ở độ
+dài 4.096 token sẽ tốn kém hơn nhiều: chi phí tính toán của tầng tự chú ý tăng theo bình
+phương độ dài chuỗi -- gấp $16$ lần khi chuyển từ 1.024 lên 4.096 token -- trong khi phần
+chi phí còn lại của mô hình chỉ tăng tuyến tính theo số token (gấp $4$ lần). ViNeoBERT áp dụng chiến lược hoàn toàn tương tự (nhưng ở quy mô nhỏ hơn nhiều) khi
 mở rộng ngữ cảnh ở Giai đoạn 3
 (Chương~\ref{chap:method} và Mục~\ref{subsec:exp-ctx4096}).
 
@@ -715,17 +716,16 @@ Rủi ro của CPT là mô hình có thể phải học lại từ tín hiệu �
 đều gợi ý rằng điểm khởi đầu của lớp nhúng ảnh hưởng lớn tới ổn định huấn luyện. Vì vậy,
 đề tài xem khởi tạo nhúng là bước quyết định trước khi CPT.
 
-Một khía cạnh thực hành quan trọng khác của CPT là \textit{lịch tốc độ học}. Lịch cosine truyền thống yêu cầu cam kết trước tổng số bước huấn luyện -- điều khó đáp ứng
-khi CPT diễn ra theo nhiều phiên nối tiếp trên hạ tầng tính toán giới hạn (chẳng hạn mỗi
-phiên Google Colab có thời lượng cố định, và tổng ngân sách huấn luyện không nhất thiết
-được biết trước). Lịch
-Warmup--Stable--Decay (WSD)~\cite{hu2024minicpm} tách quá trình thành pha khởi động, pha ổn
-định ở tốc độ học đỉnh và pha làm nguội ngắn, cho phép dừng và tiếp tục linh hoạt; Hägele
-và cộng sự~\cite{hagele2024scaling} cho thấy cách tiếp cận này đạt chất lượng tương đương
-cosine, đồng thời xác định dạng làm nguội $1-\sqrt{\cdot}$ là hiệu quả nhất ở cùng ngân
-sách. Ngoài ra, khi huấn luyện tiếp từ một điểm kiểm tra đã làm nguội, tốc độ học cần được
-khởi động lại thay vì giữ ở mức gần 0~\cite{ibrahim2024continual}. Các kết quả này là cơ
-sở cho lịch huấn luyện nhiều phiên được thiết kế ở Chương~\ref{chap:method}.
+Một khía cạnh thực hành quan trọng khác của CPT là \textit{lịch tốc độ học}. Lịch cosine
+truyền thống yêu cầu cam kết trước tổng số bước huấn luyện, kém linh hoạt khi tổng ngân
+sách chưa được biết chắc từ đầu. Lịch Warmup--Stable--Decay (WSD)~\cite{hu2024minicpm} tách
+quá trình thành pha khởi động, pha ổn định ở tốc độ học đỉnh và một pha làm nguội ngắn ở
+cuối, cho phép kéo dài hoặc dừng huấn luyện linh hoạt; Hägele và cộng sự~\cite{hagele2024scaling}
+cho thấy cách tiếp cận này đạt chất lượng tương đương cosine, đồng thời xác định dạng làm
+nguội căn bậc hai ($1-\sqrt{f}$) là hiệu quả nhất ở cùng ngân sách. Ngoài ra, khi huấn
+luyện tiếp từ một điểm kiểm tra đã làm nguội, tốc độ học cần được khởi động lại thay vì giữ
+ở mức gần 0~\cite{ibrahim2024continual}. Các kết quả này là cơ sở cho lịch huấn luyện được
+thiết kế ở Chương~\ref{chap:method}.
 
 \subsection{Khởi tạo nhúng có thông tin}
 \label{subsec:init-methods}

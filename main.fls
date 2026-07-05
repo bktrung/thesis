@@ -175,6 +175,10 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
 INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
 INPUT /usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
 INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
@@ -199,8 +203,6 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
-INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
-INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
@@ -355,6 +357,9 @@ INPUT Chapter5/chapter5.aux
 INPUT ./Appendix/appendix1.aux
 INPUT ./Appendix/appendix1.aux
 INPUT Appendix/appendix1.aux
+INPUT ./Appendix/appendix2.aux
+INPUT ./Appendix/appendix2.aux
+INPUT Appendix/appendix2.aux
 OUTPUT main.aux
 INPUT /usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 OUTPUT main.bcf
@@ -647,6 +652,12 @@ OUTPUT Appendix/appendix1.aux
 INPUT ./Appendix/appendix1.tex
 INPUT ./Appendix/appendix1.tex
 INPUT Appendix/appendix1.tex
+INPUT ./Appendix/appendix2.tex
+INPUT ./Appendix/appendix2.tex
+OUTPUT Appendix/appendix2.aux
+INPUT ./Appendix/appendix2.tex
+INPUT ./Appendix/appendix2.tex
+INPUT Appendix/appendix2.tex
 INPUT main.aux
 INPUT ./Appendix/commitment.aux
 INPUT ./Appendix/commitment.aux
@@ -684,6 +695,9 @@ INPUT Chapter5/chapter5.aux
 INPUT ./Appendix/appendix1.aux
 INPUT ./Appendix/appendix1.aux
 INPUT Appendix/appendix1.aux
+INPUT ./Appendix/appendix2.aux
+INPUT ./Appendix/appendix2.aux
+INPUT Appendix/appendix2.aux
 INPUT ./main.out
 INPUT ./main.out
 INPUT main.run.xml

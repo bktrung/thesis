@@ -31,6 +31,8 @@
 % Chèn và định dạng mã nguồn
 \usepackage{listings}
 \usepackage{color}
+\usepackage{colortbl}
+\definecolor{ourcol}{rgb}{0.90,0.94,1.0} % nền nhạt làm nổi cột mô hình của đề tài
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
@@ -197,19 +199,9 @@
 % \addcontentsline{toc}{chapter}{Danh mục công trình của tác giả}
 % \include{Appendix/publish}
 
-% Hiển thị toàn bộ tài liệu trong file references.bib
-\nocite{*} 
-
-% In tài liệu tham khảo
+% In tài liệu tham khảo (một danh mục duy nhất — mọi tài liệu đều là ấn phẩm tiếng Anh)
 \addcontentsline{toc}{chapter}{Tài liệu tham khảo}
-\printbibheading[title={Tài liệu tham khảo}]
-
-\printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet, resetnumbers=true]
-
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{default}{last-first}
-
-\printbibliography[heading=subbibliography, title={Tiếng Anh}, notkeyword=Viet, resetnumbers=4] 
+\printbibliography[title={Tài liệu tham khảo}]
 
 % ========================================================================================= %
 % PHẦN PHỤ LỤC
@@ -218,5 +210,7 @@
 \addcontentsline{toc}{chapter}{Phụ lục}
 
 \include{Appendix/appendix1}
+
+\include{Appendix/appendix2}
 
 \end{document}

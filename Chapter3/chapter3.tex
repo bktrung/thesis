@@ -1,3 +1,4 @@
+% !TEX root = ../main.tex
 \chapter{Phương pháp xây dựng Vietnamese NeoBERT}
 \label{chap:method}
 
@@ -124,7 +125,9 @@ Unigram; kết quả là một phân phối xác suất trên các cách phân �
 \subsection{So sánh PhoBERT và ViDeBERTa làm mô hình hiến tặng}
 \label{subsec:donor-compare}
 
-ViDeBERTa được chọn làm mô hình hiến tặng thay vì PhoBERT vì ba lý do chính:
+Đáng chú ý, nghiên cứu gốc SALT~\cite{lee2025salt} sử dụng chính PhoBERT làm mô hình hiến
+tặng tiếng Việt. Trong đề tài này, chúng tôi chủ đích chọn ViDeBERTa thay cho PhoBERT vì ba
+lý do chính:
 
 \textbf{1. Bộ tách từ tự chứa, không ràng buộc công cụ tách từ ngoài.} PhoBERT dùng
 thuật toán BPE huấn luyện trên văn bản đã được \textit{tách từ sẵn} bằng
@@ -524,7 +527,8 @@ lên $W_{\mathrm{dec}}$ tại thời điểm khởi tạo. Cơ sở khoa học c
 
 Giả thuyết này được kiểm chứng bằng thực nghiệm trong Chương~\ref{chap:experiment}: khi giữ
 nguyên biên độ ($\gamma = 1$) hoặc chỉ co một nửa ($\gamma = 0{,}5$), mất mát khởi điểm cao
-hơn hẳn (tiệm cận mức ngẫu nhiên $\log|\mathcal{V}_t|$) và -- quan trọng hơn -- quá trình huấn
+hơn hẳn (với $\gamma=1$ gần chạm mức ngẫu nhiên $\log|\mathcal{V}_t|$, với $\gamma=0{,}5$ vẫn
+cao hơn nhiều mức entropy từ đơn) và -- quan trọng hơn -- quá trình huấn
 luyện bị \textit{mắc kẹt} ở mức mất mát cao, không hội tụ về vùng của các phương án tốt;
 trong khi $\gamma = 0{,}1$ vừa cho khởi điểm thấp vừa hội tụ nhanh. Do đó $\gamma = 0{,}1$
 được chọn cho toàn bộ quy trình.
@@ -559,9 +563,9 @@ tục tiền huấn luyện trên dữ liệu miền đích mang lại cải thi
 toàn bộ ngôn ngữ tiếng Việt.
 
 \textbf{Lịch tốc độ học WSD.} Chúng tôi sử dụng lịch \textit{Warmup--Stable--Decay}
-(WSD)~\cite{hu2024minicpm} thay cho lịch cosine cố định, vì WSD cho phép huấn luyện theo
-nhiều phiên nối tiếp mà không phải cam kết trước tổng số bước. Tốc độ học $\eta$ theo bước
-toàn cục $s$ được định nghĩa như Công thức~\eqref{eq:wsd}:
+(WSD)~\cite{hu2024minicpm} thay cho lịch cosine cố định, vì WSD tách pha ổn định khỏi pha
+làm nguội nên cho phép kéo dài huấn luyện tùy ý mà không phải cam kết trước tổng số bước.
+Tốc độ học $\eta$ theo bước $s$ được định nghĩa như Công thức~\eqref{eq:wsd}:
 \begin{equation}
   \label{eq:wsd}
   \eta(s) =
@@ -572,11 +576,11 @@ toàn cục $s$ được định nghĩa như Công thức~\eqref{eq:wsd}:
   \end{cases}
 \end{equation}
 Trong đó $S_w$ là mốc kết thúc khởi động, $S_c$ là mốc bắt đầu làm nguội, và $S_d$ là độ dài
-giai đoạn làm nguội. Pha \textit{ổn định} giữ tốc độ học ở đỉnh trong phần lớn quá trình; pha
-\textit{làm nguội} dùng dạng $1-\sqrt{\cdot}$ vốn được Hägele và cộng sự~\cite{hagele2024scaling}
-chứng minh là dạng làm nguội cho chất lượng hạ nguồn tốt nhất ở một ngân sách cho trước. Vì
-lịch WSD được điều khiển theo \textit{bước toàn cục}, một phiên huấn luyện nối tiếp tiếp tục ở
-pha ổn định mà không bị khởi động lại đột ngột. Hình~\ref{fig:wsd} minh họa hình dạng của
+giai đoạn làm nguội. Pha \textit{ổn định} giữ tốc độ học ở đỉnh trong phần lớn quá trình,
+còn pha \textit{làm nguội} chỉ chiếm một phần nhỏ cuối ngân sách và dùng dạng căn bậc hai
+$1-\sqrt{f}$ (với $f\in[0,1]$ là phần bước đã trôi qua trong pha làm nguội) -- dạng mà Hägele
+và cộng sự~\cite{hagele2024scaling} chứng minh cho chất lượng hạ nguồn tốt nhất ở một ngân
+sách cho trước. Hình~\ref{fig:wsd} minh họa hình dạng của
 lịch và ưu điểm cốt lõi của nó: tại bất kỳ điểm nào trong pha ổn định đều có thể ``rẽ
 nhánh'' một pha làm nguội ngắn để thu về mô hình hoàn chỉnh, trong khi nhánh chính tiếp tục
 huấn luyện -- điều mà lịch cosine (phải cam kết trước tổng số bước) không làm được.
@@ -612,7 +616,7 @@ huấn luyện -- điều mà lịch cosine (phải cam kết trước tổng s�
     \node[font=\small, red!75] at (10.3,1.5) {decay};
     \node[font=\small, red!60] at (6.5,1.5) {mid-run branch};
   \end{tikzpicture}
-  \caption{Lịch tốc độ học Warmup--Stable--Decay theo Công thức~\eqref{eq:wsd}.}
+  \caption{Lịch tốc độ học Warmup--Stable--Decay (WSD).}
   \label{fig:wsd}
 \end{figure}
 
@@ -620,10 +624,10 @@ huấn luyện -- điều mà lịch cosine (phải cam kết trước tổng s�
 gần như không thể cập nhật trọng số nếu huấn luyện tiếp mà không xử lý. Do đó, mỗi khi tiếp
 tục huấn luyện trên dữ liệu mới (ví dụ một pha làm nguội trên dữ liệu mới), tốc độ học được
 \textit{khởi động lại} rồi làm nguội lại theo đúng khuyến nghị của Ibrahim và cộng
-sự~\cite{ibrahim2024continual}. Ngoài ra, bộ tối ưu AdamW được giữ \textit{liên tục} giữa các
-phiên (mang theo các mô-men bậc nhất và bậc hai) với cặp tham số $\beta = (0{,}9;\, 0{,}95)$
-theo công thức gốc của NeoBERT, để bộ tiền điều kiện của bộ tối ưu khớp với chế độ mà phần
-thân đã được huấn luyện.
+sự~\cite{ibrahim2024continual}. Ngoài ra, khi huấn luyện tiếp, trạng thái bộ tối ưu AdamW
+(các mô-men bậc nhất và bậc hai, với $\beta = (0{,}9;\, 0{,}95)$ theo NeoBERT) được nạp lại
+\textit{nguyên vẹn}, để bộ tiền điều kiện của bộ tối ưu khớp với chế độ mà phần thân đã
+được huấn luyện.
 
 % ======================================================================
 \section{Tổng kết phương pháp}

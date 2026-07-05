@@ -1,3 +1,4 @@
+% !TEX root = ../main.tex
 \chapter{Thực nghiệm và Đánh giá}
 \label{chap:experiment}
 
@@ -20,26 +21,21 @@ tác vụ hiểu tiếng Việt, và kiểm chứng ngữ cảnh dài sau pha m�
 \subsection{Môi trường thực nghiệm}
 \label{subsec:exp-env}
 
-Toàn bộ thực nghiệm được thực hiện trên nền tảng Google Colab với GPU NVIDIA A100
-(bộ nhớ 80GB), sử dụng PyTorch và hệ sinh thái Hugging Face (\texttt{transformers},
-\texttt{datasets}, \texttt{safetensors}). Do một phiên Colab có thời lượng giới hạn, quy
-trình huấn luyện được thiết kế \textit{theo phiên nối tiếp} như đã mô tả ở
-Mục~\ref{sec:cpt}: mỗi phiên xử lý một cửa sổ dữ liệu cố định, lưu điểm kiểm tra cùng
-trạng thái bộ tối ưu, và phiên kế tiếp khôi phục đúng trạng thái để tiếp tục -- lịch tốc độ
-học được khóa theo bước toàn cục nên không bị khởi động lại giữa chừng.
+Toàn bộ thực nghiệm được thực hiện trên GPU NVIDIA A100 (bộ nhớ 80GB, nền tảng Google
+Colab), sử dụng PyTorch và hệ sinh thái Hugging Face (\texttt{transformers},
+\texttt{datasets}, \texttt{safetensors}).
 
 \subsection{Dữ liệu tiền huấn luyện}
 \label{subsec:exp-cpt-data}
 
 Giai đoạn căn chỉnh đóng băng và tiếp tục tiền huấn luyện sử dụng phần tiếng Việt của
 CulturaX~\cite{nguyen2023culturax} -- kho ngữ liệu web đa ngữ quy mô lớn đã được làm sạch
-và khử trùng lặp qua nhiều tầng lọc. Dữ liệu được truyền trực tuyến (streaming) theo từng
-phiên huấn luyện; tổng ngân sách sử dụng xấp xỉ 5 tỷ token, tương đương khoảng 20GB
-văn bản.
+và khử trùng lặp qua nhiều tầng lọc. Dữ liệu được truyền trực tuyến (streaming); tổng
+ngân sách sử dụng xấp xỉ 5 tỷ token, tương đương khoảng 20GB văn bản.
 Bảng~\ref{tab:data-stats} tóm tắt thống kê dữ liệu sử dụng trong đề tài.
 
 \begin{table}[ht]
-  \caption{Thống kê dữ liệu sử dụng trong thực nghiệm.}
+  \caption{Thống kê dữ liệu thực nghiệm.}
   \label{tab:data-stats}
   \centering
   \small
@@ -62,23 +58,25 @@ Mô hình được đánh giá trên một bộ tác vụ hiểu ngôn ngữ ti�
 năng lực khác nhau của một Encoder:
 
 \begin{itemize}
-  \item \textbf{Hỏi đáp đọc hiểu}: UIT-ViQuAD 2.0 -- bộ dữ liệu hỏi đáp trích xuất xây
-        dựng theo phương pháp luận của SQuAD; mô hình phải xác định đoạn văn bản trả lời
+  \item \textbf{Hỏi đáp đọc hiểu}: UIT-ViQuAD 2.0~\cite{nguyen2022vimrc} -- bộ dữ liệu hỏi
+        đáp trích xuất xây dựng theo phương pháp luận của SQuAD; mô hình phải xác định đoạn văn bản trả lời
         trong ngữ cảnh cho trước. Chúng tôi chỉ dùng các câu hỏi \textit{trả lời được}
         (answerable); tập validation công khai được chia đôi ngẫu nhiên thành tập phát
         triển và tập kiểm tra. Đây là tác vụ chính vì đủ khó để phân hóa chất lượng biểu
         diễn giữa các mô hình tốt.
-  \item \textbf{Suy luận ngôn ngữ tự nhiên}: XNLI (phần tiếng Việt), ViANLI (bộ NLI đối
-        kháng, khó hơn đáng kể) và QNLI bản tiếng Việt (suy luận câu hỏi--câu).
-  \item \textbf{Phân loại văn bản}: UIT-VSFC (phản hồi sinh viên), UIT-VSMEC (cảm xúc đa
-        lớp), UIT-ViCTSD (bình luận độc hại).
-  \item \textbf{Tính chấp nhận được về ngữ pháp}: bộ dữ liệu kiểu CoLA cho tiếng Việt
-        (ViCoLA-syn), trong đó câu sai ngữ pháp được sinh tự động từ câu đúng; mô hình
-        phải phân biệt hai loại câu.
+  \item \textbf{Suy luận ngôn ngữ tự nhiên}: XNLI (phần tiếng Việt)~\cite{conneau2018xnli},
+        ViANLI (bộ NLI đối kháng, khó hơn đáng kể)~\cite{huynh2024vianli} và QNLI bản tiếng
+        Việt (suy luận câu hỏi--câu, phỏng theo GLUE~\cite{wang2018glue}).
+  \item \textbf{Phân loại văn bản}: UIT-VSFC (phản hồi sinh viên)~\cite{nguyen2018vsfc},
+        UIT-VSMEC (cảm xúc đa lớp)~\cite{ho2020vsmec}, UIT-ViCTSD (bình luận độc
+        hại)~\cite{nguyen2021victsd}.
+  \item \textbf{Tính chấp nhận được về ngữ pháp}: bộ dữ liệu kiểu CoLA~\cite{warstadt2019cola}
+        cho tiếng Việt (ViCoLA-syn), trong đó câu sai ngữ pháp được sinh tự động từ câu đúng;
+        mô hình phải phân biệt hai loại câu.
   \item \textbf{Gán nhãn chuỗi}: gán nhãn từ loại trên treebank Universal Dependencies
-        Vietnamese-VTB.
-  \item \textbf{Tương đồng ngữ nghĩa}: bộ STS bản tiếng Việt, đo tương quan giữa điểm dự
-        đoán và điểm do con người gán; và tác vụ phát hiện diễn đạt lại (paraphrase) --
+        Vietnamese-VTB~\cite{nguyen2009vtb}.
+  \item \textbf{Tương đồng ngữ nghĩa}: bộ STS bản tiếng Việt~\cite{cer2017sts}, đo tương
+        quan giữa điểm dự đoán và điểm do con người gán; và tác vụ phát hiện diễn đạt lại (paraphrase) --
         phân loại nhị phân cặp câu tương đương ngữ nghĩa xây dựng từ dữ liệu STS.
   \item \textbf{Biểu diễn câu (Retrieval và Reranking)}: Retrieval và Reranking xây dựng
         từ các cặp (câu hỏi, đoạn văn) của UIT-ViQuAD. Hai tác vụ này được đánh giá theo
@@ -91,7 +89,7 @@ Bảng~\ref{tab:eval-tasks} tổng hợp toàn bộ bộ đánh giá hạ nguồ
 tương ứng của từng tác vụ.
 
 \begin{table}[ht]
-  \caption{Tổng hợp các tác vụ đánh giá hạ nguồn tiếng Việt.}
+  \caption{Các tác vụ đánh giá hạ nguồn.}
   \label{tab:eval-tasks}
   \centering
   \small
@@ -120,7 +118,7 @@ Bảng~\ref{tab:model-comparison} đặt ViNeoBERT và các mô hình đối sá
 thể, tương tự cách NeoBERT~\cite{lebreton2025neobert} so sánh với ModernBERT và NomicBERT.
 
 \begin{table}[ht]
-  \caption{So sánh các mô hình Encoder tiếng Việt và đa ngữ được đánh giá trong đề tài.}
+  \caption{Các mô hình Encoder được đánh giá.}
   \label{tab:model-comparison}
   \centering
   \small
@@ -150,7 +148,7 @@ giá trị được giữ cố định cho \textit{mọi} phương án khởi t�
 đảm khác biệt duy nhất giữa các phương án là cách khởi tạo lớp nhúng và lớp đầu ra.
 
 \begin{table}[ht]
-  \caption{Siêu tham số của các giai đoạn huấn luyện.}
+  \caption{Siêu tham số huấn luyện.}
   \label{tab:hyperparams}
   \centering
   \small
@@ -166,7 +164,7 @@ giá trị được giữ cố định cho \textit{mọi} phương án khởi t�
     Tỷ lệ che MLM          & 20\%             & 20\%               & 20\% \\
     Bộ tối ưu              & \multicolumn{3}{c}{AdamW, $\beta = (0{,}9;\, 0{,}95)$, weight decay $0{,}01$} \\
     Lịch tốc độ học        & tuyến tính       & WSD, làm nguội theo CT~\ref{eq:wsd} & hằng số sau khởi động \\
-    Số epoch               & 1 lượt ($\sim$20M token) & nhiều phiên (tổng $\sim$5 tỷ token) & 1 lượt ($\sim$200M token) \\
+    Số epoch               & 1 lượt ($\sim$20M token) & 1 lượt ($\sim$5 tỷ token) & 1 lượt ($\sim$200M token) \\
     \hline
   \end{tabular}%
   }
@@ -210,31 +208,8 @@ tính trung bình trên 5 lần chạy với hạt giống khác nhau và báo c
         lần theo giao thức biểu diễn câu chung nên không kèm độ lệch chuẩn.
 \end{itemize}
 
-Một số độ đo được định nghĩa hình thức như sau. Với hỏi đáp đọc hiểu, F1 ở cấp token là
-trung bình điều hòa của độ chính xác $P$ và độ bao phủ $R$ giữa câu trả lời dự đoán và đáp
-án chuẩn, như Công thức~\eqref{eq:f1}:
-\begin{equation}
-  \label{eq:f1}
-  \mathrm{F1} = \frac{2PR}{P + R}.
-\end{equation}
-Hệ số tương quan Matthews cho phân loại nhị phân, tính từ các đại lượng dương thật ($TP$),
-âm thật ($TN$), dương giả ($FP$) và âm giả ($FN$), như Công thức~\eqref{eq:mcc}:
-\begin{equation}
-  \label{eq:mcc}
-  \mathrm{MCC} = \frac{TP\cdot TN - FP\cdot FN}
-  {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}.
-\end{equation}
-Với truy hồi và xếp hạng lại, gọi $\mathrm{rel}_i \in \{0,1\}$ là mức liên quan của kết quả ở
-hạng $i$ và $\mathrm{rank}_q$ là thứ hạng của ngữ cảnh đúng đầu tiên cho truy vấn $q$, hai độ
-đo được xác định như Công thức~\eqref{eq:ndcg-mrr}:
-\begin{equation}
-  \label{eq:ndcg-mrr}
-  \mathrm{nDCG@}k = \frac{1}{Z}\sum_{i=1}^{k}\frac{2^{\mathrm{rel}_i}-1}{\log_2(i+1)},
-  \qquad
-  \mathrm{MRR} = \frac{1}{|Q|}\sum_{q\in Q}\frac{1}{\mathrm{rank}_q},
-\end{equation}
-trong đó $Z$ là hệ số chuẩn hóa (DCG của thứ hạng lý tưởng) đưa nDCG về đoạn $[0,1]$, và $Q$
-là tập truy vấn đánh giá.
+Định nghĩa hình thức (công thức tường minh) của F1 ở cấp token, MCC, nDCG@$k$ và MRR được
+trình bày trong Phụ lục~\ref{app:metrics}.
 
 % ======================================================================
 \section{So sánh các phương án khởi tạo}
@@ -260,8 +235,7 @@ trước khi bất kỳ bước huấn luyện nào diễn ra.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{images/beforeandaftersalt.png}
-  \caption{Phân bố nhúng của từ vựng tiếng Việt so với không gian NeoBERT trước (trái)
-    và sau (phải) phép chiếu SALT.}
+  \caption{Lớp nhúng tiếng Việt trước và sau phép chiếu SALT.}
   \label{fig:salt-before-after}
 \end{figure}
 
@@ -297,8 +271,8 @@ bảo toàn. Có thể thấy phần đuôi màu vàng còn vươn nhẹ lên ph
 PC2 -- chủ yếu là các token hiếm rơi vào nhánh trung bình có trọng số hoặc khởi tạo
 ngẫu nhiên (Mục~\ref{sec:salt-proj}); chính giai đoạn căn chỉnh đóng băng ở bước kế tiếp
 sẽ kéo nốt phần này về khớp với phần thân. Đây cũng là lời giải thích hình học cho quan
-sát mở đầu mục sau: mô hình khởi đầu CPT với mất mát chỉ 7,21 thay vì mức đoán ngẫu
-nhiên trên 10.
+sát mở đầu mục sau: ngay sau khởi tạo SALT (trước căn chỉnh đóng băng), mô hình đã có mất
+mát chỉ 7,21 thay vì mức đoán ngẫu nhiên trên 10.
 
 \subsection{Lựa chọn hệ số co trọng số đầu ra}
 \label{subsec:exp-gamma}
@@ -314,7 +288,7 @@ Hình~\ref{fig:gamma-loss} trình bày mất mát đánh giá, kèm hai mức th
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.92\textwidth]{images/gamma_scale_loss.png}
-  \caption{Mất mát MLM trên tập đánh giá của ba giá trị hệ số co $\gamma$.}
+  \caption{Mất mát MLM theo hệ số co $\gamma$.}
   \label{fig:gamma-loss}
 \end{figure}
 
@@ -354,7 +328,7 @@ Hình~\ref{fig:init-strategy} tổng hợp cả hai mặt so sánh.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.95\textwidth]{images/init_strategy_100k.png}
-  \caption{So sánh ba chiến lược khởi tạo tại cùng mốc $\sim$100 triệu token CPT.}
+  \caption{So sánh ba chiến lược khởi tạo.}
   \label{fig:init-strategy}
 \end{figure}
 
@@ -399,8 +373,10 @@ vẽ mất mát và perplexity đánh giá tại các mốc. Nhờ khởi tạo 
 \textit{khởi đầu} chỉ khoảng $6{,}5$ -- đã nằm sâu dưới mức dự đoán ngẫu nhiên đều
 $\log|V| \approx 10{,}3$ và gần với entropy tự đơn tiếng Việt ($\approx 7{,}3$) -- thay vì
 bắt đầu từ trạng thái nhiễu loạn như khởi tạo ngẫu nhiên. Phần lớn mức giảm diễn ra rất
-sớm: chỉ trong khoảng $0{,}2$ tỷ token đầu, mất mát đã rơi xuống dưới $2{,}0$, sau đó hạ
-chậm dần về $\approx 1{,}1$ ở cuối pha làm nguội (khoảng $4{,}8$ tỷ token). Mất mát đánh giá
+sớm: chỉ trong khoảng $0{,}2$ tỷ token đầu, mất mát đã rơi xuống dưới $2{,}0$. Sau đó tốc độ
+học được giữ ở đỉnh trong phần lớn ngân sách (pha ổn định của lịch WSD, khoảng 4 tỷ token
+đầu) và mất mát tiếp tục hạ chậm; pha làm nguội trên khoảng 1 tỷ token cuối -- xấp xỉ 20\%
+ngân sách (Mục~\ref{sec:cpt}) -- kéo mất mát về $\approx 1{,}1$. Mất mát đánh giá
 trên tập giữ lại biến thiên đồng pha: perplexity giảm từ $17{,}2$ ở khoảng $0{,}1$ tỷ token
 xuống $3{,}3$ ở khoảng $3{,}9$ tỷ token và $3{,}2$ ở điểm kiểm tra cuối. Diễn tiến này xác
 nhận ở cấp độ tiền huấn luyện điều mà đường cong hạ nguồn dưới đây thể hiện ở cấp độ tác
@@ -409,12 +385,12 @@ vụ: phần thân kế thừa hội tụ nhanh trên tiếng Việt thay vì ph
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{images/cpt_loss_curve.png}
-  \caption{Đường học của giai đoạn tiếp tục tiền huấn luyện WSD.}
+  \caption{Đường học giai đoạn CPT (WSD).}
   \label{fig:cpt-loss}
 \end{figure}
 
-Tại mỗi mốc ngân sách, điểm kiểm tra được làm nguội rồi tinh chỉnh trên UIT-ViQuAD;
-Hình~\ref{fig:mrc-curve} thể hiện điểm F1 theo lượng token đã tiếp tục tiền huấn luyện
+Tại mỗi mốc ngân sách, chúng tôi rẽ một nhánh làm nguội ngắn để lấy điểm kiểm tra rồi tinh
+chỉnh trên UIT-ViQuAD; Hình~\ref{fig:mrc-curve} thể hiện điểm F1 theo lượng token đã tiếp tục tiền huấn luyện
 (thang log). Đối sánh chính là họ PhoBERT (hai đường đứt nét đậm) -- cùng là mô hình
 đơn ngữ chuyên cho tiếng Việt nên là mốc tham chiếu trực tiếp của đề tài; hai đường chấm
 xám của XLM-R chỉ mang tính tham khảo, vì đây là mô hình đa ngữ với tiếng Việt chỉ là
@@ -423,7 +399,7 @@ một trong một trăm ngôn ngữ.
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=0.92\textwidth]{images/mrc_curve_tokens.png}
-  \caption{Điểm F1 trên UIT-ViQuAD theo lượng token tiếp tục tiền huấn luyện.}
+  \caption{Điểm F1 trên UIT-ViQuAD theo số token CPT.}
   \label{fig:mrc-curve}
 \end{figure}
 
@@ -453,7 +429,7 @@ lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Vi
 99,0\% điểm F1 của PhoBERT-base-v2 và 98,3\% của PhoBERT-large trên tác vụ này.
 
 \begin{table}[ht]
-  \caption{Lượng dữ liệu tiếng Việt các mô hình đã duyệt trong tiền huấn luyện.}
+  \caption{Lượng dữ liệu tiếng Việt đã duyệt.}
   \label{tab:tokens-seen}
   \centering
   \small
@@ -477,18 +453,18 @@ lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Vi
 Để có bức tranh toàn diện hơn một tác vụ đơn lẻ, mô hình cuối được đánh giá trên mười hai
 tác vụ thuộc năm nhóm năng lực (Mục~\ref{subsec:exp-eval-data}), so với bốn mô hình đối
 sánh: hai bản \texttt{base} cùng hạng tham số và hai bản \texttt{large} lớn hơn đáng kể
-(PhoBERT-large khoảng 370 triệu, XLM-R-large khoảng 550 triệu tham số, so với $\approx$245
+(PhoBERT-large khoảng 370 triệu, XLM-R-large khoảng 560 triệu tham số, so với $\approx$245
 triệu của ViNeoBERT). Kết quả trình bày trong Bảng~\ref{tab:multitask}: mỗi ô là giá trị
 trung bình qua 5 lần chạy với hạt giống khác nhau, riêng hai tác vụ Retrieval và Reranking
 chạy một lần (Mục~\ref{sec:exp-metrics}).
 
 \begin{table}[ht]
-  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token (kết quả tốt nhất mỗi hàng in đậm).}
+  \caption{Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token (giá trị tốt nhất in đậm).}
   \label{tab:multitask}
   \centering
   \small
   \resizebox{\textwidth}{!}{%
-  \begin{tabular}{llccccc}
+  \begin{tabular}{llcccc>{\columncolor{ourcol}}c}
     \hline
     \textbf{Tác vụ} & \textbf{Độ đo} & \textbf{PhoBERT-base-v2} & \textbf{PhoBERT-large} & \textbf{XLM-R-base} & \textbf{XLM-R-large} & \textbf{ViNeoBERT} \\
     \hline
@@ -569,8 +545,7 @@ dài) được dùng cho cả hai điểm kiểm tra nên hai hình so sánh đ�
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{images/ctx4096_pppl.png}
-  \caption{Pseudo-perplexity theo độ dài chuỗi trước (trái) và sau (phải) pha mở rộng
-    ngữ cảnh 4.096 token.}
+  \caption{Pseudo-perplexity theo độ dài chuỗi, trước và sau pha mở rộng 4.096 token.}
   \label{fig:ctx4096}
 \end{figure}
 
