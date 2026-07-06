@@ -432,8 +432,10 @@ Thuật toán~\ref{alg:salt}.
           \State $E[t] \gets \big(\textstyle\sum_a w_{t,a}\,\mathbf{a}^{\mathrm{tgt}}\big)\big/\sum_a w_{t,a}$
           \Comment{trung bình có trọng số}
         \EndIf
-        \State $E[t] \gets E[t] \cdot \mu_{\mathrm{neo}} / \lVert E[t] \rVert$
-        \Comment{hiệu chỉnh chuẩn (ma trận nhúng)}
+        \If{ma trận đích là ma trận nhúng $E$}
+          \State $E[t] \gets E[t] \cdot \mu_{\mathrm{neo}} / \lVert E[t] \rVert$
+          \Comment{hiệu chỉnh chuẩn; ma trận đầu ra dùng $\gamma$ thay thế}
+        \EndIf
       \EndIf
     \EndFor
     \State \Return $E$
@@ -495,12 +497,13 @@ $b_{\mathrm{dec}}$ khớp với các hàng của ma trận nhúng và ma trận 
 
 Cơ sở lý thuyết của cách khởi tạo này đến từ một quan sát của Meister và cộng
 sự~\cite{meister2022naturalbias}: lớp tuyến tính cuối phân rã tự nhiên thành \textit{tích của
-hai phân phối} (product of experts):
+hai phân phối} (product of experts). Với mô hình ngôn ngữ có mặt nạ, ta viết cho ngữ cảnh hai
+chiều $\mathbf{c}$ bao quanh vị trí cần dự đoán:
 \begin{equation}
   \label{eq:poe}
-  p_\theta(y \mid y_{<t})
+  p_\theta(y \mid \mathbf{c})
   \;\propto\;
-  \underbrace{e^{W\phi(y_{<t})}}_{p_{W\phi}(\cdot\mid y_{<t})\;\text{(ngữ cảnh)}}
+  \underbrace{e^{W\phi(\mathbf{c})}}_{p_{W\phi}(\cdot\mid \mathbf{c})\;\text{(ngữ cảnh)}}
   \;\cdot\;
   \underbrace{e^{b}}_{p_b(\cdot)\;\text{(tiên nghiệm)}}
 \end{equation}
@@ -521,12 +524,14 @@ nghĩa, thay vì lãng phí vào việc hiệu chỉnh phân phối biên.
 Meister và cộng sự xác nhận thực nghiệm rằng: (i)~ngay từ bước đầu huấn luyện, mô
 hình ngôn ngữ đã ``thu hẹp'' đầu ra về phân phối từ đơn bất kể ngữ cảnh, và quá trình đó tốn
 hàng trăm đến hàng nghìn bước gradient nếu khởi tạo $b = \mathbf{0}$; (ii)~khởi tạo theo
-log-unigram cải thiện hiệu quả huấn luyện (diện tích dưới đường cong BLEU trên tập phát triển)
-trên 5/6 cặp ngôn ngữ thử nghiệm, đồng thời cải thiện BLEU cuối trên cùng số cặp.
+log-unigram cải thiện hiệu quả huấn luyện (đo bằng diện tích dưới đường cong BLEU
+(Bilingual Evaluation Understudy) trên tập phát triển) và điểm BLEU cuối trên hầu hết
+các cặp ngôn ngữ được thử nghiệm.
 
-Nhờ cách khởi tạo này, hàm mất mát khởi điểm xấp xỉ \textit{entropy từ đơn} của tiếng Việt
-(${\approx}7{,}3$ nat), thấp hơn đáng kể so với mức ngẫu nhiên $\log|\mathcal{V}_t|$
-(${\approx}10{,}3$ nat với $|\mathcal{V}_t| = 30.522$). Ý tưởng khởi tạo độ chệch theo xác
+Khi kết hợp với việc co trọng số đầu ra (Mục~\ref{subsec:dec-scale}) để thành phần
+$W_{\mathrm{dec}}$ không lấn át độ chệch, hàm mất mát khởi điểm xấp xỉ \textit{entropy từ đơn}
+của tiếng Việt (${\approx}7{,}3$ nat), thấp hơn đáng kể so với mức ngẫu nhiên
+$\log|\mathcal{V}_t|$ (${\approx}10{,}3$ nat với $|\mathcal{V}_t| = 30.522$). Ý tưởng khởi tạo độ chệch theo xác
 suất tiên nghiệm để ổn định giai đoạn đầu huấn luyện cũng được Lin và cộng
 sự~\cite{lin2017focal} áp dụng trong ngữ cảnh phát hiện đối tượng với mất cân bằng lớp nặng,
 mặc dù bài toán đó dùng một hằng số vô hướng tiên nghiệm thay vì toàn bộ phân phối biên trên
@@ -561,28 +566,23 @@ lên $W_{\mathrm{dec}}$ tại thời điểm khởi tạo. Cơ sở khoa học c
         entropy từ đơn của tiếng Việt, mô hình \textit{bỏ qua} giai đoạn phải học lại phân
         phối biên và dồn toàn bộ tín hiệu gradient vào việc học ngữ nghĩa.
   \item \textbf{Khác 0 -- để giữ ngữ nghĩa}: phép nhân vô hướng bảo toàn \textit{hướng} của
-        các hàng $W_{\mathrm{dec}}$, tức bảo toàn cấu trúc lân cận ngữ nghĩa thu được từ phép
-        chiếu SALT. Trong quá trình huấn luyện, mô hình chỉ cần \textit{khuếch đại dần} biên
-        độ của tín hiệu ngữ nghĩa sẵn có thay vì học lại từ đầu, nhờ đó tốc độ học về sau
-        nhanh hơn so với một lớp đầu ra ngẫu nhiên.
+        các hàng $W_{\mathrm{dec}}$ tại thời điểm khởi tạo, nên cấu trúc lân cận ngữ nghĩa mà
+        phép chiếu SALT dựng nên được giữ làm \textit{điểm xuất phát} cho lớp đầu ra -- một
+        khởi đầu tốt hơn hẳn so với một lớp đầu ra ngẫu nhiên, giúp mô hình bắt đầu từ một
+        hướng ngữ nghĩa hợp lý thay vì phải học lại từ đầu.
 \end{itemize}
 
 Giả thuyết này được kiểm chứng bằng thực nghiệm trong Chương~\ref{chap:experiment}: khi giữ
 nguyên biên độ ($\gamma = 1$) hoặc chỉ co một nửa ($\gamma = 0{,}5$), mất mát khởi điểm cao
-hơn hẳn (với $\gamma=1$ gần chạm mức ngẫu nhiên $\log|\mathcal{V}_t|$, với $\gamma=0{,}5$ vẫn
-cao hơn nhiều mức entropy từ đơn) và -- quan trọng hơn -- quá trình huấn
+hơn hẳn -- với $\gamma=1$ gần chạm mức đoán ngẫu nhiên $\log|\mathcal{V}_t|$, với $\gamma=0{,}5$
+vẫn cao hơn nhiều mức entropy từ đơn -- và, quan trọng hơn, quá trình huấn
 luyện bị \textit{mắc kẹt} ở mức mất mát cao, không hội tụ về vùng của các phương án tốt.
-Hiện tượng này không chỉ là hệ quả của điểm khởi đầu cao: một mô hình khởi tạo ngẫu nhiên
-chuẩn cũng bắt đầu gần $\log|\mathcal{V}_t|$ nhưng vẫn hội tụ bình thường. Dữ liệu thực
-nghiệm (Chương~\ref{chap:experiment}) xác nhận một phần cơ chế này: tại bước 10, chuẩn
-gradient (\texttt{grad\_norm}) của $\gamma=1{,}0$ đạt ${\approx}68$ -- cao hơn 33 lần so với
-${\approx}2$ của $\gamma=0{,}1$ -- trong khi ở bước đó logits chủ yếu vẫn là nhiễu vì
-$W_{\mathrm{dec}}$ chưa hề được căn chỉnh trên tiếng Việt. Điều này xác nhận các gradient
-ngược xuất hiện sớm ở $\gamma=1$ có biên độ rất lớn nhưng mang ít thông tin ngữ nghĩa. Một
-cách lý giải là các gradient đó làm biến dạng cấu trúc lân cận ngữ nghĩa mà SALT đã xây dựng
-trong $W_{\mathrm{dec}}$, phá hủy tài sản chuyển giao trước khi nó kịp phát huy hiệu quả;
-phần này vẫn cần kiểm chứng trực tiếp, ví dụ bằng cách đo độ dịch chuyển tương đồng cosine
-của các hàng $W_{\mathrm{dec}}$ qua từng bước huấn luyện đầu.
+Hiện tượng mắc kẹt này không chỉ là hệ quả của điểm khởi đầu cao: một mô hình khởi tạo ngẫu
+nhiên chuẩn cũng bắt đầu gần $\log|\mathcal{V}_t|$ nhưng vẫn hội tụ bình thường. Khi $\gamma$
+lớn, các logit do $W_{\mathrm{dec}}$ (chưa từng căn chỉnh trên tiếng Việt) sinh ra lấn át tiên
+nghiệm tần suất và ở giai đoạn đầu chủ yếu là nhiễu, khiến những cập nhật đầu tiên có biên độ
+rất lớn nhưng mang ít thông tin hữu ích -- chuẩn gradient đo được ở những bước đầu
+(Chương~\ref{chap:experiment}) phản ánh đúng điều này.
 Trong khi đó, $\gamma = 0{,}1$ vừa cho khởi điểm thấp vừa hội tụ nhanh. Do đó $\gamma = 0{,}1$
 được chọn cho toàn bộ quy trình.
 

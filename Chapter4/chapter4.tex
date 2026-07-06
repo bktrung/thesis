@@ -298,8 +298,9 @@ vừa chiếu đã nhấn chìm hoàn toàn tiên nghiệm tần suất cài tro
 một nửa ($\gamma=0{,}5$) khởi đầu ở 8,13, lơ lửng giữa hai mức tham chiếu. Chuẩn gradient
 ở những bước đầu phản ánh đúng mức sai lệch: 68,4 với $\gamma=1{,}0$ và 15,8 với
 $\gamma=0{,}5$, so với chỉ 2,1 của $\gamma=0{,}1$ -- các cập nhật đầu tiên của hai phương
-án $\gamma$ lớn đủ mạnh để phá vỡ cấu trúc ngữ nghĩa mà SALT vừa dựng, và hệ quả là cả
-hai \textit{mắc kẹt} quanh mức 6,61--6,75 cho tới hết ngân sách. Ngược lại, phương án
+án $\gamma$ lớn có biên độ rất lớn nhưng mang ít thông tin hữu ích vì logit lúc này chủ
+yếu là nhiễu, và trên thực tế cả hai \textit{mắc kẹt} quanh mức 6,61--6,75 cho tới hết
+ngân sách. Ngược lại, phương án
 $\gamma=0{,}1$ khởi đầu ngay tại vùng entropy từ đơn (7,21) -- tiên nghiệm tần suất được
 bảo toàn làm điểm xuất phát -- rồi hội tụ về 3,14, bỏ xa hai phương án còn lại trong
 suốt quá trình. Do đó, $\gamma=0{,}1$ được chọn cho mọi thí nghiệm về sau.
@@ -451,7 +452,9 @@ lượng token của họ PhoBERT và cỡ vài phần trăm lượng tiếng Vi
 \label{subsec:exp-multitask}
 
 Để có bức tranh toàn diện hơn một tác vụ đơn lẻ, mô hình cuối được đánh giá trên mười hai
-tác vụ thuộc năm nhóm năng lực (Mục~\ref{subsec:exp-eval-data}), so với bốn mô hình đối
+tác vụ thuộc năm nhóm năng lực (Mục~\ref{subsec:exp-eval-data}; riêng UIT-ViQuAD đọc hiểu
+đã được phân tích tách riêng ở Mục~\ref{subsec:exp-curve} nên không lặp lại trong bảng
+này), so với bốn mô hình đối
 sánh: hai bản \texttt{base} cùng hạng tham số và hai bản \texttt{large} lớn hơn đáng kể
 (PhoBERT-large khoảng 370 triệu, XLM-R-large khoảng 560 triệu tham số, so với $\approx$245
 triệu của ViNeoBERT). Kết quả trình bày trong Bảng~\ref{tab:multitask}: mỗi ô là giá trị

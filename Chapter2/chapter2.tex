@@ -147,7 +147,8 @@ Encoder hiện đại để thích nghi sang tiếng Việt thay vì tiếp tụ
 Về bản chất, NeoBERT~\cite{lebreton2025neobert} vẫn là một mô hình thuộc dòng BERT: mã
 hóa hai chiều toàn chuỗi và được tiền huấn luyện bằng tác vụ MLM. Điều làm nó khác biệt
 là toàn bộ ``phần cứng'' bên trong đã được thay mới theo những gì thế hệ mô hình ngôn ngữ
-lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $245$ triệu tham số, giữ kích thước
+lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $245$ triệu tham số (nhóm tác giả
+đặt tên là bản NeoBERT\textsubscript{250M} theo số làm tròn), giữ kích thước
 ẩn $768$ như BERT-base nhưng sâu $28$ lớp, dùng $12$ đầu chú ý (mỗi đầu $64$ chiều), hỗ
 trợ ngữ cảnh 4.096 token, và được tiền huấn luyện trên khoảng $2{,}1$ nghìn tỷ token văn
 bản web tiếng Anh (RefinedWeb); mục tiêu tiền huấn luyện là MLM thuần túy (bỏ NSP theo
