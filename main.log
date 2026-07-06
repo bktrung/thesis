@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.7.4)  6 JUL 2026 14:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.7.4)  6 JUL 2026 15:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1755,7 +1755,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2})
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.681 
+l.684 
       ]) [45]
 \openout2 = `Chapter4/chapter4.aux'.
 
@@ -1808,7 +1808,7 @@ as been already used, duplicate ignored
 l.205   \item \textbf
                      {nDCG@10 ($\uparrow$) và MRR ($\uparrow$)} cho truy h�...
 ]
-<images/beforeandaftersalt.png, id=1379, 858.5676pt x 393.1488pt>
+<images/beforeandaftersalt.png, id=1380, 858.5676pt x 393.1488pt>
 File: images/beforeandaftersalt.png Graphic file (type png)
 <use images/beforeandaftersalt.png>
 Package pdftex.def Info: images/beforeandaftersalt.png  used on input line 237.
@@ -1821,7 +1821,7 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.262 
        <./images/beforeandaftersalt.png>]
-<images/gamma_scale_loss.png, id=1395, 542.025pt x 303.534pt>
+<images/gamma_scale_loss.png, id=1396, 542.025pt x 303.534pt>
 File: images/gamma_scale_loss.png Graphic file (type png)
 <use images/gamma_scale_loss.png>
 Package pdftex.def Info: images/gamma_scale_loss.png  used on input line 290.
@@ -1834,7 +1834,7 @@ has been already used, duplicate ignored
 l.317   \item \textbf
                      {SALT hai ma trận}: chiếu theo token \textit{riêng...
  <./images/gamma_scale_loss.png>]
-<images/init_strategy_100k.png, id=1409, 621.522pt x 281.853pt>
+<images/init_strategy_100k.png, id=1410, 621.522pt x 281.853pt>
 File: images/init_strategy_100k.png Graphic file (type png)
 <use images/init_strategy_100k.png>
 Package pdftex.def Info: images/init_strategy_100k.png  used on input line 330.
@@ -1847,12 +1847,12 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.353 
        <./images/init_strategy_100k.png>] [56]
-<images/cpt_loss_curve.png, id=1431, 729.6861pt x 288.5982pt>
+<images/cpt_loss_curve.png, id=1432, 729.6861pt x 288.5982pt>
 File: images/cpt_loss_curve.png Graphic file (type png)
 <use images/cpt_loss_curve.png>
 Package pdftex.def Info: images/cpt_loss_curve.png  used on input line 387.
 (pdftex.def)             Requested size: 455.24411pt x 180.05637pt.
-<images/mrc_curve_tokens.png, id=1433, 592.614pt x 332.442pt>
+<images/mrc_curve_tokens.png, id=1434, 592.614pt x 332.442pt>
 File: images/mrc_curve_tokens.png Graphic file (type png)
 <use images/mrc_curve_tokens.png>
 Package pdftex.def Info: images/mrc_curve_tokens.png  used on input line 401.
@@ -1884,7 +1884,7 @@ as been already used, duplicate ignored
 l.499   \item \textbf
                      {So sánh với XLM-R}: XLM-R là đối sánh thứ ha...
 ] [60]
-<images/ctx4096_pppl.png, id=1469, 2005.4925pt x 834.11626pt>
+<images/ctx4096_pppl.png, id=1470, 2005.4925pt x 834.11626pt>
 File: images/ctx4096_pppl.png Graphic file (type png)
 <use images/ctx4096_pppl.png>
 Package pdftex.def Info: images/ctx4096_pppl.png  used on input line 547.
@@ -1992,9 +1992,9 @@ AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnti12.pfb><C:/Users/trungk
 bui/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnti8.pfb><C:/Users/tru
 ngkbui/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt10.pfb><C:/Users
 /trungkbui/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (106 pages, 1808713 bytes).
+Output written on main.pdf (106 pages, 1809309 bytes).
 PDF statistics:
- 1758 PDF objects out of 2073 (max. 8388607)
+ 1759 PDF objects out of 2073 (max. 8388607)
  316 named destinations out of 1000 (max. 500000)
  769 words of extra memory for PDF output out of 10000 (max. 10000000)
 

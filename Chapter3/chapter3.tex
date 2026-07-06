@@ -573,13 +573,16 @@ hơn hẳn (với $\gamma=1$ gần chạm mức ngẫu nhiên $\log|\mathcal{V}_
 cao hơn nhiều mức entropy từ đơn) và -- quan trọng hơn -- quá trình huấn
 luyện bị \textit{mắc kẹt} ở mức mất mát cao, không hội tụ về vùng của các phương án tốt.
 Hiện tượng này không chỉ là hệ quả của điểm khởi đầu cao: một mô hình khởi tạo ngẫu nhiên
-chuẩn cũng bắt đầu gần $\log|\mathcal{V}_t|$ nhưng vẫn hội tụ bình thường. Một giải thích
-khả dĩ là với $\gamma=1$, các gradient ngược xuất hiện sớm có biên độ lớn nhưng mang rất ít
-thông tin ngữ nghĩa (vì logits chủ yếu là nhiễu), dẫn đến khả năng làm biến dạng cấu trúc lân
-cận ngữ nghĩa mà SALT đã xây dựng trong $W_{\mathrm{dec}}$ -- phá hủy tài sản chuyển giao
-trước khi nó kịp phát huy hiệu quả. Giả thuyết này có thể kiểm chứng bằng cách đo độ dịch
-chuyển tương đồng cosine của các hàng $W_{\mathrm{dec}}$ theo bước huấn luyện đầu và so sánh
-giữa các cấu hình $\gamma$.
+chuẩn cũng bắt đầu gần $\log|\mathcal{V}_t|$ nhưng vẫn hội tụ bình thường. Dữ liệu thực
+nghiệm (Chương~\ref{chap:experiment}) xác nhận một phần cơ chế này: tại bước 10, chuẩn
+gradient (\texttt{grad\_norm}) của $\gamma=1{,}0$ đạt ${\approx}68$ -- cao hơn 33 lần so với
+${\approx}2$ của $\gamma=0{,}1$ -- trong khi ở bước đó logits chủ yếu vẫn là nhiễu vì
+$W_{\mathrm{dec}}$ chưa hề được căn chỉnh trên tiếng Việt. Điều này xác nhận các gradient
+ngược xuất hiện sớm ở $\gamma=1$ có biên độ rất lớn nhưng mang ít thông tin ngữ nghĩa. Một
+cách lý giải là các gradient đó làm biến dạng cấu trúc lân cận ngữ nghĩa mà SALT đã xây dựng
+trong $W_{\mathrm{dec}}$, phá hủy tài sản chuyển giao trước khi nó kịp phát huy hiệu quả;
+phần này vẫn cần kiểm chứng trực tiếp, ví dụ bằng cách đo độ dịch chuyển tương đồng cosine
+của các hàng $W_{\mathrm{dec}}$ qua từng bước huấn luyện đầu.
 Trong khi đó, $\gamma = 0{,}1$ vừa cho khởi điểm thấp vừa hội tụ nhanh. Do đó $\gamma = 0{,}1$
 được chọn cho toàn bộ quy trình.
 
