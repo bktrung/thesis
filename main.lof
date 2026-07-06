@@ -7,14 +7,14 @@
 \contentsline {figure}{\numberline {2.5}{\ignorespaces Sơ đồ tổng quan SALT}}{25}{figure.2.5}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình ba giai đoạn xây dựng ViNeoBERT.}}{29}{figure.3.1}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Lịch tốc độ học Warmup--Stable--Decay (WSD).}}{43}{figure.3.2}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Lịch tốc độ học Warmup--Stable--Decay (WSD).}}{44}{figure.3.2}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Lớp nhúng tiếng Việt trước và sau phép chiếu SALT.}}{51}{figure.4.1}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Mất mát MLM theo hệ số co $\gamma $.}}{53}{figure.4.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces So sánh ba chiến lược khởi tạo.}}{54}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Đường học giai đoạn CPT (WSD).}}{56}{figure.4.4}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo số token CPT.}}{57}{figure.4.5}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Pseudo-perplexity theo độ dài chuỗi, trước và sau pha mở rộng 4.096 token.}}{61}{figure.4.6}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Lớp nhúng tiếng Việt trước và sau phép chiếu SALT.}}{52}{figure.4.1}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Mất mát MLM theo hệ số co $\gamma $.}}{54}{figure.4.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces So sánh ba chiến lược khởi tạo.}}{55}{figure.4.3}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Đường học giai đoạn CPT (WSD).}}{57}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo số token CPT.}}{58}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Pseudo-perplexity theo độ dài chuỗi, trước và sau pha mở rộng 4.096 token.}}{62}{figure.4.6}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

@@ -480,21 +480,57 @@ và token đặc biệt được giữ nguyên để bảo toàn độ trung th�
 Lớp đầu ra của NeoBERT có một véc-tơ độ chệch $b_{\mathrm{dec}}$ mã hóa \textit{tiên nghiệm
 tần suất} của token. Các phương pháp khởi tạo trước đây thường để độ chệch này bằng 0, khiến
 mô hình ở bước đầu phải lãng phí công sức học lại phân phối tần suất biên. Đề tài khởi tạo
-$b_{\mathrm{dec}}$ theo \textit{log-tần-suất từ đơn} (unigram log-frequency) của tiếng Việt,
-như Công thức~\eqref{eq:freq-bias}:
+$b_{\mathrm{dec}}$ theo \textit{log-tần-suất từ đơn} (unigram log-frequency) của tiếng Việt
+theo phương pháp của Meister và cộng sự~\cite{meister2022naturalbias}, như
+Công thức~\eqref{eq:freq-bias}:
 \begin{equation}
   \label{eq:freq-bias}
   b_{\mathrm{dec},v} = \log p_v, \qquad
   p_v = \frac{c_v + 1}{\sum_{u\in\mathcal{V}_t} c_u + |\mathcal{V}_t|}
 \end{equation}
-Trong đó $c_v$ là số lần xuất hiện của token $v$ trong ngữ liệu tiếng Việt (đếm qua bộ tách
-từ đã cắt tỉa), và phép cộng 1 ở tử số là làm trơn Laplace. Nhờ cách khởi tạo này, ngay ở
-bước huấn luyện đầu tiên mô hình đã ``đoán'' đúng phân phối tần suất từ đơn thay vì phân phối
-đều, giúp hàm mất mát khởi điểm xấp xỉ \textit{entropy từ đơn} của tiếng Việt -- thấp hơn
-đáng kể so với mức ngẫu nhiên $\log|\mathcal{V}_t|$. Cách ``khởi tạo sao cho dự đoán ban đầu
-trùng với phân phối tiên nghiệm'' này cùng tinh thần với kỹ thuật khởi tạo độ chệch theo xác
-suất tiên nghiệm của Lin và cộng sự~\cite{lin2017focal}, vốn đã chứng minh hiệu quả ổn định
-hóa giai đoạn đầu huấn luyện.
+Trong đó $c_v$ là số lần xuất hiện của token $v$ trong ngữ liệu tiếng Việt (đếm qua 20.000
+văn bản CulturaX-vi với bộ tách từ đã cắt tỉa), và phép cộng 1 là làm trơn Laplace. Cụ thể,
+phép đếm sử dụng đúng cùng bộ tách từ sẽ dùng trong huấn luyện, bảo đảm chỉ số token trong
+$b_{\mathrm{dec}}$ khớp với các hàng của ma trận nhúng và ma trận đầu ra.
+
+Cơ sở lý thuyết của cách khởi tạo này đến từ một quan sát của Meister và cộng
+sự~\cite{meister2022naturalbias}: lớp tuyến tính cuối phân rã tự nhiên thành \textit{tích của
+hai phân phối} (product of experts):
+\begin{equation}
+  \label{eq:poe}
+  p_\theta(y \mid y_{<t})
+  \;\propto\;
+  \underbrace{e^{W\phi(y_{<t})}}_{p_{W\phi}(\cdot\mid y_{<t})\;\text{(ngữ cảnh)}}
+  \;\cdot\;
+  \underbrace{e^{b}}_{p_b(\cdot)\;\text{(tiên nghiệm)}}
+\end{equation}
+Thành phần $p_b$ là phân phối vô điều kiện hoàn toàn độc lập với ngữ cảnh. Khi $b_{\mathrm{dec}}
+= \log p_v$, thành phần này mã hóa phân phối từ đơn tiếng Việt, nhờ đó \textit{giải phóng} phần
+còn lại $p_{W\phi}$ để chuyên biệt hóa vào thông tin ngữ nghĩa thay vì phải mô hình hóa lại tần
+suất bề mặt. Điều này có thể diễn đạt chặt chẽ qua gradient hàm mất mát theo độ chệch:
+\begin{equation}
+  \label{eq:bias-grad}
+  \frac{\partial\mathcal{L}}{\partial b_v}
+  = \mathbb{E}[\operatorname{softmax}(y)_v] - \hat{p}_v
+\end{equation}
+tức hiệu giữa phân phối biên mô hình đang dự đoán và phân phối biên thực nghiệm của dữ liệu.
+Khi $b = \log p_v$ và $\gamma$ đủ nhỏ, $\mathbb{E}[\operatorname{softmax}(y)_v] \approx p_v
+\approx \hat{p}_v$, nên gradient của $b_v$ xấp xỉ bằng không ngay từ bước đầu: toàn bộ tín hiệu
+gradient được dồn vào $W_{\mathrm{dec}}$ và phần thân Transformer để học ngữ cảnh và ngữ
+nghĩa, thay vì lãng phí vào việc hiệu chỉnh phân phối biên.
+Meister và cộng sự xác nhận thực nghiệm rằng: (i)~ngay từ bước đầu huấn luyện, mô
+hình ngôn ngữ đã ``thu hẹp'' đầu ra về phân phối từ đơn bất kể ngữ cảnh, và quá trình đó tốn
+hàng trăm đến hàng nghìn bước gradient nếu khởi tạo $b = \mathbf{0}$; (ii)~khởi tạo theo
+log-unigram cải thiện hiệu quả huấn luyện (diện tích dưới đường cong BLEU trên tập phát triển)
+trên 5/6 cặp ngôn ngữ thử nghiệm, đồng thời cải thiện BLEU cuối trên cùng số cặp.
+
+Nhờ cách khởi tạo này, hàm mất mát khởi điểm xấp xỉ \textit{entropy từ đơn} của tiếng Việt
+(${\approx}7{,}3$ nat), thấp hơn đáng kể so với mức ngẫu nhiên $\log|\mathcal{V}_t|$
+(${\approx}10{,}3$ nat với $|\mathcal{V}_t| = 30.522$). Ý tưởng khởi tạo độ chệch theo xác
+suất tiên nghiệm để ổn định giai đoạn đầu huấn luyện cũng được Lin và cộng
+sự~\cite{lin2017focal} áp dụng trong ngữ cảnh phát hiện đối tượng với mất cân bằng lớp nặng,
+mặc dù bài toán đó dùng một hằng số vô hướng tiên nghiệm thay vì toàn bộ phân phối biên trên
+từ vựng.
 
 \subsection{Co trọng số đầu ra để tiên nghiệm dẫn dắt giai đoạn đầu}
 \label{subsec:dec-scale}
@@ -503,7 +539,13 @@ Tiên nghiệm tần suất ở trên chỉ phát huy tác dụng nếu ở bư�
 trọng số $W_{\mathrm{dec}}$ sinh ra \textit{không lấn át} độ chệch $b_{\mathrm{dec}}$. Ngay
 sau phép chiếu, các hàng của $W_{\mathrm{dec}}$ tuy đã mang cấu trúc ngữ nghĩa từ SALT nhưng
 chưa từng được huấn luyện cùng phần thân trên tiếng Việt, nên biên độ logit của chúng chưa
-đáng tin cậy: nếu giữ nguyên, các logit ``nhiễu'' này sẽ nhấn chìm tín hiệu tiên nghiệm. Vì
+đáng tin cậy: nếu giữ nguyên, các logit ``nhiễu'' này sẽ nhấn chìm tín hiệu tiên nghiệm. Đây là điểm
+khác biệt then chốt so với huấn luyện từ đầu: trong ngữ cảnh đó, $W_{\mathrm{dec}}$ được khởi
+tạo ngẫu nhiên với giá trị gần 0, nên điều kiện ``tiên nghiệm dẫn dắt'' thỏa mãn tự nhiên mà
+không cần thêm can thiệp~\cite{meister2022naturalbias}. Trong chuyển giao ngôn ngữ chéo,
+$W_{\mathrm{dec}}$ kế thừa biên độ lớn từ không gian NeoBERT tiếng Anh, khiến điều kiện đó
+không còn tự nhiên thỏa mãn và phải được khôi phục thủ công -- đây là nhu cầu đặc thù của bài
+toán chuyển giao lớp nhúng mà phương pháp đề xuất cần giải quyết. Vì
 vậy, chúng tôi \textit{co} (scale) trọng số đầu ra bằng một hệ số vô hướng $\gamma$ như
 Công thức~\eqref{eq:dec-scale}:
 \begin{equation}
@@ -529,8 +571,16 @@ Giả thuyết này được kiểm chứng bằng thực nghiệm trong Chươn
 nguyên biên độ ($\gamma = 1$) hoặc chỉ co một nửa ($\gamma = 0{,}5$), mất mát khởi điểm cao
 hơn hẳn (với $\gamma=1$ gần chạm mức ngẫu nhiên $\log|\mathcal{V}_t|$, với $\gamma=0{,}5$ vẫn
 cao hơn nhiều mức entropy từ đơn) và -- quan trọng hơn -- quá trình huấn
-luyện bị \textit{mắc kẹt} ở mức mất mát cao, không hội tụ về vùng của các phương án tốt;
-trong khi $\gamma = 0{,}1$ vừa cho khởi điểm thấp vừa hội tụ nhanh. Do đó $\gamma = 0{,}1$
+luyện bị \textit{mắc kẹt} ở mức mất mát cao, không hội tụ về vùng của các phương án tốt.
+Hiện tượng này không chỉ là hệ quả của điểm khởi đầu cao: một mô hình khởi tạo ngẫu nhiên
+chuẩn cũng bắt đầu gần $\log|\mathcal{V}_t|$ nhưng vẫn hội tụ bình thường. Một giải thích
+khả dĩ là với $\gamma=1$, các gradient ngược xuất hiện sớm có biên độ lớn nhưng mang rất ít
+thông tin ngữ nghĩa (vì logits chủ yếu là nhiễu), dẫn đến khả năng làm biến dạng cấu trúc lân
+cận ngữ nghĩa mà SALT đã xây dựng trong $W_{\mathrm{dec}}$ -- phá hủy tài sản chuyển giao
+trước khi nó kịp phát huy hiệu quả. Giả thuyết này có thể kiểm chứng bằng cách đo độ dịch
+chuyển tương đồng cosine của các hàng $W_{\mathrm{dec}}$ theo bước huấn luyện đầu và so sánh
+giữa các cấu hình $\gamma$.
+Trong khi đó, $\gamma = 0{,}1$ vừa cho khởi điểm thấp vừa hội tụ nhanh. Do đó $\gamma = 0{,}1$
 được chọn cho toàn bộ quy trình.
 
 % ======================================================================
