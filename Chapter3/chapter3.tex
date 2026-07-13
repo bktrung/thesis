@@ -39,7 +39,7 @@ Phương pháp sử dụng hai mô hình tiền huấn luyện:
         toàn bộ phần thân Transformer (28 lớp với RoPE, SwiGLU, Pre-RMSNorm) cùng không gian
         biểu diễn tiếng Anh được giữ nguyên và dùng làm hệ tọa độ đích cho phép chiếu. Một
         đặc điểm quan trọng là NeoBERT \textit{không dùng chung trọng số} giữa lớp đầu ra và lớp véc-tơ đầu vào:
-        lớp đầu ra của tác vụ MLM là một ánh xạ tuyến tính riêng $\,y = W_{\mathrm{dec}}\,h
+        lớp đầu ra MLM là một ánh xạ tuyến tính riêng $\,y = W_{\mathrm{dec}}\,h
         + b_{\mathrm{dec}}\,$ với ma trận trọng số $W_{\mathrm{dec}}$ và véc-tơ hệ số điều chỉnh (bias)
         $b_{\mathrm{dec}}$ \textit{độc lập} với ma trận véc-tơ đầu vào $E$. Do đó, việc thích
         ứng sang tiếng Việt đòi hỏi khởi tạo \textit{cả hai} ma trận: ma trận véc-tơ
@@ -106,7 +106,7 @@ Hình~\ref{fig:pipeline}:
 \subsection{Vai trò của tokenizer trong mô hình ngôn ngữ}
 \label{subsec:tokenizer-intro}
 
-Bộ token hóa (tokenizer) là thành phần đầu vào không thể thiếu của mô hình ngôn ngữ:
+Tokenizer là thành phần đầu vào không thể thiếu của mô hình ngôn ngữ:
 nó quyết định cách \textit{tách} văn bản thô thành các đơn vị (token) trước khi đưa vào
 mô hình. Chất lượng của tokenizer ảnh hưởng trực tiếp tới ba mặt: (1)~\textit{chất lượng
 tách token} -- một tokenizer tốt cho tiếng Việt tạo ra các token mang nghĩa rõ ràng, còn
@@ -298,8 +298,8 @@ Vì vậy, ràng buộc dịch ngược trùng khớp tự nhiên loại bỏ ph
 các cặp tương ứng một--một đáng tin cậy. Ràng buộc ``bản dịch là một từ đơn thuộc từ vựng
 NeoBERT'' bảo đảm mỗi cặp điểm neo ứng đúng \textit{một} token NeoBERT.
 
-Tập điểm neo cuối cùng là \textit{hợp} của ba nguồn -- điểm neo trùng mặt chữ đã xác minh, điểm neo chữ số và cặp dịch ba
-tầng -- sau khi loại các cặp trùng lặp, thu được ánh xạ $t_{\mathrm{vi}} \mapsto
+Tập điểm neo cuối cùng là \textit{hợp} của ba nguồn -- điểm neo trùng mặt chữ đã xác minh, điểm neo chữ số và cặp dịch Anh--Việt
+-- sau khi loại các cặp trùng lặp, thu được ánh xạ $t_{\mathrm{vi}} \mapsto
 t_{\mathrm{neo}}$ dùng thống nhất cho cả lớp véc-tơ đầu vào lẫn lớp đầu ra ở
 Mục~\ref{sec:salt-proj}. Thực nghiệm khởi tạo cho thấy việc mở rộng tập điểm neo bằng cặp dịch làm
 tăng đáng kể số lượng điểm neo và độ phủ ngữ nghĩa, qua đó cải thiện chất lượng khởi tạo so với
@@ -354,7 +354,7 @@ Thuật toán~\ref{alg:anchor} tóm tắt toàn bộ quy trình trích xuất t�
 Mục này trình bày kỹ thuật SALT -- bước khởi tạo cốt lõi. Với mỗi token tiếng Việt
 \textit{không thuộc} tập điểm neo, chúng tôi xây dựng véc-tơ của nó bằng một ánh xạ tuyến tính cục
 bộ học từ các điểm neo lân cận về mặt ngữ nghĩa. Các token điểm neo và token đặc biệt được sao chép
-trực tiếp hàng tương ứng từ NeoBERT.
+trực tiếp véc-tơ tương ứng từ NeoBERT.
 
 \subsection{Chọn các điểm neo gần nghĩa nhất bằng Sparsemax}
 \label{subsec:anchor-select}
@@ -372,9 +372,10 @@ Công thức~\eqref{eq:sparsemax-sel}:
   \qquad
   \mathcal{S}_t = \{\, a : w_{t,a} > 0 \,\}
 \end{equation}
-Trong đó $\mathrm{sparsemax}(\cdot)$~\cite{martins2016sparsemax} là phép chiếu lên đơn hình
-xác suất, cho kết quả \textit{thưa} -- chỉ một tập con nhỏ $\mathcal{S}_t$ các điểm neo liên quan
-nhất nhận trọng số khác 0. Việc dùng Sparsemax thay cho softmax có lý do thực tế cụ thể:
+Trong đó phép \textit{sparsemax}~\cite{martins2016sparsemax} biến véc-tơ độ tương đồng
+$\mathbf{s}_t$ thành một bộ trọng số không âm có tổng bằng 1 -- giống softmax, nhưng khác ở chỗ nó
+\textit{đặt hẳn phần lớn trọng số về 0}: chỉ một tập con nhỏ $\mathcal{S}_t$ gồm các điểm neo liên quan
+nhất mới nhận trọng số khác 0. Việc dùng Sparsemax thay cho softmax có lý do thực tế cụ thể:
 softmax luôn gán trọng số khác 0 cho \textit{tất cả} các điểm neo, kể cả những điểm neo ở rất xa token
 đích về mặt ngữ nghĩa -- khiến ánh xạ tuyến tính cục bộ bị nhiễu bởi các điểm không liên
 quan. Sparsemax tự động đặt trọng số bằng 0 cho các điểm neo có độ tương đồng thấp; chỉ tập con
@@ -389,21 +390,24 @@ Như đã lập luận ở Mục~\ref{sec:geometry}, do hai không gian véc-tơ
 \textit{ánh xạ tuyến tính riêng cho từng token} từ tập điểm neo được chọn. Gọi $A_t^{\mathrm{src}}
 \in \mathbb{R}^{k\times h}$ là ma trận xếp chồng các véc-tơ \textit{nguồn} (ViDeBERTa) của
 $k = |\mathcal{S}_t|$ điểm neo trong $\mathcal{S}_t$, và $A_t^{\mathrm{tgt}} \in \mathbb{R}^{k\times
-h}$ là ma trận các hàng \textit{đích} (NeoBERT) tương ứng. Khi số điểm neo đủ lớn ($k \ge k_0$, chúng tôi chọn $k_0 = 8$ qua thực nghiệm -- giá trị nhỏ
-hơn khiến giả nghịch đảo kém ổn định và chất lượng chiếu giảm đáng kể), ánh xạ cục bộ
+h}$ là ma trận xếp chồng các véc-tơ \textit{đích} (NeoBERT) tương ứng. Khi số điểm neo đủ lớn ($k \ge k_0$, chúng tôi chọn $k_0 = 8$ qua thực nghiệm -- giá trị nhỏ
+hơn khiến phép khớp bình phương tối thiểu kém ổn định và chất lượng chiếu giảm đáng kể), ánh xạ cục bộ
 $X_t$ và véc-tơ kết quả $\mathbf{e}_t$ được xác định như Công thức~\eqref{eq:local-map}:
 \begin{equation}
   \label{eq:local-map}
   X_t = \big(A_t^{\mathrm{src}}\big)^{+} A_t^{\mathrm{tgt}}, \qquad
   \mathbf{e}_t = \mathbf{d}_t\, X_t
 \end{equation}
-Trong đó $(\cdot)^{+}$ là \textit{giả nghịch đảo} Moore--Penrose (nghiệm bình phương tối
-thiểu chuẩn nhỏ nhất), $\mathbf{d}_t \in \mathbb{R}^{h}$ là véc-tơ nguồn của token $t$, và
-$h$ là kích thước ẩn. Ánh xạ $X_t$ học quan hệ tuyến tính giữa hai không gian \textit{cục bộ
+Ở đây $X_t$ là ánh xạ tuyến tính \textit{khớp bình phương tối thiểu}: nó biến các véc-tơ nguồn
+của điểm neo về sát nhất với véc-tơ đích tương ứng. Ký hiệu $(\cdot)^{+}$ là giả nghịch đảo
+Moore--Penrose; khi các điểm neo quá ít hoặc trùng lặp thông tin nên có nhiều ánh xạ cùng khớp,
+phép này tự chọn ánh xạ ổn định nhất (các hệ số có độ lớn nhỏ nhất), tránh hệ số phóng đại gây nhiễu.
+Véc-tơ $\mathbf{d}_t \in \mathbb{R}^{h}$
+là véc-tơ nguồn của token $t$ và $h$ là kích thước ẩn. Ánh xạ $X_t$ học quan hệ tuyến tính giữa hai không gian \textit{cục bộ
 quanh token $t$}, dựa trên các điểm neo gần nghĩa nhất với nó.
 
-Khi số điểm neo không đủ ($k < k_0$), giả nghịch đảo trở nên kém ổn định; khi đó chúng tôi chuyển
-sang dùng \textit{trung bình có trọng số Sparsemax} của các hàng đích, như
+Khi số điểm neo không đủ ($k < k_0$), phép khớp bình phương tối thiểu trở nên kém ổn định; khi đó chúng tôi chuyển
+sang dùng \textit{trung bình có trọng số Sparsemax} của các véc-tơ đích, như
 Công thức~\eqref{eq:wavg}:
 \begin{equation}
   \label{eq:wavg}
@@ -422,13 +426,13 @@ Thuật toán~\ref{alg:salt}.
   \label{alg:salt}
   \begin{algorithmic}[1]
     \Require Từ vựng $\mathcal{V}_t$; tập điểm neo $\mathcal{A}$; véc-tơ nguồn $\{\mathbf{d}_t\}$;
-      hàng đích NeoBERT $\{\mathbf{a}^{\mathrm{tgt}}\}$; véc-tơ fastText $\{\mathbf{f}_t\}$;
+      véc-tơ đích NeoBERT $\{\mathbf{a}^{\mathrm{tgt}}\}$; véc-tơ fastText $\{\mathbf{f}_t\}$;
       ngưỡng $k_0$; chuẩn trung bình $\mu_{\mathrm{neo}}$
     \Ensure Ma trận khởi tạo $E \in \mathbb{R}^{|\mathcal{V}_t| \times h}$
     \ForAll{token $t \in \mathcal{V}_t$}
       \If{$t$ là điểm neo hoặc token đặc biệt}
         \State $E[t] \gets \mathbf{a}^{\mathrm{tgt}}_{t}$
-        \Comment{sao chép nguyên hàng NeoBERT}
+        \Comment{sao chép nguyên véc-tơ NeoBERT}
       \ElsIf{$t$ không có véc-tơ fastText}
         \State $E[t] \gets$ mẫu ngẫu nhiên khớp thống kê NeoBERT
       \Else
@@ -460,12 +464,12 @@ Thuật toán~\ref{alg:salt}.
 chung trọng số} với lớp véc-tơ đầu vào, ma trận đầu ra $W_{\mathrm{dec}}$ là một ma trận độc lập với hình học riêng -- và theo
 kết quả về hiện tượng thoái hóa biểu diễn (Mục~\ref{sec:geometry}), nó \textit{không} thể
 được khởi tạo bằng cách sao chép ma trận véc-tơ. Do đó, chúng tôi áp dụng \textit{cùng một quy
-trình chiếu SALT theo từng token} cho cả hai ma trận, chỉ khác ở tập hàng đích:
+trình chiếu SALT theo từng token} cho cả hai ma trận, chỉ khác ở tập véc-tơ đích:
 \begin{itemize}
-  \item Với \textbf{ma trận véc-tơ đầu vào} $E$: hàng đích $A_t^{\mathrm{tgt}}$ lấy từ các
-        \textit{hàng véc-tơ} NeoBERT của các điểm neo.
-  \item Với \textbf{ma trận đầu ra} $W_{\mathrm{dec}}$: hàng đích $A_t^{\mathrm{tgt}}$ lấy từ
-        các \textit{hàng đầu ra} NeoBERT của các điểm neo.
+  \item Với \textbf{ma trận véc-tơ đầu vào} $E$: véc-tơ đích $A_t^{\mathrm{tgt}}$ lấy từ các
+        \textit{véc-tơ đầu vào} NeoBERT của các điểm neo.
+  \item Với \textbf{ma trận đầu ra} $W_{\mathrm{dec}}$: véc-tơ đích $A_t^{\mathrm{tgt}}$ lấy từ
+        các \textit{véc-tơ đầu ra} NeoBERT của các điểm neo.
 \end{itemize}
 Nhờ vậy, mỗi ma trận được khởi tạo trong đúng không gian của nó, phản ánh trung thực quan hệ
 ngữ nghĩa mà các điểm neo thiết lập trong từng không gian.
@@ -503,14 +507,14 @@ Công thức~\eqref{eq:freq-bias}:
   p_v = \frac{c_v + 1}{\sum_{u\in\mathcal{V}_t} c_u + |\mathcal{V}_t|}
 \end{equation}
 Trong đó $c_v$ là số lần xuất hiện của token $v$ trong ngữ liệu tiếng Việt (đếm qua 20.000
-văn bản CulturaX-vi với tokenizer đã giảm kích thước), và phép cộng 1 là làm trơn Laplace. Cụ thể,
-phép đếm sử dụng đúng cùng tokenizer sẽ dùng trong huấn luyện, bảo đảm chỉ số token trong
-$b_{\mathrm{dec}}$ khớp với các hàng của ma trận véc-tơ và ma trận đầu ra.
+văn bản CulturaX-vi), và phép cộng 1 là làm trơn Laplace. Các tần suất được đếm bằng chính
+tokenizer sẽ dùng khi huấn luyện, để chỉ số token trong $b_{\mathrm{dec}}$ khớp đúng với từ vựng
+mà ma trận véc-tơ đầu vào và ma trận đầu ra sử dụng.
 
 Cơ sở lý thuyết của cách khởi tạo này đến từ một quan sát của Meister và cộng
 sự~\cite{meister2022naturalbias}: lớp tuyến tính cuối phân rã tự nhiên thành \textit{tích của
-hai phân phối} (product of experts). Với mô hình ngôn ngữ có mặt nạ, ta viết cho ngữ cảnh hai
-chiều $\mathbf{c}$ bao quanh vị trí cần dự đoán:
+hai phân phối} (product of experts). Với mô hình ngôn ngữ có mặt nạ, xét ngữ cảnh hai
+chiều $\mathbf{c}$ bao quanh vị trí cần dự đoán, ta có:
 \begin{equation}
   \label{eq:poe}
   p_\theta(y \mid \mathbf{c})
@@ -520,33 +524,30 @@ chiều $\mathbf{c}$ bao quanh vị trí cần dự đoán:
   \underbrace{e^{b}}_{p_b(\cdot)\;\text{(tần suất)}}
 \end{equation}
 Thành phần $p_b$ là phân phối vô điều kiện hoàn toàn độc lập với ngữ cảnh. Khi $b_{\mathrm{dec}}
-= \log p_v$, thành phần này mã hóa phân phối unigram tiếng Việt, nhờ đó \textit{giải phóng} phần
-còn lại $p_{W\phi}$ để chuyên biệt hóa vào thông tin ngữ nghĩa thay vì phải mô hình hóa lại tần
-suất bề mặt. Điều này có thể diễn đạt chặt chẽ qua gradient hàm mất mát theo hệ số điều chỉnh:
+= \log p_v$, thành phần này mã hóa phân phối unigram tiếng Việt, nhờ đó phần
+còn lại $p_{W\phi}$ được \textit{giải phóng} để tập trung học thông tin ngữ nghĩa, thay vì phải học lại
+tần suất xuất hiện của token. Điều này có thể diễn đạt chặt chẽ qua gradient hàm mất mát theo hệ số điều chỉnh:
 \begin{equation}
   \label{eq:bias-grad}
   \frac{\partial\mathcal{L}}{\partial b_v}
   = \mathbb{E}[\operatorname{softmax}(y)_v] - \hat{p}_v
 \end{equation}
 tức hiệu giữa phân phối biên mô hình đang dự đoán và phân phối biên thực nghiệm của dữ liệu.
-Khi $b = \log p_v$ và $\gamma$ đủ nhỏ, $\mathbb{E}[\operatorname{softmax}(y)_v] \approx p_v
+Khi $b_{\mathrm{dec}} = \log p_v$ và $\gamma$ đủ nhỏ, $\mathbb{E}[\operatorname{softmax}(y)_v] \approx p_v
 \approx \hat{p}_v$, nên gradient của $b_v$ xấp xỉ bằng không ngay từ bước đầu: toàn bộ tín hiệu
 gradient được dồn vào $W_{\mathrm{dec}}$ và phần thân Transformer để học ngữ cảnh và ngữ
 nghĩa, thay vì tiêu tốn vào việc hiệu chỉnh phân phối biên.
-Meister và cộng sự xác nhận thực nghiệm rằng: (i)~ngay từ bước đầu huấn luyện, mô
-hình ngôn ngữ đã ``thu hẹp'' đầu ra về phân phối unigram bất kể ngữ cảnh, và quá trình đó tốn
+Meister và cộng sự xác nhận thực nghiệm rằng: (i)~ngay từ những bước đầu, mô
+hình ngôn ngữ vốn tự kéo đầu ra về phân phối unigram bất kể ngữ cảnh, và quá trình này tốn
 hàng trăm đến hàng nghìn bước gradient nếu khởi tạo $b = \mathbf{0}$; (ii)~khởi tạo theo
-log-unigram cải thiện hiệu quả huấn luyện (đo bằng diện tích dưới đường cong BLEU
-(Bilingual Evaluation Understudy) trên tập phát triển) và điểm BLEU cuối trên hầu hết
+log-unigram giúp mô hình \textit{học nhanh hơn} -- điểm BLEU (Bilingual Evaluation Understudy)
+trên tập phát triển tăng sớm hơn -- và đạt điểm BLEU cuối cao hơn trên hầu hết
 các cặp ngôn ngữ được thử nghiệm.
 
 Khi kết hợp với việc giảm biên độ trọng số đầu ra (Mục~\ref{subsec:dec-scale}) để thành phần
 $W_{\mathrm{dec}}$ không lấn át hệ số điều chỉnh, hàm mất mát khởi điểm xấp xỉ \textit{entropy unigram}
 của tiếng Việt (${\approx}7{,}3$ nat), thấp hơn đáng kể so với mức ngẫu nhiên
-$\log|\mathcal{V}_t|$ (${\approx}10{,}3$ nat với $|\mathcal{V}_t| = 30.522$). Ý tưởng khởi tạo hệ số điều chỉnh theo một phân phối định sẵn để ổn định giai đoạn đầu huấn luyện cũng được Lin và cộng
-sự~\cite{lin2017focal} áp dụng trong ngữ cảnh phát hiện đối tượng với mất cân bằng lớp nặng,
-mặc dù bài toán đó dùng một hằng số vô hướng định sẵn thay vì toàn bộ phân phối biên trên
-từ vựng.
+$\log|\mathcal{V}_t|$ (${\approx}10{,}3$ nat với $|\mathcal{V}_t| = 30.522$). Cách khởi tạo hệ số điều chỉnh theo một giá trị biết trước để ổn định giai đoạn đầu huấn luyện cũng đã được dùng ở lĩnh vực khác, chẳng hạn Lin và cộng sự~\cite{lin2017focal} áp dụng cho bài toán phát hiện đối tượng.
 
 \textbf{Nhân trọng số lớp đầu ra với một hệ số nhỏ để ổn định giai đoạn huấn luyện đầu.}\label{subsec:dec-scale}
 Phân phối tần suất ở trên chỉ phát huy tác dụng nếu ở bước khởi đầu, thành phần logit do
@@ -560,7 +561,7 @@ không cần thêm can thiệp~\cite{meister2022naturalbias}. Khi chuyển một
 $W_{\mathrm{dec}}$ kế thừa biên độ lớn từ không gian NeoBERT tiếng Anh, khiến điều kiện đó
 không còn tự nhiên thỏa mãn và phải được khôi phục thủ công -- đây là nhu cầu đặc thù của bài
 toán chuyển giao lớp véc-tơ mà phương pháp đề xuất cần giải quyết. Vì
-vậy, chúng tôi \textit{giảm biên độ} (scale) trọng số đầu ra bằng cách nhân với một hệ số vô hướng $\gamma$ như
+vậy, chúng tôi \textit{giảm biên độ} trọng số đầu ra bằng cách nhân với một hệ số vô hướng $\gamma$ như
 Công thức~\eqref{eq:dec-scale}:
 \begin{equation}
   \label{eq:dec-scale}
@@ -588,8 +589,8 @@ vẫn cao hơn nhiều mức entropy unigram -- và, quan trọng hơn, quá tr�
 luyện bị \textit{mắc kẹt} ở mức mất mát cao, không hội tụ về vùng của các phương án tốt.
 Hiện tượng mắc kẹt này không chỉ là hệ quả của điểm khởi đầu cao: một mô hình khởi tạo ngẫu
 nhiên chuẩn cũng bắt đầu gần $\log|\mathcal{V}_t|$ nhưng vẫn hội tụ bình thường. Khi $\gamma$
-lớn, các logit do $W_{\mathrm{dec}}$ (chưa từng căn chỉnh trên tiếng Việt) sinh ra lấn át tiên
-nghiệm tần suất và ở giai đoạn đầu chủ yếu là nhiễu, khiến những cập nhật đầu tiên có biên độ
+lớn, các logit do $W_{\mathrm{dec}}$ (chưa từng căn chỉnh trên tiếng Việt) sinh ra lấn át tín
+hiệu tần suất và ở giai đoạn đầu chủ yếu là nhiễu, khiến những cập nhật đầu tiên có biên độ
 rất lớn nhưng mang ít thông tin hữu ích -- chuẩn gradient đo được ở những bước đầu
 (Chương~\ref{chap:experiment}) phản ánh đúng điều này.
 Trong khi đó, $\gamma = 0{,}1$ vừa cho khởi điểm thấp vừa hội tụ nhanh. Do đó $\gamma = 0{,}1$
@@ -611,12 +612,12 @@ chỉ điều chỉnh hai ma trận mới (véc-tơ đầu vào và đầu ra) c
 
 Ý tưởng của bước này là để hai ma trận vừa khởi tạo \textit{căn chỉnh với nhau và với phần
 thân đang đóng băng} trong không gian biểu diễn trước khi cho phép phần thân thay đổi; nhờ đó điểm
-khởi đầu của giai đoạn tiếp tục tiền huấn luyện ổn định hơn. Cách làm này nằm trong tinh thần
+khởi đầu của giai đoạn tiếp tục tiền huấn luyện ổn định hơn. Cách làm này theo tinh thần
 chiến lược \textit{đóng băng rồi thích ứng} của de Vries và
 Nissim~\cite{devries2021recycle}, vốn cho thấy việc tách giai đoạn học lớp véc-tơ khỏi giai
-đoạn tinh chỉnh toàn bộ giúp tái sử dụng mô hình hiệu quả hơn. Trong thực nghiệm
-(Chương~\ref{chap:experiment}), chúng tôi quan sát thấy giai đoạn này đều cải thiện
-chất lượng lớp véc-tơ khởi tạo, do đó được giữ lại trong quy trình.
+đoạn tinh chỉnh toàn bộ giúp tái sử dụng mô hình hiệu quả hơn. Thực nghiệm ở
+Chương~\ref{chap:experiment} cho thấy giai đoạn căn chỉnh này cải thiện
+chất lượng lớp véc-tơ khởi tạo, nên chúng tôi giữ nó trong quy trình.
 % ======================================================================
 \section{Tiếp tục tiền huấn luyện (Continued Pre-Training)}
 \label{sec:cpt}

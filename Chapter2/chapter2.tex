@@ -61,7 +61,7 @@ Từ phần encoder của Transformer, Devlin và cộng sự~\cite{devlin2019be
 nó không có bộ giải mã tự hồi quy và không che các token phía sau (causal mask), nên mỗi
 token có thể khai thác đồng thời ngữ cảnh bên trái lẫn bên phải. Đầu ra của BERT là một chuỗi biểu diễn theo
 ngữ cảnh, phù hợp với các tác vụ hiểu ngôn ngữ như phân loại văn bản, gán nhãn chuỗi, hỏi
-đáp trích xuất và truy hồi.
+đáp trích xuất và tìm kiếm thông tin.
 
 Hình~\ref{fig:encoder-only-pipeline} minh họa luồng xử lý điển hình của một mô hình
 Encoder-only kiểu BERT.
@@ -148,7 +148,7 @@ Encoder hiện đại để thích ứng sang tiếng Việt thay vì tiếp t�
 \label{subsec:neobert-overview}
 
 Về bản chất, NeoBERT~\cite{lebreton2025neobert} vẫn là một mô hình thuộc dòng BERT: mã
-hóa hai chiều toàn chuỗi và được tiền huấn luyện bằng tác vụ MLM. Điều làm nó khác biệt
+hóa hai chiều toàn chuỗi và được tiền huấn luyện với mục tiêu MLM. Điều làm nó khác biệt
 là toàn bộ các thành phần kiến trúc bên trong đã được thay mới theo những gì thế hệ mô hình
 ngôn ngữ lớn gần đây chứng minh là hiệu quả. Mô hình có khoảng $250$ triệu tham số (nhóm tác giả
 đặt tên là bản NeoBERT\textsubscript{250M} theo số làm tròn), giữ kích thước

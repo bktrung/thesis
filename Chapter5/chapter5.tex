@@ -5,7 +5,7 @@
 \section{Kết luận}
 \label{sec:conclusion}
 
-Khóa luận đã nghiên cứu và xây dựng thành công \textbf{ViNeoBERT} -- một mô hình
+Khóa luận đã nghiên cứu và xây dựng \textbf{ViNeoBERT} -- một mô hình
 Encoder hiện đại cho tiếng Việt -- bằng cách thích ứng NeoBERT thông qua kỹ thuật
 SALT được cải tiến, thay vì huấn luyện lại từ đầu. Đối chiếu với các mục tiêu đặt ra
 ở Chương~\ref{chap:intro}, đề tài đã đạt được các kết quả sau:
@@ -20,16 +20,16 @@ SALT được cải tiến, thay vì huấn luyện lại từ đầu. Đối ch
 
   \item \textbf{Về phương pháp chuyển giao}: Chúng tôi đã triển khai thuật toán SALT
         và cải tiến nó cho cặp ngôn ngữ Anh--Việt với ba đóng góp: (1)~mở rộng tập điểm neo
-        bằng cặp dịch khai thác tự động, kèm cơ chế lọc từ đồng tự khác nghĩa đặc thù
+        bằng cặp dịch Anh--Việt, kèm cơ chế lọc từ đồng tự khác nghĩa đặc thù
         cho ngôn ngữ hệ chữ Latin; (2)~áp dụng phép chiếu theo từng token cho cả lớp
         đầu ra, kết hợp khởi tạo hệ số điều chỉnh theo tần suất token và hệ số tỉ lệ trọng số $\gamma = 0{,}1$; (3)~bổ sung giai đoạn căn chỉnh với phần thân đóng băng trước khi
         tiếp tục tiền huấn luyện (Chương~\ref{chap:method}).
 
   \item \textbf{Về kiểm chứng thực nghiệm}: Thí nghiệm so sánh có kiểm soát các phương
         án khởi tạo trên cùng một lượng token (Mục~\ref{sec:exp-bakeoff}) xác nhận từng lựa chọn
-        thiết kế: hệ số tỉ lệ $\gamma=0{,}1$ là cần thiết -- để nguyên hoặc giảm chưa đủ
-        khiến huấn luyện mắc kẹt ở mức mất mát cao; khởi tạo SALT riêng cho hai ma trận
-        vượt xa cách dùng chung trọng số mặc định (67,52 so với 54,09 điểm F1 trên UIT-ViQuAD
+        thiết kế: hệ số tỉ lệ $\gamma=0{,}1$ là cần thiết -- nếu để nguyên biên độ hoặc chỉ giảm
+        một nửa, huấn luyện bị mắc kẹt ở mức mất mát cao; khởi tạo SALT riêng cho hai ma trận đạt
+        điểm F1 cao hơn hẳn cách dùng chung trọng số mặc định (67,52 so với 54,09 trên UIT-ViQuAD
         sau 100 triệu token); và căn chỉnh với phần thân đóng băng giảm khoảng 26\% perplexity, nâng
         F1 lên 72,15 với chi phí phụ trợ không đáng kể.
 
@@ -63,17 +63,17 @@ sau:
 \begin{itemize}
   \item \textbf{Ngân sách huấn luyện}: khoảng 5 tỷ token ($\sim$20GB văn bản) vẫn
         nhỏ so với dữ liệu tiền
-        huấn luyện của các mô hình đối sánh; ViNeoBERT chưa vượt PhoBERT-base-v2 ở
-        nhóm tác vụ phân loại câu ngắn, dù xu hướng đường cong học cho thấy khoảng
-        cách có thể tiếp tục thu hẹp khi tăng ngân sách.
+        huấn luyện của các mô hình so sánh; ViNeoBERT chưa vượt PhoBERT-base-v2 ở
+        nhóm tác vụ phân loại câu ngắn, dù xu hướng đi lên của đường cong F1 theo ngân sách cho
+        thấy khoảng cách có thể tiếp tục thu hẹp khi tăng ngân sách.
   \item \textbf{Phạm vi đánh giá}: bộ đánh giá tập trung vào các tác vụ hiểu và biểu
         diễn câu; một số năng lực như nhận dạng thực thể có tên hay ứng dụng ngữ cảnh
-        dài chưa được khảo sát, và hai tác vụ truy hồi--xếp hạng lại mới chạy một lần
+        dài chưa được khảo sát, và hai tác vụ Retrieval--Reranking mới chạy một lần
         nên chưa ước lượng được phương sai.
   \item \textbf{Ngữ cảnh dài}: pha mở rộng ngữ cảnh lên 4.096 token mới được kiểm
         chứng bằng độ đo nội tại (pseudo-perplexity theo độ dài chuỗi,
         Mục~\ref{subsec:exp-ctx4096}); chưa có đánh giá trên các tác vụ
-        đòi hỏi ngữ cảnh dài như hỏi đáp đa đoạn hay truy hồi tài liệu.
+        đòi hỏi ngữ cảnh dài như hỏi đáp đa đoạn hay truy xuất tài liệu.
   \item \textbf{Tokenizer}: từ vựng kế thừa từ ViDeBERTa hoạt động ở mức âm tiết;
         ảnh hưởng của việc không tách từ (so với PhoBERT dùng dữ liệu đã tách từ)
         chưa được phân tích riêng.
@@ -96,16 +96,16 @@ Từ các kết quả và hạn chế trên, chúng tôi đề xuất năm hư�
         một phần nhỏ dữ liệu cũ là đủ để chống mất thông tin khi phân phối dữ liệu dịch chuyển;
         đáng chú ý hơn, Elhady và cộng sự~\cite{elhady2025emergent} chỉ ra rằng trong
         chuyển đổi ngôn ngữ, việc giữ lại dữ liệu tiếng Anh tuy \textit{không} cải thiện
-        perplexity nhưng lại quyết định sự xuất hiện của năng lực trên tác vụ ứng dụng -- một tín hiệu
+        perplexity nhưng lại quyết định sự xuất hiện của năng lực trên các tác vụ ứng dụng -- một tín hiệu
         mà mất mát MLM đơn thuần không phản ánh. Đề tài dùng khởi tạo SALT và giai đoạn
         căn chỉnh với phần thân đóng băng làm cơ chế bảo vệ chống mất thông tin, còn phát lại tiếng Anh là một
         cơ chế bổ trợ tự nhiên đáng để khảo sát tiếp.
-  \item \textbf{Khai thác ngữ cảnh dài trên tác vụ ứng dụng}: xây dựng và đánh giá trên các tác
-        vụ đòi hỏi ngữ cảnh dài (hỏi đáp đa đoạn, truy hồi tài liệu) để bổ sung cho
+  \item \textbf{Khai thác ngữ cảnh dài trên các tác vụ ứng dụng}: xây dựng và đánh giá trên các tác
+        vụ đòi hỏi ngữ cảnh dài (hỏi đáp đa đoạn, truy xuất tài liệu) để bổ sung cho
         kiểm chứng nội tại bằng pseudo-perplexity ở Mục~\ref{subsec:exp-ctx4096}; khi
         cần vượt trần 4.096 token, các kỹ thuật nội suy RoPE như
         YaRN~\cite{peng2023yarn} là ứng viên tự nhiên.
-  \item \textbf{Mở rộng bộ đánh giá}: bổ sung nhận dạng thực thể có tên, truy hồi
+  \item \textbf{Mở rộng bộ đánh giá}: bổ sung nhận dạng thực thể có tên, truy xuất
         trên kho ngữ liệu quy mô lớn hơn và lặp lại nhóm tác vụ biểu diễn câu qua
         nhiều lần chạy, nhằm đánh giá toàn diện và tin cậy hơn chất lượng biểu diễn
         của mô hình ở vai trò một Encoder đa dụng.

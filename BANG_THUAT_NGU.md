@@ -76,7 +76,7 @@ Việt đã chuẩn hóa, giải thích tiếng Anh ở lần đầu, một khá
 | vocabulary pruning | **giảm kích thước từ vựng** (vocabulary pruning) | |
 | frozen-alignment stage | **giai đoạn căn chỉnh với phần thân đóng băng** | |
 | norm calibration | **hiệu chỉnh độ lớn** (về độ lớn trung bình của NeoBERT) | |
-| tokenizer | **bộ token hóa** (tokenizer) | |
+| tokenizer | **tokenizer** (giữ tiếng Anh) | bài dùng "tokenizer" xuyên suốt; "bộ token hóa" chỉ là nghĩa mô tả, KHÔNG dùng trong văn bản |
 | tokenization / segment | **tách** (tách token / tách văn bản thành token) | không "phân đoạn thành token" |
 | word segmentation | **tách từ** (word segmentation) | chỉ cho VnCoreNLP |
 | sub-word | **từ con** (sub-word) | |
@@ -141,3 +141,4 @@ $b_{dec}$, $\mathcal{V}$…
 - **SALT không yêu cầu cùng kích thước từ vựng** — việc giảm về 30.522 token là *lựa chọn* để đồng bộ tham số + giảm tài nguyên (phần thân xử lý véc-tơ 768 chiều, không phụ thuộc cỡ từ vựng).
 - **Văn phong**: không dùng từ biểu cảm/thi đua (thắng/thua/bỏ xa/sụp đổ/bật lên…), không nói quá (hơn hẳn/tuyệt đối/khổng lồ), ngôi "chúng tôi" cho phần thân.
 - Giải thích thuật ngữ tiếng Anh ở **lần đầu** xuất hiện; sau đó dùng nhất quán một dạng.
+- **Nhãn CHỮ BÊN TRONG hình: để tiếng Anh** (đồng nhất cả 6 hình — "Held-out MLM loss", "F1 on UIT-ViQuAD", "Naive random", "Weight tying", "SALT (both)", "SALT + freeze"…), số dùng **dấu chấm** thập phân. Riêng **caption tiếng Việt** đặt dưới hình. Đừng Việt hóa chữ trong hình (từng thử với `fig_init_strategy` rồi hoàn nguyên vì 2 hình không có script không Việt hóa được).

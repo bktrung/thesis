@@ -1,9 +1,11 @@
 """Hinh (thesis 4.4.3): vi sao chon SALT + can chinh dong bang.
 
-So sanh 3 chien luoc khoi tao {buoc trong so, SALT hai ma tran, SALT + dong bang}
-tai cung moc ~100 trieu token CPT:
+So sanh 5 chien luoc khoi tao tai cung moc ~100 trieu token CPT:
 (a) mat mat MLM tren tap danh gia;
 (b) F1 tren UIT-ViQuAD sau tinh chinh (3 seed, thanh loi = do lech chuan).
+
+Nhan ben trong hinh de o TIENG ANH cho dong nhat voi cac hinh khac
+(caption tieng Viet nam o file .tex).
 
 Nguon so: salt-tied/metrics.jsonl, salt-pertoken-0.1/cpt_summary.json,
 salt-pertoken-freeze/milestone_eval.json, hardtask_summary_bakeoff100k.csv.
@@ -15,9 +17,7 @@ import math
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter, MultipleLocator
-
-vn_num = FuncFormatter(lambda v, _: f"{v:g}".replace(".", ","))
+from matplotlib.ticker import MultipleLocator
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT.parent / "images" / "init_strategy_100k.png"
@@ -42,13 +42,13 @@ with (ROOT / "hardtask_summary_bakeoff100k.csv").open() as f:
 # nguon images/mrc_summary.md (SALT-100k: 72.15±0.12), KHONG dung so bakeoff cu.
 MRC_FREEZE_100K = (72.15, 0.12)
 
-# Thu tu: 2 baseline khong-SALT (xam) -> 3 chien luoc co thong tin (tan/xanh).
+# Thu tu: 2 baseline khong-SALT (xam) -> 3 chien luoc co thong tin (nau/xanh).
 ARMS = [
-    ("Ngẫu nhiên\nngây thơ", loss_naive, mrc["trung_naive_random_zerobias"], "#cfcfcf"),
-    ("Ngẫu nhiên\ncông bằng", loss_meannorm, mrc["trung_random_meannorm"], "#9e9e9e"),
-    ("Dùng chung\ntrọng số", loss_tied, mrc["trung_salt_dectied"], "#c98a5e"),
-    ("SALT\n(hai ma trận)", loss_salt, mrc["trung_salt_decpertoken"], "#6baed6"),
-    ("SALT +\nđóng băng", loss_freeze, MRC_FREEZE_100K, "tab:blue"),
+    ("Naive\nrandom", loss_naive, mrc["trung_naive_random_zerobias"], "#cfcfcf"),
+    ("Norm-matched\nrandom", loss_meannorm, mrc["trung_random_meannorm"], "#9e9e9e"),
+    ("Weight\ntying", loss_tied, mrc["trung_salt_dectied"], "#c98a5e"),
+    ("SALT\n(both)", loss_salt, mrc["trung_salt_decpertoken"], "#6baed6"),
+    ("SALT +\nfreeze", loss_freeze, MRC_FREEZE_100K, "tab:blue"),
 ]
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 3.9))
@@ -56,30 +56,27 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 3.9))
 # ---- (a) mat mat ----
 for i, (label, l, _, color) in enumerate(ARMS):
     ax1.bar(i, l, width=0.55, color=color)
-    ax1.annotate(f"{l:.2f}".replace(".", ",")
-                 + f"\n(PPL {math.exp(l):.1f})".replace(".", ","),
+    ax1.annotate(f"{l:.2f}\n(PPL {math.exp(l):.1f})",
                  (i, l), textcoords="offset points", xytext=(0, 4),
                  fontsize=9, ha="center")
 ax1.set_xticks(range(len(ARMS)), [a[0] for a in ARMS])
 ax1.set_ylim(0, 7.6)
-ax1.set_ylabel("Mất mát MLM trên tập đánh giá")
+ax1.set_ylabel("Held-out MLM loss")
 ax1.set_xlabel("(a)")
-ax1.yaxis.set_major_formatter(vn_num)
 ax1.grid(axis="y", alpha=0.25)
 ax1.spines[["top", "right"]].set_visible(False)
 
 # ---- (b) MRC F1 ----
 for i, (label, _, (m, s), color) in enumerate(ARMS):
     ax2.errorbar(i, m, yerr=s, fmt="o", ms=7, color=color, capsize=4, lw=1.6)
-    ax2.annotate(f"{m:.2f}".replace(".", ","), (i, m),
+    ax2.annotate(f"{m:.2f}", (i, m),
                  textcoords="offset points", xytext=(10, 2), fontsize=9, color=color)
 ax2.set_xticks(range(len(ARMS)), [a[0] for a in ARMS])
 ax2.set_xlim(-0.5, 4.6)
 ax2.set_ylim(40, 76)
-ax2.set_ylabel("F1 trên UIT-ViQuAD")
+ax2.set_ylabel("F1 on UIT-ViQuAD")
 ax2.set_xlabel("(b)")
 ax2.yaxis.set_major_locator(MultipleLocator(5))
-ax2.yaxis.set_major_formatter(vn_num)
 ax2.grid(axis="y", alpha=0.25)
 ax2.spines[["top", "right"]].set_visible(False)
 

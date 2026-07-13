@@ -46,22 +46,22 @@
 \contentsline {subsection}{\numberline {3.5.1}Chọn các điểm neo gần nghĩa nhất bằng Sparsemax}{38}{subsection.3.5.1}%
 \contentsline {subsection}{\numberline {3.5.2}Xây dựng véc-tơ cho từng token bằng ánh xạ tuyến tính cục bộ}{39}{subsection.3.5.2}%
 \contentsline {subsection}{\numberline {3.5.3}Áp dụng phép chiếu cho cả lớp véc-tơ đầu vào và lớp đầu ra}{40}{subsection.3.5.3}%
-\contentsline {subsection}{\numberline {3.5.4}Tinh chỉnh kết quả khởi tạo: độ lớn véc-tơ, hệ số điều chỉnh và trọng số lớp đầu ra}{41}{subsection.3.5.4}%
+\contentsline {subsection}{\numberline {3.5.4}Tinh chỉnh kết quả khởi tạo: độ lớn véc-tơ, hệ số điều chỉnh và trọng số lớp đầu ra}{42}{subsection.3.5.4}%
 \contentsline {section}{\numberline {3.6}Giai đoạn căn chỉnh với phần thân đóng băng}{45}{section.3.6}%
 \contentsline {section}{\numberline {3.7}Tiếp tục tiền huấn luyện (Continued Pre-Training)}{46}{section.3.7}%
-\contentsline {section}{\numberline {3.8}Tổng kết phương pháp}{47}{section.3.8}%
+\contentsline {section}{\numberline {3.8}Tổng kết phương pháp}{48}{section.3.8}%
 \contentsline {chapter}{\numberline {4}Thực nghiệm và Đánh giá}{49}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Môi trường và dữ liệu thực nghiệm}{49}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Dữ liệu tiền huấn luyện}{50}{subsection.4.1.1}%
 \contentsline {subsection}{\numberline {4.1.2}Dữ liệu đánh giá}{50}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Cấu hình huấn luyện}{52}{section.4.2}%
+\contentsline {section}{\numberline {4.2}Cấu hình huấn luyện}{51}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Độ đo đánh giá}{53}{section.4.3}%
 \contentsline {section}{\numberline {4.4}So sánh các phương án khởi tạo}{54}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Kiểm chứng hình học của kỹ thuật SALT}{54}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Lựa chọn hệ số tỉ lệ trọng số đầu ra}{56}{subsection.4.4.2}%
 \contentsline {subsection}{\numberline {4.4.3}Lựa chọn chiến lược khởi tạo ma trận từ vựng}{57}{subsection.4.4.3}%
-\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{60}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Diễn biến kết quả theo lượng dữ liệu huấn luyện}{61}{subsection.4.5.1}%
+\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{61}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Chất lượng theo lượng dữ liệu huấn luyện}{61}{subsection.4.5.1}%
 \contentsline {subsection}{\numberline {4.5.2}Đánh giá đa tác vụ}{64}{subsection.4.5.2}%
 \contentsline {subsection}{\numberline {4.5.3}Mở rộng ngữ cảnh lên 4.096 token}{66}{subsection.4.5.3}%
 \contentsline {section}{\numberline {4.6}Thảo luận}{67}{section.4.6}%
