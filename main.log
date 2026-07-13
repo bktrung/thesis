@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  13 JUL 2026 20:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  13 JUL 2026 23:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1658,7 +1658,7 @@ as been already used, duplicate ignored
 l.205 
       ] [34] [35] [36]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 314.
+put line 320.
  [37] [38] [39] [40] [41] [42] [43] [44] [45] [46])
 [47
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2}) 
@@ -1666,12 +1666,12 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.190 \include{Chapter3/chapter3}
-                                 ]
+                                 ] [48]
 \openout2 = `Chapter4/chapter4.aux'.
 
  (./Chapter4/chapter4.tex
 Chương 4.
-[48
+[49
 
 
 
@@ -1696,14 +1696,14 @@ Underfull \hbox (badness 1062) in paragraph at lines 46--46
 []|\T5/cmr/m/n/12 B� ^^_�nh gi� ^^_a t�c v�
  []
 
-[49
+[50
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.67   \item \textbf
                     {Phân loại văn bản}: UIT-VSFC (phản hồi sinh v...
-] [50] [51
+] [51] [52
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.2}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1721,26 +1721,26 @@ as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.178 
-      ] [52]
-<images/beforeandaftersalt.png, id=1361, 1192.455pt x 487.8225pt>
+      ] [53]
+<images/beforeandaftersalt.png, id=1365, 1192.455pt x 487.8225pt>
 File: images/beforeandaftersalt.png Graphic file (type png)
 <use images/beforeandaftersalt.png>
 Package pdftex.def Info: images/beforeandaftersalt.png  used on input line 233.
 
 (pdftex.def)             Requested size: 455.24411pt x 186.23793pt.
- [53] [54
+ [54] [55
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.1}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.258 
        <./images/beforeandaftersalt.png>]
-<images/gamma_scale_loss.png, id=1377, 542.025pt x 303.534pt>
+<images/gamma_scale_loss.png, id=1382, 542.025pt x 303.534pt>
 File: images/gamma_scale_loss.png Graphic file (type png)
 <use images/gamma_scale_loss.png>
 Package pdftex.def Info: images/gamma_scale_loss.png  used on input line 286.
 (pdftex.def)             Requested size: 418.82375pt x 234.55093pt.
- [55] [56
+ [56] [57
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.2}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1748,31 +1748,31 @@ has been already used, duplicate ignored
 l.312   \item \textbf
                      {Ngẫu nhiên ngây thơ (naive random)}: cả hai ma ...
  <./images/gamma_scale_loss.png>]
-<images/init_strategy_100k.png, id=1392, 831.105pt x 281.853pt>
+<images/init_strategy_100k.png, id=1396, 831.105pt x 281.853pt>
 File: images/init_strategy_100k.png Graphic file (type png)
 <use images/init_strategy_100k.png>
 Package pdftex.def Info: images/init_strategy_100k.png  used on input line 337.
 
 (pdftex.def)             Requested size: 432.48051pt x 146.66762pt.
- [57] [58
+ [58] [59
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.3}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.363 H
        ai mặt đánh giá không xếp hạng các phương án hoàn toà...
- <./images/init_strategy_100k.png>] [59]
-<images/cpt_loss_curve.png, id=1417, 729.6861pt x 288.5982pt>
+ <./images/init_strategy_100k.png>] [60]
+<images/cpt_loss_curve.png, id=1421, 729.6861pt x 288.5982pt>
 File: images/cpt_loss_curve.png Graphic file (type png)
 <use images/cpt_loss_curve.png>
 Package pdftex.def Info: images/cpt_loss_curve.png  used on input line 416.
 (pdftex.def)             Requested size: 455.24411pt x 180.05637pt.
-<images/mrc_curve_tokens.png, id=1419, 592.614pt x 332.442pt>
+<images/mrc_curve_tokens.png, id=1423, 592.614pt x 332.442pt>
 File: images/mrc_curve_tokens.png Graphic file (type png)
 <use images/mrc_curve_tokens.png>
 Package pdftex.def Info: images/mrc_curve_tokens.png  used on input line 430.
 (pdftex.def)             Requested size: 418.82375pt x 234.95499pt.
- [60] [61
+ [61] [62
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.4}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1784,43 +1784,43 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.445 
-       <./images/cpt_loss_curve.png> <./images/mrc_curve_tokens.png>] [62
+       <./images/cpt_loss_curve.png> <./images/mrc_curve_tokens.png>] [63
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.5}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.491 
-      ] [63
+      ] [64
 pdfTeX warning (ext4): destination with the same identifier (name{table.4.6}) h
 as been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.537   \item \textbf
                      {Hiệu quả dữ liệu -- điểm mấu chốt}: lư...
-] [64]
-<images/ctx4096_pppl.png, id=1461, 2005.4925pt x 745.78625pt>
+] [65]
+<images/ctx4096_pppl.png, id=1465, 2005.4925pt x 745.78625pt>
 File: images/ctx4096_pppl.png Graphic file (type png)
 <use images/ctx4096_pppl.png>
 Package pdftex.def Info: images/ctx4096_pppl.png  used on input line 578.
 (pdftex.def)             Requested size: 455.24411pt x 169.28542pt.
- [65]) [66
+ [66]) [67
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4.6}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.192 \include{Chapter4/chapter4}
-                                  <./images/ctx4096_pppl.png>] [67]
+                                  <./images/ctx4096_pppl.png>] [68]
 \openout2 = `Chapter5/chapter5.aux'.
 
 
 (./Chapter5/chapter5.tex
 Chương 5.
-[68
+[69
 
 
 
 
-] [69] [70] [71]) [72]
+] [70] [71] [72]) [73]
 Underfull \hbox (badness 1348) in paragraph at lines 207--207
 \T5/cmr/m/n/14.4 BERT pre-train-ing ap-proach,'' \T5/cmr/m/it/14.4 arXiv prepri
 nt arXiv:1907.11692\T5/cmr/m/n/14.4 ,
@@ -1832,7 +1832,7 @@ Underfull \hbox (badness 3977) in paragraph at lines 207--207
 it/14.4 arXiv preprint
  []
 
-[73
+[74
 
 
 
@@ -1842,7 +1842,7 @@ Underfull \hbox (badness 1147) in paragraph at lines 207--207
 f-fi-
  []
 
-[74] [75] [76] [77] [78]
+[75] [76] [77] [78] [79]
 Underfull \hbox (badness 1789) in paragraph at lines 207--207
 \T5/cmr/m/n/14.4 recog-ni-tion for Viet-namese so-cial me-dia text,'' in \T5/cm
 r/m/it/14.4 Pro-ceed-ings
@@ -1854,25 +1854,25 @@ Underfull \hbox (badness 1082) in paragraph at lines 207--207
 i-lin-gual
  []
 
-[79] [80]
+[80] [81]
 \openout2 = `Appendix/appendix1.aux'.
 
  (./Appendix/appendix1.tex
 Phụ lục A.
-[81
+[82
 
 
-]) [82]
+]) [83]
 \openout2 = `Appendix/appendix2.aux'.
 
  (./Appendix/appendix2.tex
 Phụ lục B.
-[83
+[84
 
 
 
 
-]) [84] (./main.aux (./Appendix/commitment.aux) (./Appendix/thanks.aux)
+]) [85] (./main.aux (./Appendix/commitment.aux) (./Appendix/thanks.aux)
 (./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
 (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
 (./Appendix/appendix1.aux) (./Appendix/appendix2.aux))
@@ -1887,8 +1887,8 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34008 strings out of 474222
- 637064 string characters out of 5748733
+ 34009 strings out of 474222
+ 637071 string characters out of 5748733
  1949975 words of memory out of 5000000
  55351 multiletter control sequences out of 15000+600000
  587589 words of font info for 102 fonts, out of 8000000 for 9000
@@ -1918,10 +1918,10 @@ ex/vnr/vnr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti12.pfb
 ></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti8.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (108 pages, 1621591 bytes).
+Output written on main.pdf (109 pages, 1622880 bytes).
 PDF statistics:
- 1759 PDF objects out of 2073 (max. 8388607)
- 1506 compressed objects within 16 object streams
- 311 named destinations out of 1000 (max. 500000)
+ 1765 PDF objects out of 2073 (max. 8388607)
+ 1511 compressed objects within 16 object streams
+ 312 named destinations out of 1000 (max. 500000)
  718 words of extra memory for PDF output out of 10000 (max. 10000000)
 

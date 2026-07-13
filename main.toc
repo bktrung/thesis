@@ -42,7 +42,7 @@
 \contentsline {subsection}{\numberline {3.4.1}Vai trò của tập điểm neo}{34}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}Điểm neo trùng mặt chữ và điểm neo chữ số}{35}{subsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.4.3}Mở rộng tập điểm neo bằng cặp dịch Anh--Việt}{35}{subsection.3.4.3}%
-\contentsline {section}{\numberline {3.5}Khởi tạo lớp véc-tơ đầu vào và lớp đầu ra bằng kỹ thuật SALT}{37}{section.3.5}%
+\contentsline {section}{\numberline {3.5}Khởi tạo lớp véc-tơ đầu vào và lớp đầu ra bằng kỹ thuật SALT}{38}{section.3.5}%
 \contentsline {subsection}{\numberline {3.5.1}Chọn các điểm neo gần nghĩa nhất bằng Sparsemax}{38}{subsection.3.5.1}%
 \contentsline {subsection}{\numberline {3.5.2}Xây dựng véc-tơ cho từng token bằng ánh xạ tuyến tính cục bộ}{39}{subsection.3.5.2}%
 \contentsline {subsection}{\numberline {3.5.3}Áp dụng phép chiếu cho cả lớp véc-tơ đầu vào và lớp đầu ra}{40}{subsection.3.5.3}%
@@ -50,26 +50,26 @@
 \contentsline {section}{\numberline {3.6}Giai đoạn căn chỉnh với phần thân đóng băng}{45}{section.3.6}%
 \contentsline {section}{\numberline {3.7}Tiếp tục tiền huấn luyện (Continued Pre-Training)}{46}{section.3.7}%
 \contentsline {section}{\numberline {3.8}Tổng kết phương pháp}{47}{section.3.8}%
-\contentsline {chapter}{\numberline {4}Thực nghiệm và Đánh giá}{48}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Môi trường và dữ liệu thực nghiệm}{48}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Dữ liệu tiền huấn luyện}{49}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Dữ liệu đánh giá}{49}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Cấu hình huấn luyện}{51}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Độ đo đánh giá}{52}{section.4.3}%
-\contentsline {section}{\numberline {4.4}So sánh các phương án khởi tạo}{53}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Kiểm chứng hình học của kỹ thuật SALT}{53}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Lựa chọn hệ số tỉ lệ trọng số đầu ra}{55}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Lựa chọn chiến lược khởi tạo ma trận từ vựng}{56}{subsection.4.4.3}%
-\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{59}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Diễn biến kết quả theo lượng dữ liệu huấn luyện}{60}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa tác vụ}{63}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}Mở rộng ngữ cảnh lên 4.096 token}{65}{subsection.4.5.3}%
-\contentsline {section}{\numberline {4.6}Thảo luận}{66}{section.4.6}%
-\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{68}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Kết luận}{68}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{70}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Hướng phát triển}{70}{section.5.3}%
-\contentsline {chapter}{Tài liệu tham khảo}{73}{Item.13}%
-\contentsline {chapter}{Phụ lục}{80}{chapter*.10}%
-\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{81}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Định nghĩa hình thức các độ đo đánh giá}{83}{appendix.B}%
+\contentsline {chapter}{\numberline {4}Thực nghiệm và Đánh giá}{49}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Môi trường và dữ liệu thực nghiệm}{49}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Dữ liệu tiền huấn luyện}{50}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Dữ liệu đánh giá}{50}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Cấu hình huấn luyện}{52}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Độ đo đánh giá}{53}{section.4.3}%
+\contentsline {section}{\numberline {4.4}So sánh các phương án khởi tạo}{54}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Kiểm chứng hình học của kỹ thuật SALT}{54}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Lựa chọn hệ số tỉ lệ trọng số đầu ra}{56}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Lựa chọn chiến lược khởi tạo ma trận từ vựng}{57}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}Kết quả của mô hình cuối}{60}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Diễn biến kết quả theo lượng dữ liệu huấn luyện}{61}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Đánh giá đa tác vụ}{64}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Mở rộng ngữ cảnh lên 4.096 token}{66}{subsection.4.5.3}%
+\contentsline {section}{\numberline {4.6}Thảo luận}{67}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Kết luận và Hướng phát triển}{69}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kết luận}{69}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{71}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Hướng phát triển}{71}{section.5.3}%
+\contentsline {chapter}{Tài liệu tham khảo}{74}{Item.13}%
+\contentsline {chapter}{Phụ lục}{81}{chapter*.10}%
+\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{82}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Định nghĩa hình thức các độ đo đánh giá}{84}{appendix.B}%

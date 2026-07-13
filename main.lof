@@ -9,12 +9,12 @@
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Quy trình xây dựng ViNeoBERT.}}{30}{figure.3.1}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Lịch điều chỉnh tốc độ học Warmup--Stable--Decay (WSD).}}{47}{figure.3.2}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Lớp véc-tơ tiếng Việt trước và sau khi áp dụng SALT.}}{54}{figure.4.1}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Mất mát MLM theo hệ số tỉ lệ $\gamma $.}}{56}{figure.4.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces So sánh năm phương án khởi tạo hai ma trận từ vựng (xám: hai đường cơ sở ngẫu nhiên; nâu: dùng chung trọng số; xanh: SALT). (a) mất mát MLM trên tập đánh giá; (b) F1 trên UIT-ViQuAD, thanh lỗi là độ lệch chuẩn qua ba seed ngẫu nhiên.}}{58}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Đường học giai đoạn CPT (WSD).}}{61}{figure.4.4}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo số token CPT.}}{61}{figure.4.5}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Pseudo-perplexity theo độ dài chuỗi, trước và sau pha mở rộng 4.096 token.}}{66}{figure.4.6}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Lớp véc-tơ tiếng Việt trước và sau khi áp dụng SALT.}}{55}{figure.4.1}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Mất mát MLM theo hệ số tỉ lệ $\gamma $.}}{57}{figure.4.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces So sánh năm phương án khởi tạo hai ma trận từ vựng (xám: hai đường cơ sở ngẫu nhiên; nâu: dùng chung trọng số; xanh: SALT). (a) mất mát MLM trên tập đánh giá; (b) F1 trên UIT-ViQuAD, thanh lỗi là độ lệch chuẩn qua ba seed ngẫu nhiên.}}{59}{figure.4.3}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Đường học giai đoạn CPT (WSD).}}{62}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Điểm F1 trên UIT-ViQuAD theo số token CPT.}}{62}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Pseudo-perplexity theo độ dài chuỗi, trước và sau pha mở rộng 4.096 token.}}{67}{figure.4.6}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

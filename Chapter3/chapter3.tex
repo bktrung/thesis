@@ -211,11 +211,11 @@ nhất trong từ vựng.
 \label{subsec:anchor-role}
 
 \textit{Tập điểm neo} (anchor set) $\mathcal{A}$ là tập các cặp token $(t_{\mathrm{vi}},
-t_{\mathrm{neo}})$ có tương ứng ngữ nghĩa rõ ràng giữa từ vựng tiếng Việt (ViDeBERTa đã giảm kích thước) và từ vựng NeoBERT. Mỗi cặp điểm neo cung cấp một điểm \textit{đã biết} của ánh xạ giữa hai
-không gian véc-tơ, và giữ vai trò kép trong kỹ thuật SALT:
+t_{\mathrm{neo}})$ có tương ứng ngữ nghĩa rõ ràng giữa từ vựng tiếng Việt (ViDeBERTa) và từ vựng tiếng Anh (NeoBERT). Mỗi cặp điểm neo cung cấp một điểm \textit{đã biết} của ánh xạ giữa hai
+không gian véc-tơ, và giữ hai vai trò trong kỹ thuật SALT:
 \begin{itemize}
   \item \textbf{Khởi tạo trực tiếp}: bản thân token điểm neo $t_{\mathrm{vi}}$ được khởi tạo bằng
-        cách \textit{sao chép nguyên} hàng véc-tơ NeoBERT của $t_{\mathrm{neo}}$, nên nằm chính
+        cách \textit{sao chép nguyên} véc-tơ NeoBERT của $t_{\mathrm{neo}}$, nên nằm chính
         xác trong không gian đích.
   \item \textbf{Tập giám sát}: các cặp $(e_{\mathrm{vi}}, e_{\mathrm{neo}})$ của tập điểm neo đóng
         vai trò tập giám sát (support set) để \textit{học các ánh xạ tuyến tính cục bộ}, từ đó
@@ -224,21 +224,22 @@ không gian véc-tơ, và giữ vai trò kép trong kỹ thuật SALT:
 Do đó, chất lượng và độ phủ của tập điểm neo quyết định trực tiếp chất lượng của kỹ thuật SALT.
 
 Trong nghiên cứu gốc, SALT~\cite{lee2025salt} cũng như FOCUS~\cite{dobler2023focus} chỉ khai
-thác các token \textit{trùng mặt chữ} (cùng dạng chuỗi) giữa hai từ vựng làm điểm neo. Đối với
+thác các token \textit{trùng mặt chữ} (viết giống hệt nhau) giữa hai từ vựng làm điểm neo. Đối với
 cặp ngôn ngữ Anh--Việt vốn khác biệt lớn về hình thái, số token trùng mặt chữ là khá hạn
 chế và độ phủ ngữ nghĩa hẹp. Vì vậy, chúng tôi xây dựng tập điểm neo từ \textit{ba nguồn bổ sung
 cho nhau}: (1)~điểm neo trùng mặt chữ \textit{đã xác minh nghĩa}, (2)~điểm neo chữ số, và (3)~các
-\textit{cặp dịch} Anh--Việt khai thác tự động. Trong đó, việc mở rộng tập điểm neo bằng cặp dịch là
+\textit{cặp dịch} Anh--Việt. Trong đó, việc mở rộng tập điểm neo bằng cặp dịch là
 một trong những đóng góp chính của đề tài.
 
 \subsection{Điểm neo trùng mặt chữ và điểm neo chữ số}
 \label{subsec:anchor-surface}
 
-\textbf{Điểm neo trùng mặt chữ.} Theo ý tưởng gốc của SALT, các token có \textit{cùng dạng
-chuỗi} ở cả hai từ vựng là ứng viên điểm neo tự nhiên, bởi trùng dạng chuỗi thường hàm ý cùng khái
+\textbf{Điểm neo trùng mặt chữ.} Theo ý tưởng gốc của SALT, các token \textit{viết giống hệt
+nhau} ở cả hai từ vựng -- tức trùng nhau từng ký tự, chẳng hạn ``internet'' có mặt trong cả từ
+vựng tiếng Việt lẫn tiếng Anh -- là ứng viên điểm neo tự nhiên, bởi trùng mặt chữ thường hàm ý cùng khái
 niệm -- điển hình là từ vay mượn, tên riêng và thuật ngữ khoa học (\textit{internet, vitamin,
-radio}). Chúng tôi trích các \textit{từ đầy đủ} (word-initial), độ dài đủ lớn, xuất hiện ở cả
-hai từ vựng và lấy giao làm tập ứng viên.
+radio}). Cụ thể, chúng tôi lấy phần giao của hai từ vựng, rồi chỉ giữ những token
+\textit{ứng với một từ hoàn chỉnh} và \textit{đủ dài} làm tập ứng viên.
 
 Tuy nhiên, vì tiếng Việt cũng dùng hệ chữ Latin như tiếng Anh, \textit{cùng dạng chuỗi chưa
 chắc cùng nghĩa}: nhiều token trùng chuỗi thực chất là hiện tượng \textit{đồng tự khác nghĩa}
@@ -262,12 +263,12 @@ nguồn điểm neo đáng tin cậy và không phụ thuộc chất lượng d�
 
 Hai nguồn trên cho số điểm neo hạn chế và tập trung ở từ vay mượn, tên riêng và số -- không bao phủ
 được phần lớn kho từ vựng thuần Việt. Để \textit{mở rộng số lượng và độ phủ} của tập điểm neo,
-chúng tôi bổ sung nguồn điểm neo thứ ba: các cặp dịch Anh--Việt khai thác tự động, trong đó
+chúng tôi bổ sung nguồn điểm neo thứ ba: các cặp dịch Anh--Việt, trong đó
 $t_{\mathrm{vi}}$ và $t_{\mathrm{neo}}$ \textit{khác dạng chuỗi} nhưng tương ứng về nghĩa (ví
 dụ ``nước'' $\leftrightarrow$ ``water''). Đây là đóng góp chính của đề tài ở bước khởi tạo.
 
 Trước khi khai thác, chúng tôi lọc để chỉ giữ các \textit{từ tiếng Việt đầy đủ và hợp lệ}: loại
-token chứa ký tự không bản địa (\textit{f, j, w, z}), giới hạn độ dài, yêu cầu đúng một cụm
+token chứa các chữ cái không thuộc bảng chữ cái tiếng Việt (\textit{f, j, w, z}), giới hạn độ dài, yêu cầu đúng một cụm
 nguyên âm liền mạch, và tuân thủ các quy tắc chính tả tiếng Việt (chẳng hạn \textit{k, gh,
 ngh} chỉ đứng trước \textit{i, e, ê, y}; \textit{q} luôn đi kèm \textit{u}). Bộ lọc chính tả
 này bảo đảm ứng viên là từ tiếng Việt thực thụ, tránh nhiễu từ các chuỗi ngoại lai. Trên tập
@@ -276,14 +277,19 @@ này bảo đảm ứng viên là từ tiếng Việt thực thụ, tránh nhi�
   \item \textbf{Tầng 1 -- dịch ngược (back-translation)}: mỗi từ tiếng Việt được dịch sang
         tiếng Anh rồi \textit{dịch ngược} trở lại tiếng Việt; cặp điểm neo chỉ được chấp nhận khi
         (a)~kết quả dịch ngược trùng với từ gốc, (b)~bản dịch tiếng Anh là một \textit{từ đơn}
-        khác với từ gốc, và (c)~thuộc từ vựng NeoBERT.
-  \item \textbf{Tầng 2 -- từ ghép}: các từ ghép tiếng Việt (đa âm tiết) chưa được phủ được
-        dịch trực tiếp sang tiếng Anh, giữ lại khi bản dịch là một từ đơn thuộc từ vựng
-        NeoBERT.
-  \item \textbf{Tầng 3 -- từ đơn còn lại}: các từ đơn chưa được phủ, sau khi loại bỏ một danh
-        sách từ chức năng và từ dễ nhập nhằng (blacklist), được dịch trực tiếp và giữ theo
-        cùng ràng buộc ``một từ đơn thuộc từ vựng NeoBERT''; tầng này được giới hạn số lượng để
-        kiểm soát chi phí và chất lượng.
+        khác với từ gốc, và (c)~thuộc từ vựng NeoBERT. Ví dụ, \textit{sách} $\to$ ``book''
+        $\to$ \textit{sách}: dịch ngược trùng từ gốc và ``book'' thuộc từ vựng NeoBERT, nên nhận
+        cặp điểm neo (\textit{sách}, ``book'').
+  \item \textbf{Tầng 2 -- từ ghép}: các từ ghép tiếng Việt (đa âm tiết) chưa được tầng trước
+        lấy làm điểm neo được dịch trực tiếp sang tiếng Anh, giữ lại khi bản dịch là một từ đơn thuộc từ vựng
+        NeoBERT. Ví dụ, từ ghép \textit{bệnh viện} dịch thành ``hospital'' -- một từ đơn thuộc
+        từ vựng NeoBERT -- nên nhận cặp (\textit{bệnh viện}, ``hospital'').
+  \item \textbf{Tầng 3 -- từ đơn còn lại}: những từ đơn mà Tầng 1 bỏ sót (không qua được phép kiểm
+        dịch ngược) được vớt lại ở đây bằng cách \textit{chỉ dịch một chiều} sang tiếng Anh --
+        khác với Tầng 1, không kiểm chứng dịch ngược. Vì cách này kém chắc chắn hơn, chúng tôi loại
+        trước các từ ngữ pháp thường gặp (như \textit{và, của, thì, mà}) cùng những từ đa nghĩa dễ dịch sai,
+        giữ cặp theo cùng ràng buộc ``một từ đơn thuộc từ vựng NeoBERT'' (ví dụ \textit{muối} $\to$ ``salt''),
+        và giới hạn tối đa 500 cặp để kiểm soát chất lượng.
 \end{itemize}
 
 Cơ sở khoa học của phép kiểm tra \textit{dịch ngược} ở Tầng 1 là: một từ đa nghĩa thường không
@@ -301,7 +307,7 @@ phương án chỉ dùng điểm neo trùng mặt chữ như nghiên cứu gốc
 
 Để minh họa cụ thể ba nguồn điểm neo, xét bốn token tiếng Việt đại diện. Token \textit{internet}
 trùng dạng chuỗi ở cả hai từ vựng và dịch máy trả về đúng ``internet'', nên được giữ làm
-\textbf{điểm neo trùng mặt chữ} và khởi tạo bằng chính hàng véc-tơ NeoBERT của ``internet''. Token số
+\textbf{điểm neo trùng mặt chữ} và khởi tạo bằng chính véc-tơ NeoBERT của ``internet''. Token số
 \textit{2024} xuất hiện ở cả hai từ vựng và được nhận trực tiếp làm \textbf{điểm neo chữ số} mà không
 cần qua dịch. Token thuần Việt \textit{nước} khác hoàn toàn về dạng chuỗi so với ``water'': ở Tầng~1,
 dịch máy cho ``water'', dịch ngược cho lại ``nước'', và ``water'' là một từ đơn thuộc từ
