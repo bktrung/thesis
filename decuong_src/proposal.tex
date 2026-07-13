@@ -1,0 +1,260 @@
+%Đây là template dùng cho đề cương đề tài tốt nghiệp
+%Khoa Công nghệ Thông tin
+%Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM
+
+%Liên hệ về mẫu LaTEX này: Thầy Bùi Huy Thông (bhthong@fit.hcmus.edu.vn)
+
+\documentclass{article}[14pt]
+\usepackage[utf8]{vietnam}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{fancybox,framed}
+\linespread{1.3}
+\usepackage{lastpage}
+\usepackage{floatrow}
+\usepackage{floatrow}
+\pagenumbering{arabic}
+%\pagestyle{fancy}
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
+
+\usepackage{blindtext}
+\usepackage{titlesec}
+\usepackage[nottoc]{tocbibind}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em} % Adjust the value (e.g., 2em or 20pt) to your preference
+
+\titleformat*{\section}{\LARGE\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+\titleformat*{\subsubsection}{\large\bfseries}
+%\addbibresource{ref.bib}
+
+
+\begin{document}
+    \begin{figure}[h]
+        \begin{floatrow}
+        \ffigbox{\includegraphics[scale = .4]{logo.png}}  
+        {%
+    
+        }
+        \capbtabbox{
+            \begin{tabular}{l}
+            \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN\\KHOA CÔNG NGHỆ THÔNG TIN\end{tabular}}} \\ \\ \\
+            \end{tabular}
+        }
+        {%
+    
+        }
+        \end{floatrow}
+    \end{figure}
+    
+    \begin{center}
+        
+        %Xác định loại đề tài tốt nghiệp tương ứng: Khóa luận, Thực tập, Đồ án
+        \textbf{\Large ĐỀ CƯƠNG KHOÁ LUẬN TỐT NGHIỆP} \\ 
+    \end{center}
+    
+    %\vspace{.5cm}
+    
+    \begin{center}
+    %Tên đề tài phải VIẾT HOA
+        
+        \textbf{\huge NGHIÊN CỨU PHƯƠNG PHÁP XÂY DỰNG NEOBERT CHO TIẾNG VIỆT} 
+        \\
+        
+    %Tên đề tài bằng tiếng Anh (nếu có)
+    % \vspace{.5cm}
+    %     \textit{\textbf{\Large (Tên Đề Tài bằng Tiếng Anh \footnote{Nếu có. Nếu không có thì xoá footnote này} )}}
+    \end{center}
+    
+    \vspace{.5cm}
+    
+    \Large
+    \section{THÔNG TIN CHUNG}
+    \begin{itemize}[label = {}]
+        
+        \item \textbf{Người hướng dẫn:} 
+        %Thể hiện dạng: <Chức danh> <Họ và tên> (<Đơn vị công tác>)
+        \begin{itemize}
+            \item TS. Nguyễn Hồng Bửu Long (Khoa Công nghệ Thông tin)
+            \item TS. Lương An Vinh (Khoa Công nghệ Thông tin)
+        \end{itemize}{}
+    
+        
+        \item \textbf{Nhóm Sinh viên thực hiện:}
+        
+        %Thể hiện dạng: <Họ và tên sinh viên> (MSSV: )
+        \begin{enumerate}
+        
+            \item Bùi Khắc Trung (MSSV: 22120396)
+            \item Trần Anh Tú (MSSV: 22120400 )
+        \end{enumerate}
+
+       %Chọn loại thích hợp
+        \item \textbf{Loại đề tài:} Nghiên cứu
+        
+        \item \textbf{Thời gian thực hiện:} Từ \textit{1/2026} đến \textit{7/2026}
+        
+        
+    \end{itemize}
+    
+    \pagebreak 
+    
+    \section{NỘI DUNG THỰC HIỆN}
+    {
+
+    %Mỗi mục dưới đây phải viết ít nhất là 5 câu mô tả/giới thiệu.
+    
+    \subsection{Giới thiệu về đề tài}
+    
+    Trong lịch sử phát triển của lĩnh vực xử lý ngôn ngữ tự nhiên (NLP), các mô hình dạng Encoder-only như BERT và RoBERTa từng giữ vai trò nền tảng trong các bài toán hiểu ngôn ngữ. Tuy nhiên, trong khi các dòng mô hình Decoder-only (LLMs) liên tục tiến hóa với quy mô dữ liệu và kiến trúc đột phá, các bộ Encoder gần như không có sự cải thiện đáng kể trong suốt vài năm qua. Phải đến năm 2025, sự ra đời của NeoBERT [1] mới thực sự thu hẹp khoảng cách này. NeoBERT tái định nghĩa khả năng của mô hình bằng cách tích hợp các cải tiến kiến trúc tiên tiến nhất như hàm kích hoạt SwiGLU, vị trí tương đối Rotary Position Embeddings (RoPE), và chuẩn hóa Pre-RMSNorm. Đặc biệt, NeoBERT tối ưu hóa tỷ lệ chiều sâu trên chiều rộng (optimal depth-to-width ratio) với 28 lớp và kích thước ẩn 768, cho phép mô hình đạt hiệu suất vượt trội trên chuẩn đánh giá MTEB so với các dòng BERT-large dù chỉ sở hữu 250 triệu tham số.
+    
+    Mặc dù có khả năng suy luận mạnh và hỗ trợ độ dài ngữ cảnh lên tới 4.096 token, việc thích ứng NeoBERT cho tiếng Việt vẫn đối mặt với những thách thức lớn. Việc huấn luyện lại từ đầu (from scratch) trên quy mô hàng nghìn tỷ token như NeoBERT gốc đòi hỏi lượng tài nguyên tính toán rất lớn. Bên cạnh đó, các phương pháp tiếp tục tiền huấn luyện (Continued Pre-training) thông thường dễ dẫn đến hiện tượng mất thông tin (catastrophic forgetting), làm phá vỡ các đặc trưng biểu diễn quý giá mà mô hình đã học từ dữ liệu ban đầu.
+    
+    Xuất phát từ bối cảnh trên, đề tài tập trung nghiên cứu phương pháp thích ứng ngôn ngữ cho NeoBERT bằng kỹ thuật SALT (Semantic Aware Linear Transfer) [2]. Ý tưởng cốt lõi của nghiên cứu là tái sử dụng (recycling) không gian véc-tơ từ các mô hình tiền huấn luyện tiếng Việt chất lượng cao như ViDeBERTa [3]. Thay vì khởi tạo ngẫu nhiên, phương pháp thực hiện chuyển đổi tuyến tính dựa trên độ tương đồng ngữ nghĩa: đối với mỗi token không trùng lặp, thuật toán sẽ thiết lập các đường hồi quy tuyến tính riêng biệt dựa trên tập từ vựng chung. Quá trình này giúp ánh xạ chính xác các thành phần ngữ nghĩa từ không gian của ViDeBERTa sang không gian của NeoBERT.
+    
+    Thông qua đó, nghiên cứu hướng tới việc xây dựng mô hình Vietnamese NeoBERT có khả năng xử lý ngữ cảnh dài, tốc độ suy luận nhanh và độ chính xác cao. Kết quả của đề tài không chỉ mang ý nghĩa về mặt hiệu suất mà còn khẳng định tính khả thi của việc tối ưu hóa tài nguyên huấn luyện. Cụ thể, việc tái sử dụng không gian biểu diễn từ các mô hình ngôn ngữ mạnh sẵn có mở ra một hướng tiếp cận tiết kiệm và hiệu quả để chuyển một kiến trúc Encoder thế hệ mới sang tiếng Việt, thay vì phải chịu chi phí rất lớn của việc huấn luyện lại từ đầu.
+  
+    
+    %\textbf{Ghi chú:} Cần đăng ký tài khoản trên Overleaf\footnote{https://www.overleaf.com} và đọc cách sử dụng LaTeX tại hướng dẫn này \footnote{https://www.overleaf.com/learn/latex/Learn\_LaTeX\_in\_30\_minutes}% \cite{overleaf}.
+    
+    \subsection{Mục tiêu đề tài}
+    
+    %Phần này mô tả về động lực để giải quyết vấn đề. 
+    Trong bối cảnh các mô hình ngôn ngữ lớn đang đạt được những bước tiến vượt bậc về khả năng suy luận, các kiến trúc Encoder-only vẫn đóng vai trò nền tảng không thể thay thế trong các tác vụ trích xuất đặc trưng và biểu diễn ngữ nghĩa văn bản. Tuy nhiên, các mô hình Encoder dành cho tiếng Việt hiện nay chủ yếu dựa trên những kiến trúc cũ, thiếu đi sự tối ưu từ các kỹ thuật hiện đại và bị giới hạn ở độ dài ngữ cảnh ngắn. Việc huấn luyện lại các kiến trúc thế hệ mới như NeoBERT từ đầu cho tiếng Việt đòi hỏi nguồn lực tính toán rất lớn. Do đó, việc nghiên cứu một phương pháp thích ứng ngôn ngữ hiệu quả, ít tốn kém nhưng vẫn bảo toàn được năng lực của mô hình gốc là một nhu cầu cấp thiết.
+
+    Đề tài tập trung nghiên cứu việc khai thác và tái sử dụng không gian biểu diễn từ các mô hình ngôn ngữ tiền huấn luyện tiếng Việt sẵn có vào kiến trúc NeoBERT thông qua kỹ thuật SALT. Mục tiêu cụ thể là sử dụng các tập điểm neo (anchor) để tính toán các ánh xạ tuyến tính cục bộ riêng cho từng token, từ đó chuyển không gian biểu diễn của mô hình nguồn véc-tơ (tiêu biểu như ViDeBERTa) sang không gian véc-tơ của NeoBERT. Thông qua cách tiếp cận này, nghiên cứu hướng đến việc xây dựng một mô hình Vietnamese NeoBERT có khả năng xử lý ngữ cảnh dài (lên tới 4.096 token) với tốc độ hội tụ nhanh và chi phí huấn luyện thấp hơn đáng kể so với các phương pháp truyền thống.
+    
+    Kết quả của đề tài sẽ góp phần chứng minh hiệu quả của việc tái sử dụng không gian biểu diễn từ các mô hình ngôn ngữ mạnh sẵn có, giúp rút ngắn thời gian hội tụ và giảm hiện tượng mất thông tin (catastrophic forgetting). Nghiên cứu không chỉ cung cấp một bộ Encoder tiên tiến cho các tác vụ xử lý ngôn ngữ thực tế tại Việt Nam, mà còn đề xuất một quy trình thích ứng ngôn ngữ tối ưu, tạo tiền đề cho việc cập nhật và ứng dụng các kiến trúc mô hình ngôn ngữ thế hệ mới một cách linh hoạt, tiết kiệm và bền vững.
+    
+    \subsection{Phạm vi của đề tài}
+    
+    Đề tài tập trung vào việc nghiên cứu thực nghiệm phương pháp thích ứng mô hình ngôn ngữ thế hệ mới NeoBERT cho ngôn ngữ tiếng Việt bằng cách tái sử dụng không gian biểu diễn từ các mô hình tiền huấn luyện sẵn có. Phạm vi cụ thể bao gồm các thành phần sau:
+    
+    \textbf{Đối tượng nghiên cứu chính:}
+    \begin{itemize}
+        \item \textit{Kiến trúc mô hình NeoBERT:} Tập trung vào các cải tiến hiện đại như SwiGLU activation, RoPE, và cấu trúc Pre-RMSNorm với khả năng hỗ trợ ngữ cảnh lên đến 4.096 token.
+        \item \textit{Thuật toán SALT:} Nghiên cứu cơ chế trích xuất tập điểm neo (anchor token) dựa trên độ tương đồng ngữ nghĩa và phương pháp hồi quy tuyến tính (Linear Least Squares Transform) để ánh xạ không gian véc-tơ.
+        \item \textit{Mô hình nguồn véc-tơ (donor):} Sử dụng không gian véc-tơ tiếng Việt chất lượng cao từ mô hình ViDeBERTa để làm cơ sở cho phép chiếu.
+    \end{itemize}
+    
+    \textbf{Tập dữ liệu thực nghiệm:}
+    \begin{itemize}
+        \item \textit{Ngữ liệu tiền huấn luyện:} Sử dụng các tập dữ liệu văn bản tiếng Việt quy mô lớn, được trích xuất và làm sạch từ Wikipedia và các trang tin tức tổng hợp nhằm phục vụ giai đoạn huấn luyện thích ứng (Language Adaptive Continual Pre-training).
+        \item \textit{Dữ liệu đánh giá:} Sử dụng các bộ benchmark tiêu chuẩn cho tiếng Việt như VLSP (phân loại văn bản, nhận dạng thực thể) và các tập dữ liệu con trong MTEB (Massive Text Embedding Benchmark) để đo lường khả năng biểu diễn ngữ nghĩa.
+    \end{itemize}
+    
+    \textbf{Các giới hạn và ràng buộc:}
+    \begin{itemize}
+        \item \textit{Về phương pháp:} Nghiên cứu không thực hiện huấn luyện mô hình NeoBERT từ đầu do hạn chế về tài nguyên tính toán; thay vào đó, tập trung tối ưu hóa quá trình chuyển đổi không gian véc-tơ.
+        \item \textit{Về tác vụ:} Đề tài tập trung vào các bài toán thuộc nhóm Hiểu ngôn ngữ tự nhiên (NLU) và Trích xuất đặc trưng (Feature Extraction), không bao gồm các bài toán sinh văn bản tự do (NLG) của các mô hình Decoder-only.
+    \end{itemize}
+    
+    \subsection{Cách tiếp cận dự kiến}
+    
+    \textbf{Các nghiên cứu liên quan:}
+        
+    Trong những năm qua, hướng nghiên cứu về các mô hình Encoder-only đã đạt được nhiều thành tựu quan trọng. Điển hình là kiến trúc BERT [4] và các biến thể cải tiến như RoBERTa [5] đã thiết lập nền tảng vững chắc cho việc biểu diễn ngữ nghĩa. Tại Việt Nam, các mô hình như PhoBERT hay ViDeBERTa [3] đã tận dụng phương pháp huấn luyện tiếp tục (Continued Pre-training) trên quy mô dữ liệu lớn để tối ưu hóa khả năng xử lý tiếng Việt. Tuy nhiên, các mô hình này chủ yếu dựa trên kiến trúc Transformer cũ, gặp hạn chế về tốc độ huấn luyện và độ dài ngữ cảnh.
+    
+    Gần đây, nghiên cứu về NeoBERT [1] đã tái định nghĩa sức mạnh của Encoder bằng cách tích hợp các thành phần hiện đại. NeoBERT chứng minh rằng một mô hình quy mô 250 triệu tham số, nếu được tối ưu về tỷ lệ chiều sâu-chiều rộng và huấn luyện trên 2,1 nghìn tỷ token, có thể vượt qua hiệu suất của các mô hình lớn hơn gấp nhiều lần trên chuẩn đánh giá MTEB.
+    
+    Bên cạnh đó, bài toán chuyển đổi ngôn ngữ đã có bước tiến với kỹ thuật SALT [2]. Thay vì thay thế tập từ vựng một cách máy móc, SALT đề xuất cơ chế tái sử dụng không gian véc-tơ từ các mô hình tiền huấn luyện của ngôn ngữ mục tiêu. Kết quả thực nghiệm cho thấy SALT giúp tăng tốc độ hội tụ nhanh hơn và đạt mức tổn thất (loss) thấp hơn so với các phương pháp khởi tạo truyền thống, đồng thời vẫn duy trì được hiệu quả khi chuyển sang ngôn ngữ mới.
+    
+    \textbf{Phương pháp thực hiện dự kiến:}
+    
+    Dựa trên việc kế thừa sức mạnh kiến trúc của NeoBERT và phương pháp chuyển đổi hiệu quả của SALT, đề tài đề xuất quy trình xây dựng mô hình Vietnamese NeoBERT thông qua các bước sau:
+    
+    \begin{enumerate}
+        \item \textbf{Căn chỉnh không gian (Alignment Stage):} Sử dụng không gian véc-tơ tiếng Việt từ ViDeBERTa làm nguồn. Thông qua các véc-tơ tĩnh (như fastText), thuật toán sẽ trích xuất một tập điểm neo (Anchor Extraction) gồm các token có độ tương đồng ngữ nghĩa cao giữa từ vựng của NeoBERT và ViDeBERTa.
+        \item \textbf{Chuyển đổi tuyến tính dựa trên độ tương đồng ngữ nghĩa:} Đối với mỗi token không trùng lặp trong từ điển tiếng Việt, hệ thống thiết lập các đường hồi quy tuyến tính riêng biệt (unique regression lines) thông qua phương pháp Bình phương tối thiểu (Linear Least Squares). Bước này giúp chuyển đổi trực tiếp các biểu diễn ngữ nghĩa từ ViDeBERTa vào đúng hệ tọa độ không gian mà NeoBERT đã được học.
+        \item \textbf{Huấn luyện thích ứng có chọn lọc:} Tiến hành huấn luyện tiếp tục trên ngữ liệu tiếng Việt. Để ngăn chặn hiện tượng mất thông tin, mô hình áp dụng chiến lược đóng băng (freezing) một phần các lớp Transformer và sử dụng bộ lập lịch tốc độ học (learning rate scheduler) tối ưu nhằm tinh chỉnh lớp véc-tơ mới sao cho tương thích với các lớp phía trên.
+    \end{enumerate}
+    
+    \textbf{Sự khác biệt so với các nghiên cứu trước đây:}
+    
+    So với các phương pháp xây dựng mô hình tiếng Việt truyền thống, cách tiếp cận này không yêu cầu huấn luyện lại từ đầu mà thực hiện ánh xạ toán học để tái sử dụng không gian biểu diễn sẵn có. Điểm mới của đề tài là việc áp dụng SALT lên kiến trúc NeoBERT -- một kiến trúc hiện đại hỗ trợ ngữ cảnh dài 4.096 token và sử dụng FlashAttention-2 -- thay vì áp dụng trên các kiến trúc BERT cũ. Điều này kỳ vọng tạo ra một bộ Encoder mạnh, tối ưu tài nguyên và có tốc độ suy luận cao cho tiếng Việt.
+     
+    \subsection{Kết quả dự kiến của đề tài}
+        
+    Đề tài dự kiến đạt được các kết quả cụ thể về mặt định lượng, sản phẩm và đóng góp khoa học như sau:
+    
+    \textbf{Số liệu định lượng:}
+    \begin{itemize}
+        \item \textit{Hiệu suất mô hình:} Vietnamese NeoBERT dự kiến đạt kết quả tương đương hoặc vượt trội so với các mô hình baseline hiện tại (như PhoBERT, ViDeBERTa) trên các bài toán NLU thuộc bộ benchmark VLSP và tập dữ liệu MTEB tiếng Việt.
+        \item \textit{Tốc độ hội tụ và chi phí:} Nhờ việc khởi tạo lớp véc-tơ bằng SALT, quá trình huấn luyện dự kiến có tốc độ hội tụ nhanh hơn, giảm từ 40\% đến 50\% số lượng token cần thiết so với việc huấn luyện lại từ đầu hoặc tiếp tục tiền huấn luyện không có định hướng.
+        \item \textit{Tốc độ thực thi (Throughput):} Nhờ kiến trúc tối ưu (optimal depth-to-width), mô hình dự kiến đạt tốc độ suy luận nhanh hơn khoảng 30\% - 45\% so với các mô hình Encoder-large truyền thống trên cùng một cấu hình phần cứng.
+        \item \textit{Khả năng xử lý ngữ cảnh:} Mô hình xử lý ổn định các văn bản có độ dài lên tới 4.096 token, khắc phục được rào cản 512 token của các kiến trúc tiền nhiệm.
+    \end{itemize}
+    
+    \textbf{Sản phẩm đầu ra:}
+    \begin{itemize}
+        \item Trọng số mô hình (Model Weights) Vietnamese NeoBERT hoàn chỉnh (250M tham số), tương thích với thư viện Hugging Face Transformers.
+        \item Bộ mã nguồn (Source Code) bao gồm thuật toán trích xuất tập điểm neo, hàm chuyển đổi tuyến tính SALT và kịch bản huấn luyện.
+        \item Báo cáo thực nghiệm chi tiết so sánh độ chính xác, tốc độ và biểu đồ tổn thất (loss curve) giữa các phương pháp.
+    \end{itemize}
+    
+    \textbf{Đóng góp khoa học:}
+    \begin{itemize}
+        \item Khẳng định khả năng ứng dụng của kiến trúc NeoBERT kết hợp với kỹ thuật SALT trong việc giải quyết bài toán thiếu hụt tài nguyên tính toán cho các ngôn ngữ ít tài nguyên.
+        \item Kết quả nghiên cứu có triển vọng phát triển thành bài báo khoa học công bố tại các hội nghị chuyên ngành uy tín trong nước và quốc tế.
+    \end{itemize}
+    
+    \subsection{Kế hoạch thực hiện}
+        
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|p{4.5cm}|p{8.5cm}|p{3cm}|}
+    \hline
+    \textbf{Thời gian} & \textbf{Nội dung công việc} & \textbf{Người thực hiện} \\ \hline
+    03/01/2026 – 20/01/2026 & Khảo sát các tài liệu nghiên cứu về kiến trúc NeoBERT, thuật toán SALT và các phương pháp Cross-lingual Transfer. & Trung, Tú \\ \hline
+    21/01/2026 – 16/02/2026 & Thu thập và tiền xử lý ngữ liệu tiếng Việt; xây dựng pipeline; chuẩn bị môi trường huấn luyện.& Trung, Tú \\ \hline
+    16/02/2026 – 10/03/2026 & Cài đặt thuật toán trích xuất tập điểm neo; lập trình mô-đun hồi quy tuyến tính (Least Squares) cho các non-shared token. & Trung \\ \cline{2-3} 
+     & Huấn luyện mô hình NeoBert baseline trên dữ liệu tiếng Việt mà không dùng SALT. & Tú \\ \hline
+    11/03/2026 – 31/04/2026 & Thực hiện giai đoạn ánh xạ không gian véc-tơ và tiến hành huấn luyện thích ứng (Language Adaptive Continual Pre-training). Bên cạnh đó thực nghiệm đánh giá mô hình NeoBert baseline về cả hiệu suất và chi phí huấn luyện. & Trung, Tú \\ \hline
+    01/04/2026 – 15/04/2026 & Thực nghiệm đánh giá mô hình NeoBert có sử dụng SALT và so sánh kết quả với baseline. Đánh giá cả hai mô hình trên cả quá trình huấn luyện và hiệu suất của mô hình. & Trung, Tú \\ \hline
+    16/04/2026 – 15/05/2026 & Thực hiện các thí nghiệm để so sánh mô hình NeoBert tiếng Việt với các mô hình khác. Đánh giá và phân tích kết quả của thí nghiệm. & Trung, Tú \\ \hline
+    16/05/2026 – 28/07/2026 & Viết báo cáo khóa luận, trực quan hóa kết quả bằng biểu đồ và chuẩn bị slide bảo vệ. & Trung, Tú \\ \hline
+    \end{tabular}
+    \end{table}
+    
+    
+    }
+    
+    \pagebreak 
+    
+    \begin{thebibliography}{9}
+    
+    \bibitem{neobert}
+    L. L. Breton, Q. Fournier, J. X. Morris, M. E. Mezouar, and S. Chandar, "NeoBERT: A Next-Generation BERT," \textit{arXiv preprint arXiv:2502.19587v2}, 2025.
+    
+    \bibitem{salt}
+    S. Lee, S. Hong, H. Moon, and H. Lim, "Semantic Aware Linear Transfer by Recycling Pre-trained Language Models for Cross-lingual Transfer," \textit{arXiv preprint arXiv:2505.10945v2}, 2025.
+    
+    \bibitem{videberta}
+    V. D. Lai, C. V. Nguyen, N. T. Ngo, T. Nguyen, F. Dernoncourt, R. A. Rossi, and T. H. Nguyen, "ViDeBERTa: A Powerful Pre-trained Language Model for Vietnamese," in \textit{Findings of the Association for Computational Linguistics: EACL 2023}, pp. 1032–1043, 2023.
+    
+    \bibitem{bert}
+    J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding," in \textit{Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics}, pp. 4171–4186, 2019.
+    
+    \bibitem{roberta}
+    Y. Liu, M. Ott, N. Goyal, J. Du, M. Joshi, D. Chen, O. Levy, M. Lewis, L. Zettlemoyer, and V. Stoyanov, "RoBERTa: A Robustly Optimized BERT Pretraining Approach," \textit{arXiv preprint arXiv:1907.11692}, 2019.
+    
+    \end{thebibliography}
+
+    \begin{table}[h]
+    \centering
+        \begin{tabular}{p{7cm}p{7cm}}
+        \textbf{\begin{tabular}[c]{@{}c@{}}\\XÁC NHẬN\\CỦA NGƯỜI HƯỚNG DẪN\\ \textit{(Ký và ghi rõ họ tên)}\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\textit{TP. Hồ Chí Minh, ngày... tháng... năm...}\\NHÓM SINH VIÊN THỰC HIỆN\\\textit{(Ký và ghi rõ họ tên}) \end{tabular}}
+        \end{tabular}
+    \end{table}
+    
+\end{document}
+
+

@@ -8,25 +8,24 @@ ngữ lớn -- RoPE, SwiGLU, Pre-RMSNorm, tỷ lệ sâu--hẹp tối ưu và ng
 song chỉ được tiền huấn luyện trên tiếng Anh, trong khi các Encoder tiếng Việt hiện có
 vẫn dựa trên kiến trúc thế hệ cũ.
 
-Khóa luận xây dựng \textbf{ViNeoBERT} -- mô hình NeoBERT cho tiếng Việt -- bằng quy
-trình thích nghi ngôn ngữ ba giai đoạn thay vì huấn luyện lại từ đầu: (1)~khởi tạo lớp
-nhúng và lớp đầu ra bằng kỹ thuật Semantic Aware Linear Transfer (SALT), tái sử dụng
-không gian nhúng của mô hình tiếng Việt ViDeBERTa thông qua các ánh xạ tuyến tính cục
-bộ theo từng token; (2)~căn chỉnh đóng băng: chỉ huấn luyện hai ma trận vừa khởi tạo
-trên phần thân cố định; và (3)~tiếp tục tiền huấn luyện trên ngữ liệu CulturaX tiếng
-Việt theo lịch tốc độ học Warmup--Stable--Decay. So với SALT gốc, đề tài đưa ra ba cải
-tiến: mở rộng tập neo bằng cặp dịch Anh--Việt khai thác tự động (kèm cơ chế lọc từ đồng
-tự khác nghĩa), khởi tạo riêng lớp đầu ra tách rời với độ chệch theo tần suất từ đơn và
-hệ số co trọng số, cùng giai đoạn căn chỉnh đóng băng.
+Khóa luận xây dựng \textbf{ViNeoBERT} -- mô hình NeoBERT cho tiếng Việt -- bằng
+một quy trình chuyển đổi ngôn ngữ thay vì huấn luyện lại từ đầu: (1)~khởi tạo lớp véc-tơ đầu vào và lớp đầu ra bằng kỹ thuật Chuyển đổi tuyến tính trong không gian có ngữ nghĩa (Semantic Aware Linear Transfer -- SALT), tái sử dụng
+không gian véc-tơ của mô hình tiếng Việt ViDeBERTa thông qua các ánh xạ tuyến tính cục
+bộ theo từng token; (2)~căn chỉnh với phần thân đóng băng: đóng băng toàn bộ phần thân Transformer,
+chỉ huấn luyện hai ma trận vừa khởi tạo cho khớp với phần thân đó; và (3)~tiếp tục tiền huấn luyện trên ngữ liệu CulturaX tiếng
+Việt theo lịch điều chỉnh tốc độ học Warmup--Stable--Decay. So với SALT gốc, đề tài đưa ra ba cải
+tiến: mở rộng tập điểm neo bằng các cặp dịch Anh--Việt; khởi tạo riêng lớp đầu ra --
+khởi tạo hệ số điều chỉnh theo tần suất xuất hiện của token trong tiếng Việt, đồng thời thu nhỏ
+trọng số lớp đầu ra để tín hiệu tần suất này chi phối giai đoạn huấn luyện đầu; và bổ sung
+giai đoạn căn chỉnh với phần thân đóng băng.
 
-Thực nghiệm so sánh có kiểm soát ở cùng ngân sách huấn luyện xác nhận từng lựa chọn
-thiết kế, từ hệ số co trọng số đầu ra tới khởi tạo riêng hai ma trận và giai đoạn căn
-chỉnh đóng băng. Trên bộ đánh giá gồm mười hai tác vụ hiểu tiếng Việt (phân loại, suy
+Thực nghiệm so sánh có kiểm soát trên cùng một lượng token huấn luyện xác nhận từng lựa chọn
+thiết kế, từ việc giảm biên độ trọng số lớp đầu ra tới khởi tạo riêng hai ma trận và giai đoạn căn chỉnh với phần thân đóng băng. Trên bộ đánh giá gồm mười hai tác vụ hiểu tiếng Việt (phân loại, suy
 luận, gán nhãn chuỗi, tương đồng ngữ nghĩa và biểu diễn câu), ViNeoBERT sau 5 tỷ token
-($\sim$20GB) đạt kết quả ngang ngửa PhoBERT-base-v2 ở đa số tác vụ và thắng ở gán nhãn
-từ loại -- dù lượng tiếng Việt tiếp xúc chỉ bằng $\sim$3,5\% so với PhoBERT và ít hơn
-một đến hai bậc so với phần tiếng Việt trong XLM-R. Trên đọc hiểu UIT-ViQuAD, mô hình đạt
-76,6 điểm F1 -- hơn XLM-R-base 3,3 điểm và cạnh tranh với PhoBERT-large lớn gấp 1,5 lần.
+($\sim$20GB) đạt kết quả tương đương PhoBERT-base-v2 ở đa số tác vụ và dẫn đầu ở gán nhãn
+từ loại. Trên tác vụ đọc hiểu với bộ dữ liệu UIT-ViQuAD, mô hình đạt
+76,6 điểm F1 -- hơn XLM-R-base 3,3 điểm và cạnh tranh với PhoBERT-large (lớn gấp 1,5 lần)
+dù chỉ dùng khoảng 3,5\% lượng token mà mô hình này đã huấn luyện ($\sim$140 tỷ).
 Ngoài ra, một pha mở rộng ngắn $\sim$200 triệu token ở độ dài 4.096 token giữ
 pseudo-perplexity ổn định trên toàn dải ngữ cảnh, biến trần 4.096 token của kiến trúc
 thành năng lực sử dụng được. Kết quả cho thấy tái sử dụng không gian biểu diễn sẵn có
@@ -34,5 +33,5 @@ là con đường tiết kiệm và hiệu quả để đưa các kiến trúc E
 tiếng Việt.
 
 \vspace{4mm}
-\noindent\textbf{Từ khóa:} NeoBERT, tiếng Việt, thích nghi ngôn ngữ, khởi tạo nhúng
-xuyên ngôn ngữ, SALT, tiếp tục tiền huấn luyện.
+\noindent\textbf{Từ khóa:} NeoBERT, tiếng Việt, chuyển đổi ngôn ngữ, khởi tạo véc-tơ
+cho ngôn ngữ mới, SALT, tiếp tục tiền huấn luyện.

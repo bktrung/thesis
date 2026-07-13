@@ -67,5 +67,13 @@
   "latex-workshop.message.error.show": true,
   "latex-workshop.message.warning.show": false,
   "latex-workshop.latex.rootFile.doNotPrompt": true,
-  "latex-workshop.latex.rootFile.useSubFile": false
+  "latex-workshop.latex.rootFile.useSubFile": false,
+  "latex-workshop.latex.external.build.command": "latexmk",
+  "latex-workshop.latex.external.build.args": [
+    "-synctex=1",
+    "-interaction=nonstopmode",
+    "-file-line-error",
+    "-pdf",
+    "main.tex"
+  ]
 }

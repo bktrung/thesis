@@ -17,7 +17,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 
-vn_num = FuncFormatter(lambda v, _: f"{v:g}")
+vn_num = FuncFormatter(lambda v, _: f"{v:g}".replace(".", ","))
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT.parent / "images" / "init_strategy_100k.png"
@@ -28,6 +28,8 @@ loss_tied = [r["eval_loss"] for r in tied_rows if "eval_loss" in r][-1]
 loss_salt = json.load((ROOT / "salt-pertoken-0.1" / "cpt_summary.json").open())["post"]["eval_loss"]
 ms = json.load((ROOT / "salt-pertoken-freeze" / "milestone_eval.json").open())
 loss_freeze = next(m for m in ms if m["milestone_docs"] == 100000)["eval_loss"]
+loss_naive = json.load((ROOT / "naiv_random_zerobias" / "cpt_summary.json").open())["post"]["eval_loss"]
+loss_meannorm = json.load((ROOT / "random_meannorm" / "cpt_summary.json").open())["post"]["eval_loss"]
 
 # ---- MRC F1 @ 100M token ----
 mrc = {}
@@ -40,24 +42,27 @@ with (ROOT / "hardtask_summary_bakeoff100k.csv").open() as f:
 # nguon images/mrc_summary.md (SALT-100k: 72.15±0.12), KHONG dung so bakeoff cu.
 MRC_FREEZE_100K = (72.15, 0.12)
 
+# Thu tu: 2 baseline khong-SALT (xam) -> 3 chien luoc co thong tin (tan/xanh).
 ARMS = [
-    ("Weight\ntying", loss_tied, mrc["trung_salt_dectied"], "#999999"),
-    ("SALT\n(two matrices)", loss_salt, mrc["trung_salt_decpertoken"], "#6baed6"),
-    ("SALT +\nfrozen align", loss_freeze, MRC_FREEZE_100K, "tab:blue"),
+    ("Ngẫu nhiên\nngây thơ", loss_naive, mrc["trung_naive_random_zerobias"], "#cfcfcf"),
+    ("Ngẫu nhiên\ncông bằng", loss_meannorm, mrc["trung_random_meannorm"], "#9e9e9e"),
+    ("Dùng chung\ntrọng số", loss_tied, mrc["trung_salt_dectied"], "#c98a5e"),
+    ("SALT\n(hai ma trận)", loss_salt, mrc["trung_salt_decpertoken"], "#6baed6"),
+    ("SALT +\nđóng băng", loss_freeze, MRC_FREEZE_100K, "tab:blue"),
 ]
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.6, 3.9))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 3.9))
 
 # ---- (a) mat mat ----
 for i, (label, l, _, color) in enumerate(ARMS):
     ax1.bar(i, l, width=0.55, color=color)
-    ax1.annotate(f"{l:.2f}"
-                 + f"\n(PPL {math.exp(l):.1f})",
+    ax1.annotate(f"{l:.2f}".replace(".", ",")
+                 + f"\n(PPL {math.exp(l):.1f})".replace(".", ","),
                  (i, l), textcoords="offset points", xytext=(0, 4),
                  fontsize=9, ha="center")
 ax1.set_xticks(range(len(ARMS)), [a[0] for a in ARMS])
 ax1.set_ylim(0, 7.6)
-ax1.set_ylabel("Held-out MLM loss")
+ax1.set_ylabel("Mất mát MLM trên tập đánh giá")
 ax1.set_xlabel("(a)")
 ax1.yaxis.set_major_formatter(vn_num)
 ax1.grid(axis="y", alpha=0.25)
@@ -66,12 +71,12 @@ ax1.spines[["top", "right"]].set_visible(False)
 # ---- (b) MRC F1 ----
 for i, (label, _, (m, s), color) in enumerate(ARMS):
     ax2.errorbar(i, m, yerr=s, fmt="o", ms=7, color=color, capsize=4, lw=1.6)
-    ax2.annotate(f"{m:.2f}", (i, m),
+    ax2.annotate(f"{m:.2f}".replace(".", ","), (i, m),
                  textcoords="offset points", xytext=(10, 2), fontsize=9, color=color)
 ax2.set_xticks(range(len(ARMS)), [a[0] for a in ARMS])
-ax2.set_xlim(-0.5, 2.6)
-ax2.set_ylim(48, 76)
-ax2.set_ylabel("F1 on UIT-ViQuAD")
+ax2.set_xlim(-0.5, 4.6)
+ax2.set_ylim(40, 76)
+ax2.set_ylabel("F1 trên UIT-ViQuAD")
 ax2.set_xlabel("(b)")
 ax2.yaxis.set_major_locator(MultipleLocator(5))
 ax2.yaxis.set_major_formatter(vn_num)

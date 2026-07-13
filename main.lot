@@ -1,15 +1,15 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Cấu hình NeoBERT~\blx@tocontentsinit {0}\cite {lebreton2025neobert}.}}{21}{table.2.1}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Cấu hình NeoBERT~\blx@tocontentsinit {0}\cite {lebreton2025neobert}.}}{22}{table.2.1}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces So sánh bộ tách từ của PhoBERT và ViDeBERTa.}}{31}{table.3.1}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces So sánh tokenizer của PhoBERT và ViDeBERTa.}}{33}{table.3.1}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Thống kê dữ liệu thực nghiệm.}}{47}{table.4.1}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Các tác vụ đánh giá hạ nguồn.}}{49}{table.4.2}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Các mô hình Encoder được đánh giá.}}{49}{table.4.3}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Siêu tham số huấn luyện.}}{50}{table.4.4}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Lượng dữ liệu tiếng Việt đã duyệt.}}{59}{table.4.5}%
-\contentsline {table}{\numberline {4.6}{\ignorespaces Kết quả đánh giá đa nhiệm tại mốc 5 tỷ token (giá trị tốt nhất in đậm).}}{60}{table.4.6}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Thống kê dữ liệu thực nghiệm.}}{49}{table.4.1}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Các tác vụ đánh giá.}}{51}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Các mô hình Encoder được đánh giá.}}{51}{table.4.3}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Siêu tham số huấn luyện.}}{51}{table.4.4}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Lượng dữ liệu tiếng Việt đã xử lý.}}{62}{table.4.5}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Kết quả đánh giá đa tác vụ tại điểm kiểm tra 5 tỷ token (giá trị tốt nhất in đậm).}}{63}{table.4.6}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

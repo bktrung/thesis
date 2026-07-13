@@ -1,3 +1,4 @@
+% !TEX root = main.tex
 % Template KLTN cho SV trường ĐHKHTN
 % Liên hệ: bhthong@fit.hcmus.edu.vn
 % Last update: 
@@ -23,7 +24,7 @@
 
 % Chèn hình, các hình trong luận văn được để trong thư mục Images/
 \usepackage{graphicx}
-\graphicspath{ {Images/} }
+\graphicspath{ {images/} }
 
 % Chèn file PDF (đề cương, biểu mẫu scan)
 \usepackage{pdfpages}
@@ -125,6 +126,8 @@
 \newcommand{\tenSV}{Bùi~Khắc~Trung~-~Trần~Anh~Tú} 
 \newcommand{\mssv}{22120396~-~22120400}
 \newcommand{\tenKL}{Nghiên cứu phương pháp xây dựng NeoBERT cho tiếng Việt}
+% Bản dành riêng cho trang bìa: ngắt dòng để "xây dựng..." xuống dòng cho cân đối
+\newcommand{\tenKLcover}{Nghiên cứu phương pháp\\ xây dựng NeoBERT\\ cho tiếng Việt}
 \newcommand{\tenGVHD}{TS.~Nguyễn~Hồng~Bửu~Long~-~TS.~Lương~An~Vinh}
 \newcommand{\tenBM}{Công nghệ tri thức}
 
@@ -139,14 +142,14 @@
 \addcontentsline{toc}{chapter}{Lời cam đoan}
 \include{Appendix/commitment}
 
-\addcontentsline{toc}{chapter}{Thuyết minh chỉnh sửa đề tài}
-\include{Appendix/edit}
+% \addcontentsline{toc}{chapter}{Thuyết minh chỉnh sửa đề tài}
+% \include{Appendix/edit}
 
-\addcontentsline{toc}{chapter}{Nhận xét của GV hướng dẫn}
-\include{Appendix/advisor}
+% \addcontentsline{toc}{chapter}{Nhận xét của GV hướng dẫn}
+% \include{Appendix/advisor}
 
-\addcontentsline{toc}{chapter}{Nhận xét của GV phản biện}
-\include{Appendix/reviewer}
+% \addcontentsline{toc}{chapter}{Nhận xét của GV phản biện}
+% \include{Appendix/reviewer}
 
 \addcontentsline{toc}{chapter}{Lời cảm ơn}
 \include{Appendix/thanks}
