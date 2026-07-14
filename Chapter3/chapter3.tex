@@ -265,7 +265,8 @@ Hai nguồn trên cho số điểm neo hạn chế và tập trung ở từ vay 
 được phần lớn kho từ vựng thuần Việt. Để \textit{mở rộng số lượng và độ phủ} của tập điểm neo,
 chúng tôi bổ sung nguồn điểm neo thứ ba: các cặp dịch Anh--Việt, trong đó
 $t_{\mathrm{vi}}$ và $t_{\mathrm{neo}}$ \textit{khác dạng chuỗi} nhưng tương ứng về nghĩa (ví
-dụ ``nước'' $\leftrightarrow$ ``water''). Đây là đóng góp chính của đề tài ở bước khởi tạo.
+dụ ``nước'' $\leftrightarrow$ ``water''). Trong giai đoạn này, phải đảm bảo được số lượng và chất lượng của các điểm neo.
+Đây cũng là đóng góp chính của đề tài ở bước khởi tạo.
 
 Trước khi khai thác, chúng tôi lọc để chỉ giữ các \textit{từ tiếng Việt đầy đủ và hợp lệ}: loại
 token chứa các chữ cái không thuộc bảng chữ cái tiếng Việt (\textit{f, j, w, z}), giới hạn độ dài, yêu cầu đúng một cụm
@@ -276,20 +277,17 @@ này bảo đảm ứng viên là từ tiếng Việt thực thụ, tránh nhi�
 \begin{itemize}
   \item \textbf{Tầng 1 -- dịch ngược (back-translation)}: mỗi từ tiếng Việt được dịch sang
         tiếng Anh rồi \textit{dịch ngược} trở lại tiếng Việt; cặp điểm neo chỉ được chấp nhận khi
-        (a)~kết quả dịch ngược trùng với từ gốc, (b)~bản dịch tiếng Anh là một \textit{từ đơn}
-        khác với từ gốc, và (c)~thuộc từ vựng NeoBERT. Ví dụ, \textit{sách} $\to$ ``book''
+        (a)~kết quả dịch ngược trùng với từ tiếng Việt gốc, và (b)~thuộc từ vựng NeoBERT. Ví dụ, \textit{sách} $\to$ ``book''
         $\to$ \textit{sách}: dịch ngược trùng từ gốc và ``book'' thuộc từ vựng NeoBERT, nên nhận
         cặp điểm neo (\textit{sách}, ``book'').
   \item \textbf{Tầng 2 -- từ ghép}: các từ ghép tiếng Việt (đa âm tiết) chưa được tầng trước
-        lấy làm điểm neo được dịch trực tiếp sang tiếng Anh, giữ lại khi bản dịch là một từ đơn thuộc từ vựng
-        NeoBERT. Ví dụ, từ ghép \textit{bệnh viện} dịch thành ``hospital'' -- một từ đơn thuộc
+        lấy làm điểm neo được dịch trực tiếp sang tiếng Anh, giữ lại khi bản dịch là một từ thuộc từ vựng
+        NeoBERT. Ví dụ, từ ghép \textit{bệnh viện} dịch thành ``hospital'' -- một từ thuộc
         từ vựng NeoBERT -- nên nhận cặp (\textit{bệnh viện}, ``hospital'').
-  \item \textbf{Tầng 3 -- từ đơn còn lại}: những từ đơn mà Tầng 1 bỏ sót (không qua được phép kiểm
-        dịch ngược) được vớt lại ở đây bằng cách \textit{chỉ dịch một chiều} sang tiếng Anh --
-        khác với Tầng 1, không kiểm chứng dịch ngược. Vì cách này kém chắc chắn hơn, chúng tôi loại
-        trước các từ ngữ pháp thường gặp (như \textit{và, của, thì, mà}) cùng những từ đa nghĩa dễ dịch sai,
-        giữ cặp theo cùng ràng buộc ``một từ đơn thuộc từ vựng NeoBERT'' (ví dụ \textit{muối} $\to$ ``salt''),
-        và giới hạn tối đa 500 cặp để kiểm soát chất lượng.
+  \item \textbf{Tầng 3 -- từ đơn còn lại}: những từ đơn còn lại sau 2 tầng trên được kiểm tra lại bằng cách \textit{chỉ dịch một chiều} sang tiếng Anh không kiểm chứng dịch
+        ngược sau đó được lọc thủ công qua blacklist. Mục đích của tầng này là bao phủ thêm
+        các từ đơn có chất lượng tốt nhưng không qua được tầng 1. Do số lượng từ vựng không quá nhiều nên tầng này 
+        được lọc thủ công qua blacklist để loại bỏ đi những từ gây nhiễu cao.
 \end{itemize}
 
 Cơ sở khoa học của phép kiểm tra \textit{dịch ngược} ở Tầng 1 là: một từ đa nghĩa thường không
@@ -297,6 +295,17 @@ dịch ngược về chính nó một cách ổn định, do bản dịch trung 
 Vì vậy, ràng buộc dịch ngược trùng khớp tự nhiên loại bỏ phần lớn các từ đa nghĩa, chỉ giữ lại
 các cặp tương ứng một--một đáng tin cậy. Ràng buộc ``bản dịch là một từ đơn thuộc từ vựng
 NeoBERT'' bảo đảm mỗi cặp điểm neo ứng đúng \textit{một} token NeoBERT.
+
+Đối với tầng 2 và tầng 3 mục đích chính vẫn là mở rộng số lượng điểm neo (nếu chỉ dựa vào tầng 1 thì sẽ không đảm bảo được số lượng).
+Tầng 2 được dựa trên cơ sở từ ghép trong tiếng Việt thường mang nghĩa cụ thể và ít đa nghĩa hơn từ đơn, bởi sự kết hợp của nhiều âm tiết giúp 
+thu hẹp ngữ cảnh ngữ nghĩa và giảm hiện tượng một từ biểu đạt nhiều khái niệm khác nhau. Tầng 3 hướng tới việc tăng độ bao phủ tập neo đối với 
+các từ đơn còn lại dựa trên thực tế một số từ đơn có nghĩa rõ ràng nhưng không vượt qua được phép kiểm tra dịch ngược do hệ thống dịch hoặc do
+từ đơn đó tồn tại nhiều cách diễn đạt tương đương. 
+
+Nhìn chung, ba tầng khai thác được thiết kế theo nguyên tắc đánh đổi giữa độ chính xác và độ phủ. 
+Tầng 1 ưu tiên độ tin cậy thông qua ràng buộc dịch ngược, Tầng 2 mở rộng số lượng điểm neo bằng cách khai thác đặc tính ngữ nghĩa ổn định của từ ghép tiếng Việt, 
+trong khi Tầng 3 bổ sung các trường hợp còn thiếu thông qua kiểm duyệt thủ công. Sự kết hợp này xây dựng nên một tập điểm neo 
+tối ưu cả về số lượng lẫn chất lượng.
 
 Tập điểm neo cuối cùng là \textit{hợp} của ba nguồn -- điểm neo trùng mặt chữ đã xác minh, điểm neo chữ số và cặp dịch Anh--Việt
 -- sau khi loại các cặp trùng lặp, thu được ánh xạ $t_{\mathrm{vi}} \mapsto
