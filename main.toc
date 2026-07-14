@@ -69,7 +69,7 @@
 \contentsline {section}{\numberline {5.1}Kết luận}{69}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Hạn chế của đề tài}{71}{section.5.2}%
 \contentsline {section}{\numberline {5.3}Hướng phát triển}{71}{section.5.3}%
-\contentsline {chapter}{Tài liệu tham khảo}{74}{Item.13}%
-\contentsline {chapter}{Phụ lục}{81}{chapter*.10}%
-\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{82}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Định nghĩa hình thức các độ đo đánh giá}{84}{appendix.B}%
+\contentsline {chapter}{Tài liệu tham khảo}{73}{Item.13}%
+\contentsline {chapter}{Phụ lục}{80}{chapter*.10}%
+\contentsline {chapter}{\numberline {A}Bộ lọc chính tả tiếng Việt cho khai thác neo}{81}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Định nghĩa hình thức các độ đo đánh giá}{83}{appendix.B}%

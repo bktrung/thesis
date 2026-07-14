@@ -36,8 +36,8 @@ SALT được cải tiến, thay vì huấn luyện lại từ đầu. Đối ch
   \item \textbf{Về hiệu quả của mô hình}: Sau khoảng 5 tỷ token CulturaX
         ($\sim$20GB văn bản), ViNeoBERT
         đạt 76,62 điểm F1 trên đọc hiểu UIT-ViQuAD (hơn XLM-R-base 3,3 điểm), cao hơn
-        XLM-R-base ở 11/12 tác vụ của bảng đánh giá đa tác vụ, dẫn đầu cả năm mô hình
-        so sánh ở gán nhãn từ loại và cạnh tranh được với các bản \texttt{large}
+        XLM-R-base ở 11/12 tác vụ của bảng đánh giá đa tác vụ, đạt điểm cao nhất
+        ở gán nhãn từ loại và cạnh tranh được với các bản \texttt{large}
         có gấp 1,5--2,3 lần tham số (Mục~\ref{sec:exp-mrc}). Pha mở rộng ngữ cảnh
         $\sim$200 triệu token ở độ dài 4.096 giữ pseudo-perplexity ổn định trên toàn
         dải ngữ cảnh, biến trần 4.096 token kế thừa từ kiến trúc thành năng lực sử
@@ -50,7 +50,7 @@ SALT được cải tiến, thay vì huấn luyện lại từ đầu. Đối ch
         hệ mới đến với tiếng Việt}.
 \end{itemize}
 
-Bên cạnh mô hình, đề tài đóng góp một quy trình ba giai đoạn có thể tái lập -- khởi
+Bên cạnh mô hình, đề tài đóng góp một quy trình có thể tái lập -- khởi
 tạo SALT cải tiến, căn chỉnh với phần thân đóng băng, tiếp tục tiền huấn luyện theo lịch WSD -- cùng
 bộ mã nguồn công khai đi kèm.
 
@@ -85,10 +85,9 @@ sau:
 Từ các kết quả và hạn chế trên, chúng tôi đề xuất năm hướng phát triển:
 
 \begin{enumerate}
-  \item \textbf{Mở rộng ngân sách tiếp tục tiền huấn luyện}: tăng lượng token CulturaX
-        vượt mốc 5 tỷ và khai thác thêm các pha làm nguội trên dữ liệu mới -- vốn
-        đã cho thấy hiệu quả nâng điểm ở mốc cuối -- nhằm vượt các mô hình họ PhoBERT
-        trên các tác vụ ứng dụng.
+  \item \textbf{Mở rộng ngân sách tiếp tục tiền huấn luyện}: thêm dữ liệu và
+        huấn luyện lâu hơn, nhằm thu hẹp và tiến tới vượt
+        các mô hình họ PhoBERT trên các tác vụ ứng dụng.
   \item \textbf{Trộn lại một phần dữ liệu tiếng Anh khi tiếp tục tiền huấn luyện}: giữ
         lại một tỷ lệ nhỏ (khoảng $5$--$10\%$) dữ liệu tiếng Anh -- ngôn ngữ nguồn của
         NeoBERT -- trong hỗn hợp huấn luyện ở Giai đoạn 3 như một cơ chế \textit{phát
@@ -109,7 +108,7 @@ Từ các kết quả và hạn chế trên, chúng tôi đề xuất năm hư�
         trên kho ngữ liệu quy mô lớn hơn và lặp lại nhóm tác vụ biểu diễn câu qua
         nhiều lần chạy, nhằm đánh giá toàn diện và tin cậy hơn chất lượng biểu diễn
         của mô hình ở vai trò một Encoder đa dụng.
-  \item \textbf{Tổng quát hóa quy trình}: áp dụng quy trình ba giai đoạn của đề tài
+  \item \textbf{Tổng quát hóa quy trình}: áp dụng quy trình của đề tài
         cho các ngôn ngữ ít tài nguyên khác hoặc các kiến trúc nền khác, qua đó kiểm
         chứng tính tổng quát của các cải tiến (tập điểm neo theo cặp dịch, khởi tạo riêng lớp
         đầu ra, căn chỉnh với phần thân đóng băng) ngoài phạm vi cặp Anh--Việt và NeoBERT.

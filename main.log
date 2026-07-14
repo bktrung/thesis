@@ -1,6 +1,7 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  14 JUL 2026 02:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.28)  14 JUL 2026 07:27
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **main.tex
 (./main.tex
@@ -1826,7 +1827,7 @@ Chương 5.
 
 
 
-] [70] [71] [72]) [73]
+] [70] [71]) [72]
 Underfull \hbox (badness 1348) in paragraph at lines 207--207
 \T5/cmr/m/n/14.4 BERT pre-train-ing ap-proach,'' \T5/cmr/m/it/14.4 arXiv prepri
 nt arXiv:1907.11692\T5/cmr/m/n/14.4 ,
@@ -1838,7 +1839,7 @@ Underfull \hbox (badness 3977) in paragraph at lines 207--207
 it/14.4 arXiv preprint
  []
 
-[74
+[73
 
 
 
@@ -1848,7 +1849,7 @@ Underfull \hbox (badness 1147) in paragraph at lines 207--207
 f-fi-
  []
 
-[75] [76] [77] [78] [79]
+[74] [75] [76] [77] [78]
 Underfull \hbox (badness 1789) in paragraph at lines 207--207
 \T5/cmr/m/n/14.4 recog-ni-tion for Viet-namese so-cial me-dia text,'' in \T5/cm
 r/m/it/14.4 Pro-ceed-ings
@@ -1860,25 +1861,25 @@ Underfull \hbox (badness 1082) in paragraph at lines 207--207
 i-lin-gual
  []
 
-[80] [81]
+[79] [80]
 \openout2 = `Appendix/appendix1.aux'.
 
  (./Appendix/appendix1.tex
 Phụ lục A.
-[82
+[81
 
 
-]) [83]
+]) [82]
 \openout2 = `Appendix/appendix2.aux'.
 
  (./Appendix/appendix2.tex
 Phụ lục B.
-[84
+[83
 
 
 
 
-]) [85] (./main.aux (./Appendix/commitment.aux) (./Appendix/thanks.aux)
+]) [84] (./main.aux (./Appendix/commitment.aux) (./Appendix/thanks.aux)
 (./Appendix/summary.aux) (./Chapter1/chapter1.aux) (./Chapter2/chapter2.aux)
 (./Chapter3/chapter3.aux) (./Chapter4/chapter4.aux) (./Chapter5/chapter5.aux)
 (./Appendix/appendix1.aux) (./Appendix/appendix2.aux))
@@ -1893,8 +1894,8 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34009 strings out of 474222
- 637071 string characters out of 5748733
+ 34008 strings out of 474222
+ 637064 string characters out of 5748733
  1949975 words of memory out of 5000000
  55351 multiletter control sequences out of 15000+600000
  587589 words of font info for 102 fonts, out of 8000000 for 9000
@@ -1924,10 +1925,10 @@ ex/vnr/vnr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti12.pfb
 ></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti8.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (109 pages, 1607389 bytes).
+Output written on main.pdf (108 pages, 1607047 bytes).
 PDF statistics:
- 1764 PDF objects out of 2073 (max. 8388607)
- 1510 compressed objects within 16 object streams
- 312 named destinations out of 1000 (max. 500000)
+ 1758 PDF objects out of 2073 (max. 8388607)
+ 1505 compressed objects within 16 object streams
+ 311 named destinations out of 1000 (max. 500000)
  718 words of extra memory for PDF output out of 10000 (max. 10000000)
 
